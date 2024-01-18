@@ -8,10 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static LumaBotUI.Constants;
-using MQTTnet.Server;
-using MQTTnet;
-using MQTTnet.Protocol;
-using MQTTnet.Diagnostics;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
+
 
 namespace LumaBotUI
 {
@@ -24,22 +23,50 @@ namespace LumaBotUI
 
         #endregion
 
-        #region Variables
+        #region Private Fields
 
         private RobotStatus status;
 
+        private PointF curLocation; // location of robot
+        private PointF targetLocation; // location to send robot to
+
+        private string ipAddress;
+        #endregion
+
+        #region Delegates
+        private delegate void LocationDelegate();
         #endregion
 
         #region Constructor
-
         public MainForm()
         {
+            ipAddress = "192.168.1.134"; // maybe get this dynamically somehow?!
             InitializeComponent();
+            ConnectToMqtt();
         }
-
         #endregion
 
         #region Private Methods
+        private void ConnectToMqtt()
+        {
+            MqttModule mqtt = new MqttModule(ipAddress);
+            mqtt.LocationUpdated += Mqtt_LocationUpdated;
+
+            // example for publishing a message
+            //client.Publish("/home/temperature", Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false); 
+        }
+
+        private void LocationUpdate()
+        {
+            string locationStr = String.Format("%f, %f", curLocation.X, curLocation.Y);
+            positionLabel.Text = locationStr;
+            UpdateGraphicLocation();
+        }
+
+        private void UpdateGraphicLocation()
+        {
+
+        }
         private void UpdateStatus()
         {
             statusLabel.Text = StatusToText(status);
@@ -65,7 +92,11 @@ namespace LumaBotUI
         #endregion
 
         #region Event Handlers
-
+        private void Mqtt_LocationUpdated(object sender, MqttModule.LocationEventArgs e)
+        {
+            curLocation = e.CurLocation;
+            this.BeginInvoke(new LocationDelegate(LocationUpdate));
+        }
         #endregion
 
     }
