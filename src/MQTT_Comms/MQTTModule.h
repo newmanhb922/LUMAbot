@@ -1,4 +1,4 @@
-#include "paho.mqtt.c\src\MQTTClient.h"
+#include "paho.mqtt.c/src/MQTTClient.h"
 #include <string.h>
 
 #define ADDRESS     "localhost"
