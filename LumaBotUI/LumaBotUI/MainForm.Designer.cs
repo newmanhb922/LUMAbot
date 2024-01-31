@@ -93,6 +93,7 @@ namespace LumaBotUI
             this.goButton.TabIndex = 2;
             this.goButton.Text = "Go";
             this.goButton.UseVisualStyleBackColor = false;
+            this.goButton.Click += new System.EventHandler(this.goButton_Click);
             // 
             // eStopButton
             // 

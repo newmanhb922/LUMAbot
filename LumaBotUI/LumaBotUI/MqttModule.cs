@@ -12,7 +12,7 @@ namespace LumaBotUI
     class MqttModule
     {
         #region Private Enums
-        public enum Topic { CurLocation, TargetLocation, Command };
+        public enum Topic { CurrentPosition, TargetPosition, Command };
         #endregion
 
         #region Private Fields
@@ -24,7 +24,7 @@ namespace LumaBotUI
         {
             mqttClient = new MqttClient(ipAddress);
             mqttClient.MqttMsgPublishReceived += MqttClient_MqttMsgPublishReceived;
-            SubscribeToTopic(Topic.CurLocation.ToString());
+            SubscribeToTopic(Topic.CurrentPosition.ToString());
             mqttClient.Connect("Windows PC");
         }
         #endregion
@@ -53,6 +53,10 @@ namespace LumaBotUI
         {
             mqttClient.Subscribe(new string[] { topic }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
         }
+        public void PublishMessage(string topic, string message)
+        {
+            mqttClient.Publish(topic, Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+        }
         #endregion
 
         #region Event Handlers
@@ -60,7 +64,7 @@ namespace LumaBotUI
         {
             string msg = Encoding.UTF8.GetString(e.Message);
 
-            if (e.Topic == Topic.CurLocation.ToString())
+            if (e.Topic == Topic.CurrentPosition.ToString())
             {
                 string[] coords = msg.Split(',');
                 if (coords.Length == 2)

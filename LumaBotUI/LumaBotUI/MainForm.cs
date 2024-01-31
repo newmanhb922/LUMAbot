@@ -31,6 +31,8 @@ namespace LumaBotUI
         private PointF targetLocation; // location to send robot to
 
         private string ipAddress;
+
+        private MqttModule mqtt;
         #endregion
 
         #region Delegates
@@ -49,7 +51,7 @@ namespace LumaBotUI
         #region Private Methods
         private void ConnectToMqtt()
         {
-            MqttModule mqtt = new MqttModule(ipAddress);
+            mqtt = new MqttModule(ipAddress);
             mqtt.LocationUpdated += Mqtt_LocationUpdated;
 
             // example for publishing a message
@@ -99,5 +101,9 @@ namespace LumaBotUI
         }
         #endregion
 
+        private void goButton_Click(object sender, EventArgs e)
+        {
+            mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "Go");
+        }
     }
 }
