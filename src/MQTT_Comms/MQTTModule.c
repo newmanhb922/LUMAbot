@@ -69,7 +69,7 @@ int ConnectToMQTT(MQTTClient * client)
     return returnCode;
 }
 
-int SubsribeToTopic(MQTTClient * client, const char * topicName)
+int SubscribeToTopic(MQTTClient * client, const char * topicName)
 {
     int returnCode = -1;
     if ((returnCode = MQTTClient_subscribe(*client, topicName, QOS)) != MQTTCLIENT_SUCCESS)

@@ -14,7 +14,7 @@ int main()
     {
         sprintf(messageToPublish, "%d, %d", i, i);
         printf("Publishing message: %s\n", messageToPublish);
-        PrintReturnCode(PublishMessage(&client, "CurrentPosition", messageToPublish));
+        PrintReturnCode(PublishMessage(&client, CURRENTPOSITIONTOPIC, messageToPublish));
         int ch = getchar();
     }
 }
