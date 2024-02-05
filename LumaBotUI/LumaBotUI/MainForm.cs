@@ -18,7 +18,6 @@ namespace LumaBotUI
     {
 
         #region Types
-
         enum RobotStatus { Disconnected = 0, Idle = 1, Moving = 2}
 
         #endregion
@@ -60,7 +59,7 @@ namespace LumaBotUI
 
         private void LocationUpdate()
         {
-            string locationStr = String.Format("%f, %f", curLocation.X, curLocation.Y);
+            string locationStr = String.Format("{0:F2}, {0:F2}", curLocation.X, curLocation.Y);
             positionLabel.Text = locationStr;
             UpdateGraphicLocation();
         }
@@ -99,11 +98,10 @@ namespace LumaBotUI
             curLocation = e.CurLocation;
             this.BeginInvoke(new LocationDelegate(LocationUpdate));
         }
-        #endregion
-
         private void goButton_Click(object sender, EventArgs e)
         {
             mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "Go");
         }
+        #endregion
     }
 }
