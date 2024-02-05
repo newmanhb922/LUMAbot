@@ -7,20 +7,20 @@ void ConnectionLost(void * context, char * cause)
 
 int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_message * message)
 {
-    printf("Topic: %s, Message: %s\n", topicName, message->payload);
-    if (strcmp(topicName, CurrentPositionTopic) == 0)
+    printf("message arrived. Topic: %s, Message: %s\n", topicName, message->payload);
+    if (strcmp(topicName, CURRENTPOSITIONTOPIC) == 0)
     {
         // should never receive a message with current position topic
     }
-    else if (strcmp(topicName, TargetPositionTopic) == 0)
+    else if (strcmp(topicName, TARGETPOSITIONTOPIC) == 0)
     {
         // set target position
     }
-    else if (strcmp(topicName, CommandTopic) == 0)
+    else if (strcmp(topicName, COMMANDTOPIC) == 0)
     {
         // execute command
     }
-    MQTTClient_freeMessage(message);
+    MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;
 }
@@ -39,14 +39,16 @@ int ConnectToMQTT(MQTTClient * client)
     if ((returnCode = MQTTClient_create(client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL)) != MQTTCLIENT_SUCCESS)
     {
         // error
+        printf("error creating client\n");
     }
     else
     {
         printf("Client created\n");
     }
-    if ((returnCode = MQTTClient_setCallbacks(client, NULL, ConnectionLost, MessageArrived, DeliveryComplete)) != MQTTCLIENT_SUCCESS)
+    if ((returnCode = MQTTClient_setCallbacks(*client, NULL, ConnectionLost, MessageArrived, DeliveryComplete)) != MQTTCLIENT_SUCCESS)
     {
         // error
+        printf("error setting callbacks\n");
     }
     else
     {
@@ -58,6 +60,7 @@ int ConnectToMQTT(MQTTClient * client)
     if ((returnCode = MQTTClient_connect(*client, &conn_opts)) != MQTTCLIENT_SUCCESS)
     {
         // error
+        printf("error connecting\n");
     }
     else
     {
@@ -66,12 +69,13 @@ int ConnectToMQTT(MQTTClient * client)
     return returnCode;
 }
 
-int SubsribeToTopic(MQTTClient * client, const char topicName)
+int SubsribeToTopic(MQTTClient * client, const char * topicName)
 {
-    int returnCode = 0;
-    if ((returnCode = MQTTClient_subscribe(client, topicName, QOS)) != MQTTCLIENT_SUCCESS)
+    int returnCode = -1;
+    if ((returnCode = MQTTClient_subscribe(*client, topicName, QOS)) != MQTTCLIENT_SUCCESS)
     {
         // error
+        printf("Error subscribing.\n");
     }
     else
     {
@@ -80,22 +84,23 @@ int SubsribeToTopic(MQTTClient * client, const char topicName)
     return returnCode;
 }
 
-int PublishMessage(MQTTClient * client, const char topicName, const char message)
+int PublishMessage(MQTTClient * client, const char * topicName, char * message)
 {
     MQTTClient_message toPublish = MQTTClient_message_initializer;
     MQTTClient_deliveryToken deliveryToken;
-    int returnCode = 0;
+    int returnCode = -1;
 
     toPublish.payload = message;
     toPublish.payloadlen = strlen(message);
     toPublish.qos = QOS;
     toPublish.retained = 0;
 
-    if ((returnCode = MQTTClient_publishMessage(client, topicName, &toPublish, &deliveryToken)) != MQTTCLIENT_SUCCESS)
+    if ((returnCode = MQTTClient_publishMessage(*client, topicName, &toPublish, &deliveryToken)) != MQTTCLIENT_SUCCESS)
     {
         // error
+        printf("error publishing message\n");
     }
-    returnCode = MQTTClient_waitForCompletion(client, deliveryToken, TIMEOUT);
+    returnCode = MQTTClient_waitForCompletion(*client, deliveryToken, TIMEOUT);
     printf("Message Published: %s, DeliveryToken: %d\n", message, deliveryToken);
     return returnCode;
 }
