@@ -36,6 +36,7 @@ namespace LumaBotUI
 
         #region Delegates
         private delegate void LocationDelegate();
+        private delegate void StatusDelegate(string status);
         #endregion
 
         #region Constructor
@@ -52,10 +53,13 @@ namespace LumaBotUI
         {
             mqtt = new MqttModule(ipAddress);
             mqtt.LocationUpdated += Mqtt_LocationUpdated;
+            mqtt.StatusUpdated += Mqtt_StatusUpdated;
 
             // example for publishing a message
             //client.Publish("/home/temperature", Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false); 
         }
+
+
 
         private void LocationUpdate()
         {
@@ -63,7 +67,10 @@ namespace LumaBotUI
             positionLabel.Text = locationStr;
             UpdateGraphicLocation();
         }
-
+        private void StatusUpdate(string status)
+        {
+            statusLabel.Text = status;
+        }
         private void UpdateGraphicLocation()
         {
 
@@ -101,6 +108,15 @@ namespace LumaBotUI
         private void goButton_Click(object sender, EventArgs e)
         {
             mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "Go");
+        }
+        private void Mqtt_StatusUpdated(object sender, MqttModule.StatusEventArgs e)
+        {
+            this.BeginInvoke(new StatusDelegate(StatusUpdate), e.Status);
+        }
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            mqtt.SubscribeToTopic(MqttModule.Topic.CurrentPosition.ToString());
+            mqtt.ConnectToBroker();
         }
         #endregion
     }

@@ -24,8 +24,7 @@ namespace LumaBotUI
         {
             mqttClient = new MqttClient(ipAddress);
             mqttClient.MqttMsgPublishReceived += MqttClient_MqttMsgPublishReceived;
-            SubscribeToTopic(Topic.CurrentPosition.ToString());
-            mqttClient.Connect("Windows PC");
+            
         }
         #endregion
 
@@ -46,9 +45,37 @@ namespace LumaBotUI
         {
             LocationUpdated?.Invoke(this, e);
         }
+
+        public event EventHandler<StatusEventArgs> StatusUpdated;
+
+        public class StatusEventArgs : EventArgs
+        {
+            public string Status { get; set; }
+            public StatusEventArgs(string status)
+            {
+                Status = status;
+            }
+        }
+
+        protected virtual void OnStatusUpdate(StatusEventArgs e)
+        {
+            StatusUpdated?.Invoke(this, e);
+        }
         #endregion
 
         #region Public Methods
+        public void ConnectToBroker()
+        {
+            try
+            {
+                mqttClient.Connect("Windows PC");
+            }
+            catch (Exception e)
+            {
+                //error
+                OnStatusUpdate(new StatusEventArgs("Error connecting to MQTT broker"));
+            }
+        }
         public void SubscribeToTopic(string topic)
         {
             mqttClient.Subscribe(new string[] { topic }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
