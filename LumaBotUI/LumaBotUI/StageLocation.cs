@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace LumaBotUI
 {
-    public partial class StageLocation : UserControl
+    public partial class StageLocation : Control
     {
         #region Constants
 
@@ -21,11 +21,10 @@ namespace LumaBotUI
 
         private Color pointColor;
         private string pointLabelStr;
-
+        private string coordLabelStr;
         #endregion
 
         #region Properties
-        //TODO Figure out how to get properties to show on designer.
         [Category("Custom Properties")]
         [Description("Color of the point.")]
         [Browsable(true)]
@@ -54,16 +53,37 @@ namespace LumaBotUI
                 pointLabelStr = value;
             }
         }
+        [Category("Custom Properties")]
+        [Description("Coordinate of the point.")]
+        [Browsable(true)]
+        public string CoordLabelStr
+        {
+            get
+            {
+                return coordLabelStr;
+            }
+            set
+            {
+                coordLabelStr = value;
+            }
+        }
         #endregion
 
-        public StageLocation()
+        protected override CreateParams CreateParams
         {
-            InitializeComponent();
+            get
+            {
+                CreateParams CP = base.CreateParams;
+                CP.ExStyle |= 0x20;
+                return CP;
+            }
         }
-
-        private void Point_Paint(object sender, PaintEventArgs e)
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
-            pointLabel.Text = pointLabelStr;
+            //base.OnPaintBackground(e);
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {    
             int pointDiameter = POINT_DIAMETER;
             if (this.Width < pointDiameter)
             {
@@ -73,15 +93,23 @@ namespace LumaBotUI
             {
                 pointDiameter = this.Height;
             }
-
-            int pointTop = (this.Height / 2) - (pointDiameter / 2);
-            pointLabel.Left = (this.Width / 2) - (pointLabel.Width / 2);
-            pointLabel.Top = pointTop - pointLabel.Height - 5;
-
+            
             Graphics g = e.Graphics;
+            int pointTop = (this.Height / 2) - (pointDiameter / 2);
+            SizeF strSize = g.MeasureString(pointLabelStr, this.Font);
+            PointF pointLabelPos = new PointF((this.Width / 2) - (strSize.Width / 2), pointTop - strSize.Height - 5);
+
+            int pointBottom = pointTop + pointDiameter;
+            strSize = g.MeasureString(coordLabelStr, this.Font);
+            PointF coordLabelPos = new PointF((this.Width / 2) - (strSize.Width / 2), pointBottom + 5);
+            
             SolidBrush brush = new System.Drawing.SolidBrush(pointColor);
-            g.Clear(this.BackColor);
-            g.FillEllipse(brush, (this.Width / 2) - (pointDiameter / 2), pointTop, pointDiameter, pointDiameter);  
+            SolidBrush textBrush = new SolidBrush(this.ForeColor);
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.FillEllipse(brush, (this.Width / 2) - (pointDiameter / 2), pointTop, pointDiameter, pointDiameter);
+            g.DrawString(pointLabelStr, this.Font, textBrush, pointLabelPos);
+            g.DrawString(CoordLabelStr, this.Font, textBrush, coordLabelPos);
+                
         }
     }
 }

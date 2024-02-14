@@ -44,7 +44,6 @@ namespace LumaBotUI
         {
             ipAddress = "192.168.1.134"; // maybe get this dynamically somehow?!
             InitializeComponent();
-            ConnectToMqtt();
         }
         #endregion
 
@@ -54,7 +53,8 @@ namespace LumaBotUI
             mqtt = new MqttModule(ipAddress);
             mqtt.LocationUpdated += Mqtt_LocationUpdated;
             mqtt.StatusUpdated += Mqtt_StatusUpdated;
-
+            mqtt.SubscribeToTopic(MqttModule.Topic.CurrentPosition.ToString());
+            mqtt.ConnectToBroker();
             // example for publishing a message
             //client.Publish("/home/temperature", Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false); 
         }
@@ -63,8 +63,7 @@ namespace LumaBotUI
 
         private void LocationUpdate()
         {
-            string locationStr = String.Format("{0:F2}, {0:F2}", curLocation.X, curLocation.Y);
-            positionLabel.Text = locationStr;
+            positionLabel.Text = String.Format("{0:F2}, {1:F2}", curLocation.X, curLocation.Y);
             UpdateGraphicLocation();
         }
         private void StatusUpdate(string status)
@@ -73,7 +72,23 @@ namespace LumaBotUI
         }
         private void UpdateGraphicLocation()
         {
+            PointF topLeftPoint = new PointF(stageGrid.Left + stageLocationL.Width / 2,
+                                        stageGrid.Top + stageLocationL.Height / 2);
+            PointF bottomRightPoint = new PointF(topLeftPoint.X + 4 * stageLocationL.Width,
+                                            topLeftPoint.Y + 2 * stageLocationL.Height);
+            float stageToFormRatioX = -(bottomRightPoint.X - topLeftPoint.X) / (MAX_STAGE_X - MIN_STAGE_X);
+            float stageToFormRatioY = (bottomRightPoint.Y - topLeftPoint.Y) / (MAX_STAGE_Y - MIN_STAGE_Y);
 
+            float positionBoxCenterX = ((curLocation.X * stageToFormRatioX) + 2.5f * stageLocationL.Width + stageGrid.Left + stageLocationL.Margin.Left + 1);
+            float positionBoxCenterY = ((curLocation.Y * stageToFormRatioY) + 2.5f * stageLocationL.Height + stageGrid.Top + stageLocationL.Margin.Top + 3);
+
+            positionBoxCenterX = AdjustXForMargins(positionBoxCenterX);
+            positionBoxCenterY = AdjustYForMargins(positionBoxCenterY);
+
+            robotPositionBox.Location = new Point((int)(positionBoxCenterX - robotPositionBox.Width / 2.0),
+                                                  (int)(positionBoxCenterY - robotPositionBox.Height / 2.0));
+            stageGrid.Refresh();
+            robotPositionBox.Refresh();
         }
         private void UpdateStatus()
         {
@@ -97,6 +112,38 @@ namespace LumaBotUI
             }
             return toReturn;
         }
+        private float AdjustXForMargins(float xCoord)
+        {
+            if (xCoord > stageLocationL.Width * 4)
+            {
+                xCoord = xCoord + stageLocationL.Margin.Left * 8;
+            }
+            else if (xCoord > stageLocationL.Width * 3)
+            {
+                xCoord = xCoord + stageLocationL.Margin.Left * 6;
+            }
+            else if (xCoord > stageLocationL.Width * 2)
+            {
+                xCoord = xCoord + stageLocationL.Margin.Left * 4;
+            }
+            else if (xCoord > stageLocationL.Width)
+            {
+                xCoord = xCoord + stageLocationL.Margin.Left * 2;
+            }
+            return xCoord;
+        }
+        private float AdjustYForMargins(float yCoord)
+        {
+            if (yCoord > stageLocationL.Height * 2)
+            {
+                yCoord = yCoord + stageLocationL.Margin.Top * 4;
+            }
+            else if (yCoord > stageLocationL.Height)
+            {
+                yCoord = yCoord + stageLocationL.Margin.Top * 2;
+            }
+            return yCoord;
+        }
         #endregion
 
         #region Event Handlers
@@ -115,8 +162,12 @@ namespace LumaBotUI
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
-            mqtt.SubscribeToTopic(MqttModule.Topic.CurrentPosition.ToString());
-            mqtt.ConnectToBroker();
+            ConnectToMqtt();
+            LocationUpdate();
+        }
+        private void eStopButton_Click(object sender, EventArgs e)
+        {
+            mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "Stop");
         }
         #endregion
     }

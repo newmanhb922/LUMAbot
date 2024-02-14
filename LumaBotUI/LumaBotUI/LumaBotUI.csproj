@@ -57,19 +57,16 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MqttModule.cs" />
-    <Compile Include="StageLocation.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="RobotPositionBox.cs">
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Include="StageLocation.Designer.cs">
-      <DependentUpon>StageLocation.cs</DependentUpon>
+    <Compile Include="StageLocation.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StageLocation.resx">
-      <DependentUpon>StageLocation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

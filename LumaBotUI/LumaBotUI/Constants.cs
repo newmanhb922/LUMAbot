@@ -12,5 +12,10 @@ namespace LumaBotUI
         public const string DISCONNECTED_STR = "Disconnected";
         public const string IDLE_STR = "Idle";
         public const string MOVING_STR = "Moving";
+
+        public const int MIN_STAGE_X = -14;
+        public const int MIN_STAGE_Y = -14;
+        public const int MAX_STAGE_X = 14;
+        public const int MAX_STAGE_Y = 0;
     }
 }

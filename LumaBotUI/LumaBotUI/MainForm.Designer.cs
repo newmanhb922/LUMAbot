@@ -35,32 +35,34 @@ namespace LumaBotUI
             this.eStopButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
-            this.batteryLabel = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.positionLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.stageGrid = new System.Windows.Forms.TableLayoutPanel();
-            this.stageLocationF = new LumaBotUI.StageLocation();
-            this.stageLocationA = new LumaBotUI.StageLocation();
-            this.stageLocationB = new LumaBotUI.StageLocation();
-            this.stageLocationH = new LumaBotUI.StageLocation();
-            this.stageLocationG = new LumaBotUI.StageLocation();
-            this.stageLocationI = new LumaBotUI.StageLocation();
-            this.stageLocationC = new LumaBotUI.StageLocation();
             this.stageLocationE = new LumaBotUI.StageLocation();
             this.stageLocationD = new LumaBotUI.StageLocation();
-            this.stagePanel = new System.Windows.Forms.Panel();
+            this.stageLocationK = new LumaBotUI.StageLocation();
+            this.stageLocationJ = new LumaBotUI.StageLocation();
+            this.stageLocationQ = new LumaBotUI.StageLocation();
+            this.stageLocationP = new LumaBotUI.StageLocation();
+            this.stageLocationH = new LumaBotUI.StageLocation();
+            this.stageLocationL = new LumaBotUI.StageLocation();
+            this.stageLocationN = new LumaBotUI.StageLocation();
+            this.stageLocationB = new LumaBotUI.StageLocation();
+            this.stageLocationA = new LumaBotUI.StageLocation();
+            this.stageLocationM = new LumaBotUI.StageLocation();
+            this.stageLocationG = new LumaBotUI.StageLocation();
+            this.stageLocationF = new LumaBotUI.StageLocation();
+            this.stageLocationC = new LumaBotUI.StageLocation();
+            this.robotPositionBox = new LumaBotUI.RobotPositionBox();
             this.stageGrid.SuspendLayout();
-            this.stagePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // pointLabel
             // 
             this.pointLabel.AutoSize = true;
-            this.pointLabel.Location = new System.Drawing.Point(448, 45);
-            this.pointLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.pointLabel.Location = new System.Drawing.Point(28, 591);
             this.pointLabel.Name = "pointLabel";
-            this.pointLabel.Size = new System.Drawing.Size(94, 13);
+            this.pointLabel.Size = new System.Drawing.Size(123, 17);
             this.pointLabel.TabIndex = 0;
             this.pointLabel.Text = "Move to this point:";
             // 
@@ -77,10 +79,10 @@ namespace LumaBotUI
             "G",
             "H",
             "I"});
-            this.pointSelectionCombo.Location = new System.Drawing.Point(565, 45);
-            this.pointSelectionCombo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pointSelectionCombo.Location = new System.Drawing.Point(184, 591);
+            this.pointSelectionCombo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pointSelectionCombo.Name = "pointSelectionCombo";
-            this.pointSelectionCombo.Size = new System.Drawing.Size(55, 21);
+            this.pointSelectionCombo.Size = new System.Drawing.Size(72, 24);
             this.pointSelectionCombo.TabIndex = 1;
             // 
             // goButton
@@ -89,10 +91,10 @@ namespace LumaBotUI
             this.goButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.goButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.goButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.goButton.Location = new System.Drawing.Point(460, 86);
-            this.goButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.goButton.Location = new System.Drawing.Point(31, 635);
+            this.goButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.goButton.Name = "goButton";
-            this.goButton.Size = new System.Drawing.Size(158, 44);
+            this.goButton.Size = new System.Drawing.Size(211, 54);
             this.goButton.TabIndex = 2;
             this.goButton.Text = "Go";
             this.goButton.UseVisualStyleBackColor = false;
@@ -104,230 +106,322 @@ namespace LumaBotUI
             this.eStopButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.eStopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.eStopButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.eStopButton.Location = new System.Drawing.Point(460, 392);
-            this.eStopButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.eStopButton.Location = new System.Drawing.Point(673, 567);
+            this.eStopButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.eStopButton.Name = "eStopButton";
-            this.eStopButton.Size = new System.Drawing.Size(222, 142);
+            this.eStopButton.Size = new System.Drawing.Size(296, 175);
             this.eStopButton.TabIndex = 3;
             this.eStopButton.Text = "Emergency Stop";
             this.eStopButton.UseVisualStyleBackColor = false;
+            this.eStopButton.Click += new System.EventHandler(this.eStopButton_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(448, 161);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(332, 591);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.Size = new System.Drawing.Size(52, 17);
             this.label1.TabIndex = 4;
             this.label1.Text = "Status:";
             // 
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(562, 161);
-            this.statusLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.statusLabel.Location = new System.Drawing.Point(424, 591);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(24, 13);
+            this.statusLabel.Size = new System.Drawing.Size(30, 17);
             this.statusLabel.TabIndex = 5;
             this.statusLabel.Text = "Idle";
-            // 
-            // batteryLabel
-            // 
-            this.batteryLabel.AutoSize = true;
-            this.batteryLabel.Location = new System.Drawing.Point(562, 204);
-            this.batteryLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.batteryLabel.Name = "batteryLabel";
-            this.batteryLabel.Size = new System.Drawing.Size(33, 13);
-            this.batteryLabel.TabIndex = 7;
-            this.batteryLabel.Text = "100%";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(448, 204);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Battery Health:";
             // 
             // positionLabel
             // 
             this.positionLabel.AutoSize = true;
-            this.positionLabel.Location = new System.Drawing.Point(562, 250);
-            this.positionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.positionLabel.Location = new System.Drawing.Point(484, 626);
             this.positionLabel.Name = "positionLabel";
-            this.positionLabel.Size = new System.Drawing.Size(22, 13);
+            this.positionLabel.Size = new System.Drawing.Size(28, 17);
             this.positionLabel.TabIndex = 9;
             this.positionLabel.Text = "0,0";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(448, 250);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(332, 626);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(84, 13);
+            this.label4.Size = new System.Drawing.Size(113, 17);
             this.label4.TabIndex = 8;
             this.label4.Text = "Current Position:";
             // 
             // stageGrid
             // 
-            this.stageGrid.ColumnCount = 3;
-            this.stageGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.stageGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.stageGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.stageGrid.Controls.Add(this.stageLocationF, 2, 1);
-            this.stageGrid.Controls.Add(this.stageLocationA, 0, 0);
-            this.stageGrid.Controls.Add(this.stageLocationB, 1, 0);
-            this.stageGrid.Controls.Add(this.stageLocationH, 0, 2);
-            this.stageGrid.Controls.Add(this.stageLocationG, 0, 2);
-            this.stageGrid.Controls.Add(this.stageLocationI, 0, 2);
-            this.stageGrid.Controls.Add(this.stageLocationC, 1, 0);
-            this.stageGrid.Controls.Add(this.stageLocationE, 1, 1);
-            this.stageGrid.Controls.Add(this.stageLocationD, 0, 1);
-            this.stageGrid.Location = new System.Drawing.Point(2, 2);
-            this.stageGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.stageGrid.ColumnCount = 5;
+            this.stageGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.stageGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.stageGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.stageGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.stageGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.stageGrid.Controls.Add(this.stageLocationE, 4, 2);
+            this.stageGrid.Controls.Add(this.stageLocationD, 3, 2);
+            this.stageGrid.Controls.Add(this.stageLocationK, 4, 1);
+            this.stageGrid.Controls.Add(this.stageLocationJ, 3, 1);
+            this.stageGrid.Controls.Add(this.stageLocationQ, 4, 0);
+            this.stageGrid.Controls.Add(this.stageLocationP, 3, 0);
+            this.stageGrid.Controls.Add(this.stageLocationH, 2, 1);
+            this.stageGrid.Controls.Add(this.stageLocationL, 0, 0);
+            this.stageGrid.Controls.Add(this.stageLocationN, 2, 0);
+            this.stageGrid.Controls.Add(this.stageLocationB, 1, 2);
+            this.stageGrid.Controls.Add(this.stageLocationA, 0, 2);
+            this.stageGrid.Controls.Add(this.stageLocationM, 1, 0);
+            this.stageGrid.Controls.Add(this.stageLocationG, 1, 1);
+            this.stageGrid.Controls.Add(this.stageLocationF, 0, 1);
+            this.stageGrid.Controls.Add(this.stageLocationC, 2, 2);
+            this.stageGrid.Location = new System.Drawing.Point(12, 11);
+            this.stageGrid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stageGrid.Name = "stageGrid";
             this.stageGrid.RowCount = 3;
             this.stageGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.stageGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.stageGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.stageGrid.Size = new System.Drawing.Size(405, 439);
+            this.stageGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.stageGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.stageGrid.Size = new System.Drawing.Size(930, 550);
             this.stageGrid.TabIndex = 10;
-            // 
-            // stageLocationF
-            // 
-            this.stageLocationF.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationF.Location = new System.Drawing.Point(272, 148);
-            this.stageLocationF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.stageLocationF.Name = "stageLocationF";
-            this.stageLocationF.PointColor = System.Drawing.Color.Black;
-            this.stageLocationF.PointLabelStr = "F";
-            this.stageLocationF.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationF.TabIndex = 7;
-            // 
-            // stageLocationA
-            // 
-            this.stageLocationA.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationA.Location = new System.Drawing.Point(2, 2);
-            this.stageLocationA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.stageLocationA.Name = "stageLocationA";
-            this.stageLocationA.PointColor = System.Drawing.Color.Black;
-            this.stageLocationA.PointLabelStr = "A";
-            this.stageLocationA.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationA.TabIndex = 6;
-            // 
-            // stageLocationB
-            // 
-            this.stageLocationB.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationB.Location = new System.Drawing.Point(272, 2);
-            this.stageLocationB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.stageLocationB.Name = "stageLocationB";
-            this.stageLocationB.PointColor = System.Drawing.Color.Black;
-            this.stageLocationB.PointLabelStr = "C";
-            this.stageLocationB.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationB.TabIndex = 5;
-            // 
-            // stageLocationH
-            // 
-            this.stageLocationH.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationH.Location = new System.Drawing.Point(137, 294);
-            this.stageLocationH.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.stageLocationH.Name = "stageLocationH";
-            this.stageLocationH.PointColor = System.Drawing.Color.Black;
-            this.stageLocationH.PointLabelStr = "H";
-            this.stageLocationH.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationH.TabIndex = 3;
-            // 
-            // stageLocationG
-            // 
-            this.stageLocationG.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationG.Location = new System.Drawing.Point(2, 294);
-            this.stageLocationG.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.stageLocationG.Name = "stageLocationG";
-            this.stageLocationG.PointColor = System.Drawing.Color.Black;
-            this.stageLocationG.PointLabelStr = "G";
-            this.stageLocationG.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationG.TabIndex = 2;
-            // 
-            // stageLocationI
-            // 
-            this.stageLocationI.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationI.Location = new System.Drawing.Point(272, 294);
-            this.stageLocationI.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.stageLocationI.Name = "stageLocationI";
-            this.stageLocationI.PointColor = System.Drawing.Color.Black;
-            this.stageLocationI.PointLabelStr = "I";
-            this.stageLocationI.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationI.TabIndex = 1;
-            // 
-            // stageLocationC
-            // 
-            this.stageLocationC.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationC.Location = new System.Drawing.Point(137, 2);
-            this.stageLocationC.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.stageLocationC.Name = "stageLocationC";
-            this.stageLocationC.PointColor = System.Drawing.Color.Black;
-            this.stageLocationC.PointLabelStr = "B";
-            this.stageLocationC.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationC.TabIndex = 0;
             // 
             // stageLocationE
             // 
             this.stageLocationE.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationE.Location = new System.Drawing.Point(137, 148);
-            this.stageLocationE.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.stageLocationE.CoordLabelStr = "-14,0";
+            this.stageLocationE.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationE.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationE.Location = new System.Drawing.Point(747, 368);
+            this.stageLocationE.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stageLocationE.Name = "stageLocationE";
             this.stageLocationE.PointColor = System.Drawing.Color.Black;
             this.stageLocationE.PointLabelStr = "E";
-            this.stageLocationE.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationE.TabIndex = 4;
+            this.stageLocationE.Size = new System.Drawing.Size(180, 180);
+            this.stageLocationE.TabIndex = 14;
             // 
             // stageLocationD
             // 
             this.stageLocationD.BackColor = System.Drawing.SystemColors.Control;
-            this.stageLocationD.Location = new System.Drawing.Point(2, 148);
-            this.stageLocationD.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.stageLocationD.CoordLabelStr = null;
+            this.stageLocationD.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationD.Location = new System.Drawing.Point(561, 368);
+            this.stageLocationD.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stageLocationD.Name = "stageLocationD";
             this.stageLocationD.PointColor = System.Drawing.Color.Black;
             this.stageLocationD.PointLabelStr = "D";
-            this.stageLocationD.Size = new System.Drawing.Size(130, 141);
-            this.stageLocationD.TabIndex = 8;
+            this.stageLocationD.Size = new System.Drawing.Size(180, 180);
+            this.stageLocationD.TabIndex = 13;
             // 
-            // stagePanel
+            // stageLocationK
             // 
-            this.stagePanel.Controls.Add(this.stageGrid);
-            this.stagePanel.Location = new System.Drawing.Point(9, 10);
-            this.stagePanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.stagePanel.Name = "stagePanel";
-            this.stagePanel.Size = new System.Drawing.Size(435, 580);
-            this.stagePanel.TabIndex = 11;
+            this.stageLocationK.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationK.CoordLabelStr = null;
+            this.stageLocationK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationK.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationK.Location = new System.Drawing.Point(747, 185);
+            this.stageLocationK.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationK.Name = "stageLocationK";
+            this.stageLocationK.PointColor = System.Drawing.Color.Black;
+            this.stageLocationK.PointLabelStr = "K";
+            this.stageLocationK.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationK.TabIndex = 12;
+            // 
+            // stageLocationJ
+            // 
+            this.stageLocationJ.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationJ.CoordLabelStr = null;
+            this.stageLocationJ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationJ.Location = new System.Drawing.Point(561, 185);
+            this.stageLocationJ.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationJ.Name = "stageLocationJ";
+            this.stageLocationJ.PointColor = System.Drawing.Color.Black;
+            this.stageLocationJ.PointLabelStr = "J";
+            this.stageLocationJ.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationJ.TabIndex = 11;
+            // 
+            // stageLocationQ
+            // 
+            this.stageLocationQ.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationQ.CoordLabelStr = "-14,-14";
+            this.stageLocationQ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationQ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationQ.Location = new System.Drawing.Point(747, 2);
+            this.stageLocationQ.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationQ.Name = "stageLocationQ";
+            this.stageLocationQ.PointColor = System.Drawing.Color.Black;
+            this.stageLocationQ.PointLabelStr = "Q";
+            this.stageLocationQ.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationQ.TabIndex = 10;
+            // 
+            // stageLocationP
+            // 
+            this.stageLocationP.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationP.CoordLabelStr = null;
+            this.stageLocationP.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationP.Location = new System.Drawing.Point(561, 2);
+            this.stageLocationP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationP.Name = "stageLocationP";
+            this.stageLocationP.PointColor = System.Drawing.Color.Black;
+            this.stageLocationP.PointLabelStr = "P";
+            this.stageLocationP.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationP.TabIndex = 9;
+            // 
+            // stageLocationH
+            // 
+            this.stageLocationH.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationH.CoordLabelStr = null;
+            this.stageLocationH.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationH.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationH.Location = new System.Drawing.Point(375, 185);
+            this.stageLocationH.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationH.Name = "stageLocationH";
+            this.stageLocationH.PointColor = System.Drawing.Color.Black;
+            this.stageLocationH.PointLabelStr = "H";
+            this.stageLocationH.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationH.TabIndex = 7;
+            // 
+            // stageLocationL
+            // 
+            this.stageLocationL.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationL.CoordLabelStr = "14,-14";
+            this.stageLocationL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationL.Location = new System.Drawing.Point(3, 2);
+            this.stageLocationL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationL.Name = "stageLocationL";
+            this.stageLocationL.PointColor = System.Drawing.Color.Black;
+            this.stageLocationL.PointLabelStr = "L";
+            this.stageLocationL.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationL.TabIndex = 6;
+            // 
+            // stageLocationN
+            // 
+            this.stageLocationN.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationN.CoordLabelStr = null;
+            this.stageLocationN.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationN.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationN.Location = new System.Drawing.Point(375, 2);
+            this.stageLocationN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationN.Name = "stageLocationN";
+            this.stageLocationN.PointColor = System.Drawing.Color.Black;
+            this.stageLocationN.PointLabelStr = "N";
+            this.stageLocationN.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationN.TabIndex = 5;
+            // 
+            // stageLocationB
+            // 
+            this.stageLocationB.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationB.CoordLabelStr = null;
+            this.stageLocationB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationB.Location = new System.Drawing.Point(189, 368);
+            this.stageLocationB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationB.Name = "stageLocationB";
+            this.stageLocationB.PointColor = System.Drawing.Color.Black;
+            this.stageLocationB.PointLabelStr = "B";
+            this.stageLocationB.Size = new System.Drawing.Size(180, 180);
+            this.stageLocationB.TabIndex = 3;
+            // 
+            // stageLocationA
+            // 
+            this.stageLocationA.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationA.CoordLabelStr = "14,0";
+            this.stageLocationA.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationA.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationA.Location = new System.Drawing.Point(3, 368);
+            this.stageLocationA.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationA.Name = "stageLocationA";
+            this.stageLocationA.PointColor = System.Drawing.Color.Black;
+            this.stageLocationA.PointLabelStr = "A";
+            this.stageLocationA.Size = new System.Drawing.Size(180, 180);
+            this.stageLocationA.TabIndex = 2;
+            // 
+            // stageLocationM
+            // 
+            this.stageLocationM.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationM.CoordLabelStr = null;
+            this.stageLocationM.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationM.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationM.Location = new System.Drawing.Point(189, 2);
+            this.stageLocationM.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationM.Name = "stageLocationM";
+            this.stageLocationM.PointColor = System.Drawing.Color.Black;
+            this.stageLocationM.PointLabelStr = "M";
+            this.stageLocationM.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationM.TabIndex = 0;
+            // 
+            // stageLocationG
+            // 
+            this.stageLocationG.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationG.CoordLabelStr = null;
+            this.stageLocationG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationG.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationG.Location = new System.Drawing.Point(189, 185);
+            this.stageLocationG.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationG.Name = "stageLocationG";
+            this.stageLocationG.PointColor = System.Drawing.Color.Black;
+            this.stageLocationG.PointLabelStr = "G";
+            this.stageLocationG.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationG.TabIndex = 4;
+            // 
+            // stageLocationF
+            // 
+            this.stageLocationF.BackColor = System.Drawing.SystemColors.Control;
+            this.stageLocationF.CoordLabelStr = null;
+            this.stageLocationF.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationF.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationF.Location = new System.Drawing.Point(3, 185);
+            this.stageLocationF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.stageLocationF.Name = "stageLocationF";
+            this.stageLocationF.PointColor = System.Drawing.Color.Black;
+            this.stageLocationF.PointLabelStr = "F";
+            this.stageLocationF.Size = new System.Drawing.Size(180, 179);
+            this.stageLocationF.TabIndex = 8;
+            // 
+            // stageLocationC
+            // 
+            this.stageLocationC.CoordLabelStr = "0,0";
+            this.stageLocationC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stageLocationC.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stageLocationC.Location = new System.Drawing.Point(375, 369);
+            this.stageLocationC.Name = "stageLocationC";
+            this.stageLocationC.PointColor = System.Drawing.Color.Black;
+            this.stageLocationC.PointLabelStr = "C";
+            this.stageLocationC.Size = new System.Drawing.Size(180, 178);
+            this.stageLocationC.TabIndex = 15;
+            // 
+            // robotPositionBox
+            // 
+            this.robotPositionBox.DrawBorder = true;
+            this.robotPositionBox.Location = new System.Drawing.Point(100, 100);
+            this.robotPositionBox.Name = "robotPositionBox";
+            this.robotPositionBox.Size = new System.Drawing.Size(100, 100);
+            this.robotPositionBox.TabIndex = 11;
+            this.robotPositionBox.Text = "robotPositionBox1";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(736, 612);
-            this.Controls.Add(this.stagePanel);
+            this.ClientSize = new System.Drawing.Size(981, 753);
+            this.Controls.Add(this.robotPositionBox);
+            this.Controls.Add(this.stageGrid);
             this.Controls.Add(this.positionLabel);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.batteryLabel);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.eStopButton);
             this.Controls.Add(this.goButton);
             this.Controls.Add(this.pointSelectionCombo);
             this.Controls.Add(this.pointLabel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.Text = "LumaBot";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.stageGrid.ResumeLayout(false);
-            this.stagePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -341,21 +435,25 @@ namespace LumaBotUI
         private System.Windows.Forms.Button eStopButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label statusLabel;
-        private System.Windows.Forms.Label batteryLabel;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label positionLabel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TableLayoutPanel stageGrid;
-        private System.Windows.Forms.Panel stagePanel;
-        private StageLocation stageLocationC;
-        private StageLocation stageLocationD;
-        private StageLocation stageLocationF;
-        private StageLocation stageLocationA;
-        private StageLocation stageLocationB;
         private StageLocation stageLocationE;
+        private StageLocation stageLocationD;
+        private StageLocation stageLocationK;
+        private StageLocation stageLocationJ;
+        private StageLocation stageLocationQ;
+        private StageLocation stageLocationP;
         private StageLocation stageLocationH;
+        private StageLocation stageLocationL;
+        private StageLocation stageLocationN;
+        private StageLocation stageLocationB;
+        private StageLocation stageLocationA;
+        private StageLocation stageLocationM;
         private StageLocation stageLocationG;
-        private StageLocation stageLocationI;
+        private StageLocation stageLocationF;
+        private StageLocation stageLocationC;
+        private RobotPositionBox robotPositionBox;
     }
 }
 
