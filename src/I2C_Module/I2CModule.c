@@ -9,7 +9,7 @@ void MotorOff(int motorID, int motorOffHAddress);
 /// @param motorID motor id
 /// @param motorOnLAddress address of the ON_L register for this motor
 /// @param dutyCycle duty cycle as a percentage
-void MotorSetSpeed(int motorID, int motorOnLAddress, float dutyCycle);
+void MotorSetPWM(int motorID, int motorOnLAddress, float dutyCycle);
 
 int SetupI2C()
 {
@@ -57,22 +57,22 @@ void Motor3Off()
     MotorOff(MOTOR3_ID, MOTOR3_OFF_H);
 }
 
-void Motor0On(float dutyCyle)
+void Motor0SetPWM(float dutyCyle)
 {
     MotorOn(MOTOR0_ID, MOTOR0_ON_L, dutyCyle);
 }
 
-void Motor1On(float dutyCyle)
+void Motor1SetPWM(float dutyCyle)
 {
     MotorOn(MOTOR1_ID, MOTOR1_ON_L, dutyCyle);
 }
 
-void Motor2On(float dutyCyle)
+void Motor2SetPWM(float dutyCyle)
 {
     MotorOn(MOTOR2_ID, MOTOR2_ON_L, dutyCyle);
 }
 
-void Motor3On(float dutyCyle)
+void Motor3SetPWM(float dutyCyle)
 {
     MotorOn(MOTOR3_ID, MOTOR3_ON_L, dutyCyle);
 }
@@ -84,7 +84,7 @@ void MotorOff(int motorID, int motorOffHAddress)
     wiringPiI2CWriteReg8(motorID, motorOffHAddress, 0x10);
 }
 
-void MotorOn(int motorID, int motorOnLAddress, float dutyCycle)
+void MotorSetPWM(int motorID, int motorOnLAddress, float dutyCycle)
 {
     // per the pwm board documentation. write on value to ON_L
     // then ON_H registers and off value to OFF_L and OFF_H 

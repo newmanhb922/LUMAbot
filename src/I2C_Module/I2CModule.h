@@ -1,5 +1,10 @@
 #include <wiringPiI2C.h>
 
+// The SetPWM functions are not the only thing that needs to be done to move the motors
+// The SetPWM function only controls the speed. The direction must be controlled by setting 
+// The direction pin on the driver board to High or Low 
+// (and that wouldn't be I2C so it wouldn't make sense to put it in this file)
+
 // not sure what the Id's should be yet
 #define MOTOR0_ID       0x00
 #define MOTOR1_ID       0x01
@@ -35,25 +40,25 @@ void Motor0Off();
 
 /// @brief sets speed of Motor 0
 /// @param dutyCycle duty cycle as a percentage
-void Motor0SetSpeed(float dutyCycle);
+void Motor0SetPWM(float dutyCycle);
 
 /// @brief turns Motor1 off
 void Motor1Off();
 
 /// @brief sets speed of Motor 1
 /// @param dutyCycle duty cycle as a percentage
-void Motor1SetSpeed(float dutyCycle);
+void Motor1SetPWM(float dutyCycle);
 
 /// @brief turns Motor2 off
 void Motor2Off();
 
 /// @brief sets speed of Motor 2
 /// @param dutyCycle duty cycle as a percentage
-void Motor2SetSpeed(float dutyCycle);
+void Motor2SetPWM(float dutyCycle);
 
 /// @brief turns Motor3 off
 void Motor3Off();
 
 /// @brief sets speed of Motor 3
 /// @param dutyCycle duty cycle as a percentage
-void Motor3SetSpeed(float dutyCycle);
+void Motor3SetPWM(float dutyCycle);
