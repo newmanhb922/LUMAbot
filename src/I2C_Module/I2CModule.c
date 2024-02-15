@@ -1,5 +1,16 @@
 #include "I2CModule.h"
 
+/// @brief turns the specified motor off
+/// @param motorID motor id
+/// @param motorOffHAddress address of the OFF_H register for this motor
+void MotorOff(int motorID, int motorOffHAddress);
+
+/// @brief sets speed of a specified motor
+/// @param motorID motor id
+/// @param motorOnLAddress address of the ON_L register for this motor
+/// @param dutyCycle duty cycle as a percentage
+void MotorSetSpeed(int motorID, int motorOnLAddress, float dutyCycle);
+
 int SetupI2C()
 {
     int status = 0;
