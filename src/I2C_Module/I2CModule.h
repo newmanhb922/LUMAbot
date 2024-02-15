@@ -6,10 +6,8 @@
 // (and that wouldn't be I2C so it wouldn't make sense to put it in this file)
 
 // not sure what the Id's should be yet
-#define MOTOR0_ID       0x00
-#define MOTOR1_ID       0x01
-#define MOTOR2_ID       0x02
-#define MOTOR3_ID       0x03
+#define PWM_BOARD_ID    0x00
+
 
 // Motor data registers
 // each PWM output has an "on" value and "off" value from 0 to 4095
@@ -31,7 +29,15 @@
 #define MOTOR3_OFF_L    0x14
 #define MOTOR3_OFF_H    0x15
 
-/// @brief sets up I2C communication with all 4 motor drivers
+// special registers
+#define PRE_SCALE_REG   0xFE
+#define MODE1_REG       0x00
+
+// Mode 1 register bits
+#define AUTO_INCR_BIT   0x05
+#define SLEEP_BIT       0x04
+
+/// @brief sets up I2C communication
 /// @return returns -1 if there was an error
 int SetupI2C();
 
