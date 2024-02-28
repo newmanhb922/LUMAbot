@@ -1,3 +1,0 @@
-[submodule "src/MQTT_Comms/paho.mqtt.c"]
-	path = src/MQTT_Comms/paho.mqtt.c
-	url = https://github.com/eclipse/paho.mqtt.c.git
