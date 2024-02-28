@@ -2,6 +2,7 @@
 
 void SetupMotors()
 {
+    wiringPiSetup();
     pinMode(MOTOR_1_DIR, OUTPUT);
     pinMode(MOTOR_2_DIR, OUTPUT);
     pinMode(MOTOR_3_DIR, OUTPUT);

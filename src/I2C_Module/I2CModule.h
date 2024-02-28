@@ -1,4 +1,5 @@
 #include <wiringPiI2C.h>
+#include <stdio.h>
 
 // The SetPWM functions are not the only thing that needs to be done to move the motors
 // The SetPWM function only controls the speed. The direction must be controlled by setting 

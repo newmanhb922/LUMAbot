@@ -86,22 +86,22 @@ void Motor4Off()
 
 void Motor1SetPWM(float dutyCyle)
 {
-    MotorOn(MOTOR1_ON_L, dutyCyle);
+    MotorSetPWM(MOTOR1_ON_L, dutyCyle);
 }
 
 void Motor2SetPWM(float dutyCyle)
 {
-    MotorOn(MOTOR2_ON_L, dutyCyle);
+    MotorSetPWM(MOTOR2_ON_L, dutyCyle);
 }
 
 void Motor3SetPWM(float dutyCyle)
 {
-    MotorOn(MOTOR3_ON_L, dutyCyle);
+    MotorSetPWM(MOTOR3_ON_L, dutyCyle);
 }
 
 void Motor4SetPWM(float dutyCyle)
 {
-    MotorOn(MOTOR4_ON_L, dutyCyle);
+    MotorSetPWM(MOTOR4_ON_L, dutyCyle);
 }
 
 void MotorOff(int motorOffHAddress)
@@ -120,5 +120,5 @@ void MotorSetPWM(int motorOnLAddress, float dutyCycle)
     unsigned short turnOffTime = (unsigned short)(dutyCycle * 4095.0f);
     wiringPiI2CWriteReg16(PWM_BOARD_ID, motorOnLAddress, 0x0); // this will write 0 to all bits of ON_L and ON_H
     wiringPiI2CWriteReg8(PWM_BOARD_ID, motorOnLAddress + 2, (turnOffTime & 0xFF)); // write 8 LSBs to OFF_L
-    wiringPiI2cWriteReg8(PWM_BOARD_ID, motorOnLAddress + 3, ((turnOffTime >> 8) & 0xFF)); // write 8 MSBs to OFF_H (only lower 4 bits can be non-zero)
+    wiringPiI2CWriteReg8(PWM_BOARD_ID, motorOnLAddress + 3, ((turnOffTime >> 8) & 0xFF)); // write 8 MSBs to OFF_H (only lower 4 bits can be non-zero)
 }
