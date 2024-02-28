@@ -26,9 +26,42 @@ int SetupI2C()
     return status;
 }
 
-void Motor0Off()
+void TurnMotorOff(int motorNum)
 {
-    MotorOff(MOTOR0_OFF_H);
+    switch (motorNum)
+    {
+        case 1:
+            Motor1Off();
+            break;
+        case 2:
+            Motor2Off();
+            break;
+        case 3:
+            Motor3Off();
+            break;
+        case 4:
+            Motor4Off();
+            break;
+    }
+}
+
+void SetMotorPWM(int motorNum, float dutyCycle)
+{
+    switch (motorNum)
+    {
+        case 1:
+            Motor1SetPWM(dutyCycle);
+            break;
+        case 2:
+            Motor2SetPWM(dutyCycle);
+            break;
+        case 3:
+            Motor3SetPWM(dutyCycle);
+            break;
+        case 4:
+            Motor4SetPWM(dutyCycle);
+            break;
+    }
 }
 
 void Motor1Off()
@@ -46,9 +79,9 @@ void Motor3Off()
     MotorOff(MOTOR3_OFF_H);
 }
 
-void Motor0SetPWM(float dutyCyle)
+void Motor4Off()
 {
-    MotorOn(MOTOR0_ON_L, dutyCyle);
+    MotorOff(MOTOR4_OFF_H);
 }
 
 void Motor1SetPWM(float dutyCyle)
@@ -64,6 +97,11 @@ void Motor2SetPWM(float dutyCyle)
 void Motor3SetPWM(float dutyCyle)
 {
     MotorOn(MOTOR3_ON_L, dutyCyle);
+}
+
+void Motor4SetPWM(float dutyCyle)
+{
+    MotorOn(MOTOR4_ON_L, dutyCyle);
 }
 
 void MotorOff(int motorOffHAddress)
