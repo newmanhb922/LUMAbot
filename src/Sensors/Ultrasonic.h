@@ -2,6 +2,7 @@
 #define ULTRASONIC_H
 
 #include <wiringPi.h>
+#include <signal.h>
 
 #define ECHO_PIN            26
 #define SENSOR_1_TRIG       22
@@ -13,13 +14,21 @@
 #define SENSOR_7_TRIG       38
 #define SENSOR_8_TRIG       40
 
+int sensorCounter = 0;
+
+unsigned int sensor1Val = 0;
+unsigned int sensor2Val = 0;
+unsigned int sensor3Val = 0;
+unsigned int sensor4Val = 0;
+unsigned int sensor5Val = 0;
+unsigned int sensor6Val = 0;
+unsigned int sensor7Val = 0;
+unsigned int sensor8Val = 0;
+
 /// @brief Initializes pins for ultrasonic sensors
 void UltrasonicInit();
 
 /// @brief Sets up timer and starts sampling sensors
-void BeginSampling();
-
-/// @brief Samples the sensor value
-/// @param sensorNum the number of the sensor to sample (1 - 8)
-void SampleSensor(int sensorNum);
+/// @param microSeconds interval in microseconds to trigger the timer
+void StartSampling(int microSeconds);
 #endif
