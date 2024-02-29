@@ -9,7 +9,7 @@ void SampleSensor();
 /// @brief Reads the sensor distance
 /// @param sensorTrigPin the gpio pin on the raspberry pi that is wired to the trigger pin of the sensor
 /// @return returns the distance in cm
-unsigned int ReadSensorDistance(int sensorTrigPin);
+double ReadSensorDistance(int sensorTrigPin);
 
 void UltrasonicInit()
 {
@@ -73,11 +73,11 @@ void SampleSensor()
     }
 }
 
-unsigned int ReadSensorDistance(int sensorTrigPin)
+double ReadSensorDistance(int sensorTrigPin)
 {
     unsigned int startUSec = 0;
     unsigned int endUSec = 0;
-    unsigned int distanceCm = 0;
+    double distanceCm = 0;
     unsigned int timeout = 1000000; // 1 second. if we reduce this to 10,000 that should cut off measurement at around 5 or 6 feet max
     const double SPEED_OF_SOUND = 343.8; // approximate speed of sound in 69.8 degree F air
 
@@ -92,7 +92,7 @@ unsigned int ReadSensorDistance(int sensorTrigPin)
     endUSec = micros(); // record end time
     // (100 (cm / meter) * (elapsed time (microseconds) / 1000000 (microseconds / second)) * speed of sound (meters / second)) / 2.
     // we divide by two because the elapsed time is the time to travel to object and back to sensor so it travelled double the distance that we want.
-    distanceCm = (100 * ((endUSec - startUSec) / 1000000.0) * SPEED_OF_SOUND) / 2;
+    distanceCm = (100.0 * ((endUSec - startUSec) / 1000000.0) * SPEED_OF_SOUND) / 2.0;
     return distanceCm;
 }
 

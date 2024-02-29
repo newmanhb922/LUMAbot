@@ -17,14 +17,14 @@
 
 int sensorCounter;
 
-unsigned int sensor1Val;
-unsigned int sensor2Val;
-unsigned int sensor3Val;
-unsigned int sensor4Val;
-unsigned int sensor5Val;
-unsigned int sensor6Val;
-unsigned int sensor7Val;
-unsigned int sensor8Val;
+float sensor1Val;
+float sensor2Val;
+float sensor3Val;
+float sensor4Val;
+float sensor5Val;
+float sensor6Val;
+float sensor7Val;
+float sensor8Val;
 
 /// @brief Initializes pins for ultrasonic sensors
 void UltrasonicInit();

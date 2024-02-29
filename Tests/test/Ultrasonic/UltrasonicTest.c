@@ -2,7 +2,7 @@
 #include <wiringPi.h>
 #include <stdio.h>
 
-extern unsigned int sensor1Val;
+extern double sensor1Val;
 
 int main()
 {
