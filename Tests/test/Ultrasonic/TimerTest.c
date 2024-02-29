@@ -1,6 +1,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <wiringPi.h>
+#include <unistd.h>
 
 void TimerInterrupt();
 

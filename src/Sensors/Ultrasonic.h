@@ -3,6 +3,7 @@
 
 #include <wiringPi.h>
 #include <signal.h>
+#include <unistd.h>
 
 #define ECHO_PIN            26
 #define SENSOR_1_TRIG       22
@@ -14,16 +15,16 @@
 #define SENSOR_7_TRIG       38
 #define SENSOR_8_TRIG       40
 
-int sensorCounter = 0;
+int sensorCounter;
 
-unsigned int sensor1Val = 0;
-unsigned int sensor2Val = 0;
-unsigned int sensor3Val = 0;
-unsigned int sensor4Val = 0;
-unsigned int sensor5Val = 0;
-unsigned int sensor6Val = 0;
-unsigned int sensor7Val = 0;
-unsigned int sensor8Val = 0;
+unsigned int sensor1Val;
+unsigned int sensor2Val;
+unsigned int sensor3Val;
+unsigned int sensor4Val;
+unsigned int sensor5Val;
+unsigned int sensor6Val;
+unsigned int sensor7Val;
+unsigned int sensor8Val;
 
 /// @brief Initializes pins for ultrasonic sensors
 void UltrasonicInit();

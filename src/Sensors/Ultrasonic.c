@@ -23,9 +23,19 @@ void UltrasonicInit()
     pinMode(SENSOR_6_TRIG, OUTPUT);
     pinMode(SENSOR_7_TRIG, OUTPUT);
     pinMode(SENSOR_8_TRIG, OUTPUT);
+    
+    sensorCounter = 0;
+    sensor1Val = 0;
+    sensor2Val = 0;
+    sensor3Val = 0;
+    sensor4Val = 0;
+    sensor5Val = 0;
+    sensor6Val = 0;
+    sensor7Val = 0;
+    sensor8Val = 0;
 }
 
-void StartTimer(int microSeconds)
+void StartSampling(int microSeconds)
 {
     signal(SIGALRM, TimerInterrupt); // set TimerInterrupt as callback
     ualarm(microSeconds, microSeconds); // set alarm interval to number of microseconds
