@@ -8,17 +8,21 @@ void ConnectionLost(void * context, char * cause)
 int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_message * message)
 {
     printf("message arrived. Topic: %s, Message: %s\n", topicName, message->payload);
-    if (strcmp(topicName, CURRENTPOSITIONTOPIC) == 0)
+    if (strcmp(topicName, CURRENT_POSITION_TOPIC) == 0)
     {
         // should never receive a message with current position topic
     }
-    else if (strcmp(topicName, TARGETPOSITIONTOPIC) == 0)
+    else if (strcmp(topicName, TARGET_POSITION_TOPIC) == 0)
     {
         // set target position
     }
-    else if (strcmp(topicName, COMMANDTOPIC) == 0)
+    else if (strcmp(topicName, COMMAND_TOPIC) == 0)
     {
         // execute command
+    }
+    else if (strcmp(topicName, DEBUG_TOPIC) == 0)
+    {
+        // should never receive a debug message
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);

@@ -8,13 +8,13 @@ int main()
     char messageToPublish[10];
     MQTTClient client;
     PrintReturnCode(ConnectToMQTT(&client));
-    PrintReturnCode(SubscribeToTopic(&client, COMMANDTOPIC));
-    PrintReturnCode(SubscribeToTopic(&client, TARGETPOSITIONTOPIC));
+    PrintReturnCode(SubscribeToTopic(&client, COMMAND_TOPIC));
+    PrintReturnCode(SubscribeToTopic(&client, TARGET_POSITION_TOPIC));
     for (int i = 0; i <= 10; i++)
     {
         sprintf(messageToPublish, "%d, %d", i, i);
         printf("Publishing message: %s\n", messageToPublish);
-        PrintReturnCode(PublishMessage(&client, CURRENTPOSITIONTOPIC, messageToPublish));
+        PrintReturnCode(PublishMessage(&client, CURRENT_POSITION_TOPIC, messageToPublish));
         int ch = getchar();
     }
 }

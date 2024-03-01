@@ -9,9 +9,10 @@
 #define QOS         1
 #define TIMEOUT     10000L
 
-#define CURRENTPOSITIONTOPIC    "CurrentPosition"
-#define TARGETPOSITIONTOPIC     "TargetPosition"
-#define COMMANDTOPIC            "Command"
+#define CURRENT_POSITION_TOPIC    "CurrentPosition"
+#define TARGET_POSITION_TOPIC     "TargetPosition"
+#define COMMAND_TOPIC            "Command"
+#define DEBUG_TOPIC             "Debug"
 
 /// @brief Connects to mqtt server and returns a return code.
 /// @param client pointer to an MQTTClient object 
