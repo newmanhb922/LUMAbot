@@ -82,9 +82,10 @@ namespace LumaBotUI
         #region Public Methods
         public void ConnectToBroker()
         {
+            byte returnCode = 0;
             try
             {
-                mqttClient.Connect("Windows PC");
+                returnCode = mqttClient.Connect("WindowsApp");
             }
             catch (Exception e)
             {

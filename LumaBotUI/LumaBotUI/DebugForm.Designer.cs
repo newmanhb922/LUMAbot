@@ -34,18 +34,21 @@ namespace LumaBotUI
             // 
             // debugBox
             // 
-            this.debugBox.Location = new System.Drawing.Point(12, 12);
+            this.debugBox.Location = new System.Drawing.Point(9, 10);
+            this.debugBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.debugBox.Multiline = true;
             this.debugBox.Name = "debugBox";
-            this.debugBox.Size = new System.Drawing.Size(776, 426);
+            this.debugBox.ReadOnly = true;
+            this.debugBox.Size = new System.Drawing.Size(583, 347);
             this.debugBox.TabIndex = 0;
             // 
             // DebugForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.debugBox);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "DebugForm";
             this.Text = "Debug";
             this.ResumeLayout(false);

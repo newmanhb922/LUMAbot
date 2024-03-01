@@ -12,20 +12,25 @@ namespace LumaBotUI
 {
     public partial class DebugForm : Form
     {
-        private MqttModule mqttModule;
+        private delegate void DebugDelegate(string debugMsg);
         public DebugForm(MqttModule mqtt)
         {
             InitializeComponent();
             if (mqtt != null)
             {
                 mqtt.DebugReceived += Mqtt_DebugReceived;
+                mqtt.SubscribeToTopic(MqttModule.Topic.Debug.ToString());
             }
         }
 
+        private void AddDebugMsg(string debugMsg)
+        {
+            string newLine = String.Format("{0} {1}{2}", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), debugMsg, Environment.NewLine);
+            debugBox.AppendText(newLine);
+        }
         private void Mqtt_DebugReceived(object sender, MqttModule.DebugEventArgs e)
         {
-            string newLine = String.Format("{0} {1}\n", DateTime.Now.ToString("MM/dd/yyyy H:mm:ss"), e.DebugMessage);
-            debugBox.AppendText(newLine);
+            this.BeginInvoke(new DebugDelegate(AddDebugMsg), e.DebugMessage);
         }
     }
 }
