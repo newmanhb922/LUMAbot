@@ -38,6 +38,9 @@ namespace LumaBotUI
             this.positionLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.stageGrid = new System.Windows.Forms.TableLayoutPanel();
+            this.setOriginButton = new System.Windows.Forms.Button();
+            this.launchDebugButton = new System.Windows.Forms.Button();
+            this.robotPositionBox = new LumaBotUI.RobotPositionBox();
             this.stageLocationE = new LumaBotUI.StageLocation();
             this.stageLocationD = new LumaBotUI.StageLocation();
             this.stageLocationK = new LumaBotUI.StageLocation();
@@ -53,7 +56,6 @@ namespace LumaBotUI
             this.stageLocationG = new LumaBotUI.StageLocation();
             this.stageLocationF = new LumaBotUI.StageLocation();
             this.stageLocationC = new LumaBotUI.StageLocation();
-            this.robotPositionBox = new LumaBotUI.RobotPositionBox();
             this.stageGrid.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -183,6 +185,35 @@ namespace LumaBotUI
             this.stageGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.stageGrid.Size = new System.Drawing.Size(930, 550);
             this.stageGrid.TabIndex = 10;
+            // 
+            // setOriginButton
+            // 
+            this.setOriginButton.Location = new System.Drawing.Point(335, 659);
+            this.setOriginButton.Name = "setOriginButton";
+            this.setOriginButton.Size = new System.Drawing.Size(170, 30);
+            this.setOriginButton.TabIndex = 12;
+            this.setOriginButton.Text = "Set Origin";
+            this.setOriginButton.UseVisualStyleBackColor = true;
+            this.setOriginButton.Click += new System.EventHandler(this.setOriginButton_Click);
+            // 
+            // launchDebugButton
+            // 
+            this.launchDebugButton.Location = new System.Drawing.Point(335, 711);
+            this.launchDebugButton.Name = "launchDebugButton";
+            this.launchDebugButton.Size = new System.Drawing.Size(170, 30);
+            this.launchDebugButton.TabIndex = 13;
+            this.launchDebugButton.Text = "Launch Debugging";
+            this.launchDebugButton.UseVisualStyleBackColor = true;
+            this.launchDebugButton.Click += new System.EventHandler(this.launchDebugButton_Click);
+            // 
+            // robotPositionBox
+            // 
+            this.robotPositionBox.DrawBorder = true;
+            this.robotPositionBox.Location = new System.Drawing.Point(100, 100);
+            this.robotPositionBox.Name = "robotPositionBox";
+            this.robotPositionBox.Size = new System.Drawing.Size(100, 100);
+            this.robotPositionBox.TabIndex = 11;
+            this.robotPositionBox.Text = "robotPositionBox1";
             // 
             // stageLocationE
             // 
@@ -392,21 +423,14 @@ namespace LumaBotUI
             this.stageLocationC.Size = new System.Drawing.Size(180, 178);
             this.stageLocationC.TabIndex = 15;
             // 
-            // robotPositionBox
-            // 
-            this.robotPositionBox.DrawBorder = true;
-            this.robotPositionBox.Location = new System.Drawing.Point(100, 100);
-            this.robotPositionBox.Name = "robotPositionBox";
-            this.robotPositionBox.Size = new System.Drawing.Size(100, 100);
-            this.robotPositionBox.TabIndex = 11;
-            this.robotPositionBox.Text = "robotPositionBox1";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(981, 753);
+            this.Controls.Add(this.launchDebugButton);
+            this.Controls.Add(this.setOriginButton);
             this.Controls.Add(this.robotPositionBox);
             this.Controls.Add(this.stageGrid);
             this.Controls.Add(this.positionLabel);
@@ -454,6 +478,8 @@ namespace LumaBotUI
         private StageLocation stageLocationF;
         private StageLocation stageLocationC;
         private RobotPositionBox robotPositionBox;
+        private System.Windows.Forms.Button setOriginButton;
+        private System.Windows.Forms.Button launchDebugButton;
     }
 }
 

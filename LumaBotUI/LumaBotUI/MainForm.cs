@@ -32,6 +32,8 @@ namespace LumaBotUI
         private string ipAddress;
 
         private MqttModule mqtt;
+
+        private DebugForm debugForm;
         #endregion
 
         #region Delegates
@@ -170,5 +172,23 @@ namespace LumaBotUI
             mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "Stop");
         }
         #endregion
+
+        private void launchDebugButton_Click(object sender, EventArgs e)
+        {
+            if (debugForm == null)
+            {
+                debugForm = new DebugForm(mqtt);
+            }
+            debugForm.Show();
+        }
+
+        private void setOriginButton_Click(object sender, EventArgs e)
+        {
+            string message = "Are you sure you want to set the robot's current position as the (0, 0) position (origin)?";
+            if (MessageBox.Show(message, "Are you sure?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "SetOrigin");
+            }
+        }
     }
 }

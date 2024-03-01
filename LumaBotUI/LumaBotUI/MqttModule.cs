@@ -9,10 +9,10 @@ using System.Drawing;
 
 namespace LumaBotUI
 {
-    class MqttModule
+    public class MqttModule
     {
         #region Private Enums
-        public enum Topic { CurrentPosition, TargetPosition, Command };
+        public enum Topic { CurrentPosition, TargetPosition, Command, Debug };
         #endregion
 
         #region Private Fields
@@ -61,6 +61,22 @@ namespace LumaBotUI
         {
             StatusUpdated?.Invoke(this, e);
         }
+
+        public event EventHandler<DebugEventArgs> DebugReceived;
+
+        public class DebugEventArgs : EventArgs
+        {
+            public string DebugMessage { get; set; }
+            public DebugEventArgs(string debugMessage)
+            {
+                DebugMessage = debugMessage;
+            }
+        }
+
+        protected virtual void OnDebugReceived(DebugEventArgs e)
+        {
+            DebugReceived?.Invoke(this, e);
+        }
         #endregion
 
         #region Public Methods
@@ -100,6 +116,10 @@ namespace LumaBotUI
                     float yCoord = float.Parse(coords[1]);
                     OnLocationUpdated(new LocationEventArgs(new PointF(xCoord, yCoord)));
                 }
+            }
+            else if (e.Topic == Topic.Debug.ToString())
+            {
+                OnDebugReceived(new DebugEventArgs(Encoding.UTF8.GetString(e.Message)));
             }
         }
         #endregion
