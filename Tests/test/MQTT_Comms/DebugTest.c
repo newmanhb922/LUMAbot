@@ -3,8 +3,9 @@
 
 int main()
 {
-    char * message = "";
+    char message[100];
     MQTTClient client;
+    ConnectToMQTT(&client);
     for (int i = 0; i < 30; i++)
     {
         printf("Type a debug message to send to the UI.\n");
