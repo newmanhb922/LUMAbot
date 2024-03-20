@@ -1,7 +1,7 @@
 #ifndef MQTT_H
 #define MQTT_H
 
-#include "paho.mqtt.c/src/MQTTClient.h"
+#include "MQTTClient.h"
 #include <string.h>
 
 #define ADDRESS     "localhost"
