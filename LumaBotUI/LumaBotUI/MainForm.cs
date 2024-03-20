@@ -156,7 +156,56 @@ namespace LumaBotUI
         }
         private void goButton_Click(object sender, EventArgs e)
         {
-            mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "Go");
+            string coordToSend = "(0,0)";
+            switch (pointSelectionCombo.SelectedItem.ToString())
+            {
+                case "A":
+                    coordToSend = "(14,0)";
+                    break;
+                case "B":
+                    coordToSend = "(7,0)";
+                    break;
+                case "C":
+                    coordToSend = "(0,0)";
+                    break;
+                case "D":
+                    coordToSend = "(-7,0)";
+                    break;
+                case "E":
+                    coordToSend = "(-14,0)";
+                    break;
+                case "F":
+                    coordToSend = "(14,-7)";
+                    break;
+                case "G":
+                    coordToSend = "(7,-7)";
+                    break;
+                case "H":
+                    coordToSend = "(0,-7)";
+                    break;
+                case "J":
+                    coordToSend = "(-7,-7)";
+                    break;
+                case "K":
+                    coordToSend = "(-14,-7)";
+                    break;
+                case "L":
+                    coordToSend = "(14,-14)";
+                    break;
+                case "M":
+                    coordToSend = "(7,-14)";
+                    break;
+                case "N":
+                    coordToSend = "(0,-14)";
+                    break;
+                case "P":
+                    coordToSend = "(-7,-14)";
+                    break;
+                case "Q":
+                    coordToSend = "(-14,-14)";
+                    break;
+            }
+            mqtt.PublishMessage(MqttModule.Topic.TargetPosition.ToString(), coordToSend);
         }
         private void Mqtt_StatusUpdated(object sender, MqttModule.StatusEventArgs e)
         {
