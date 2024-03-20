@@ -68,7 +68,8 @@ int ConnectToMQTT(MQTTClient * client)
     }
     else
     {
-        printf("Callbacks set\n");
+        printf("Connected\n");
+        mqttClient = client;
     }
     return returnCode;
 }
@@ -107,4 +108,12 @@ int PublishMessage(MQTTClient * client, const char * topicName, char * message)
     returnCode = MQTTClient_waitForCompletion(*client, deliveryToken, TIMEOUT);
     printf("Message Published: %s, DeliveryToken: %d\n", message, deliveryToken);
     return returnCode;
+}
+
+int Debug(char * message)
+{
+    if (mqttClient != NULL)
+    {
+        PublishMessage(mqttClient, DEBUG_TOPIC, message);
+    }
 }

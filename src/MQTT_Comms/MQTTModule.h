@@ -14,6 +14,8 @@
 #define COMMAND_TOPIC            "Command"
 #define DEBUG_TOPIC             "Debug"
 
+MQTTClient * mqttClient;
+
 /// @brief Connects to mqtt server and returns a return code.
 /// @param client pointer to an MQTTClient object 
 /// @return returns a code specifying whether the connection succeeded.
@@ -32,4 +34,8 @@ int SubscribeToTopic(MQTTClient * client, const char * topicName);
 /// @return returns a code specifying success or failure
 int PublishMessage(MQTTClient * client, const char * topicName, char * message);
 
+/// @brief Publishes a debug message
+/// @param message message to publish
+/// @return return code specifying success or failure
+int Debug(char * message);
 #endif
