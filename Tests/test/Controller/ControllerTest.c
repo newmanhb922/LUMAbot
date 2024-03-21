@@ -6,4 +6,5 @@ int main()
     printf("Initializing Controller\n");
     InitController();
     printf("Controller initialized\n");
+    int ch = getchar();
 }
