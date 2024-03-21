@@ -1,0 +1,5 @@
+from the root repo directory run:
+gcc -c src/GeneralControls/Motors/MotorControl.c
+gcc -c src/I2C_Module/I2CModule.c
+gcc -o MotorTest Tests/test/Motors/MotorTest.c I2CModule.o MotorControl.o -lwiringPi
+./MotorTest
