@@ -2,7 +2,15 @@
 
 void SetupMotors()
 {
-    wiringPiSetup();
+    int returnVal = wiringPiSetup();
+    if (returnVal == 0)
+    {
+        printf("wiringPiSetup success\n");
+    }
+    else 
+    {
+        printf("wiringPiSetup failed\n");
+    }
     pinMode(MOTOR_1_DIR, OUTPUT);
     pinMode(MOTOR_2_DIR, OUTPUT);
     pinMode(MOTOR_3_DIR, OUTPUT);

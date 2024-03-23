@@ -3,3 +3,6 @@ gcc -c src/GeneralControls/Motors/MotorControl.c
 gcc -c src/I2C_Module/I2CModule.c
 gcc -o MotorTest Tests/test/Motors/MotorTest.c I2CModule.o MotorControl.o -lwiringPi
 ./MotorTest
+
+use the following command to see wiringPi debug statements:
+WIRINGPI_DEBUG=1 ./MotorTest
