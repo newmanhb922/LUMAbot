@@ -1,8 +1,9 @@
 #include "../../../src/Sensors/Ultrasonic.h"
+//#include "../../../src/MQTT_Comms/MQTTModule.h"
 #include <wiringPi.h>
 #include <stdio.h>
 
-extern double sensor1Val;
+extern volatile float sensor1Val;
 
 int main()
 {
@@ -11,7 +12,7 @@ int main()
     StartSampling(200000);
     for (int i = 0; i < 10; i++)
     {
-        printf("Sensor 1 val: %d. Press enter to see update.\n", sensor1Val);
+        printf("Sensor 1 val: %.2f. Press enter to see update.\n", sensor1Val);
         int ch = getchar();
     }
 }
