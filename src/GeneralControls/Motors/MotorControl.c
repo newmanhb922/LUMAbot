@@ -1,20 +1,34 @@
 #include "MotorControl.h"
 
+// these variables store the encoder counts for each motor
 extern volatile int encoder1Count;
 extern volatile int encoder2Count;
 extern volatile int encoder3Count;
 extern volatile int encoder4Count;
 
+/// @brief Initialize encoder pins and variables and set up hardware interrupts
 void SetupEncoders();
 
+// Interrupt Service routines for each Encoder
 void EncoderISR1();
 void EncoderISR2();
 void EncoderISR3();
 void EncoderISR4();
 
+/// @brief Calculate the encoder change
+/// @param encoderNum number of the encoder we are working with (1 - 4)
+/// @param lastA last value of the encoder channel A
+/// @param lastB last value of the encoder channel B
+/// @param curA current value of the encoder channel A
+/// @param curB current value of the encoder channel B
+/// @return the encoder change, will be 1 for motor moving forward, -1 for motor moving backwards
 unsigned char CalculateEncoderChange(unsigned char encoderNum, unsigned char lastA, unsigned char lastB, unsigned char curA, unsigned char curB);
 
-void SetCountChanging(unsigned char encoderNum, bool value);
+/// @brief Updates the lastxA and lastxB variables for the specified encoder
+/// @param encoderNum number of the encoder we are working with (1 - 4)
+/// @param curA current value of the encoder channel A
+/// @param curB current value of the encoder channel B
+void SetLastVars(unsigned char encoderNum, unsigned char curA, unsigned char curB);
 
 void SetupMotors()
 {
@@ -91,6 +105,9 @@ void SetupEncoders()
     count3Changing = false;
     count4Changing = false;
 
+    // set up Interrupts for encoders. 
+    // receive an interrupt on a rising or falling edge of the A and B channels of each encoder
+    // However, both A and B channels will call the same interrupt function
     wiringPiISR(ENCODER_1A, INT_EDGE_BOTH, &EncoderISR1);
     wiringPiISR(ENCODER_1B, INT_EDGE_BOTH, &EncoderISR1);
     wiringPiISR(ENCODER_2A, INT_EDGE_BOTH, &EncoderISR2);
@@ -101,6 +118,12 @@ void SetupEncoders()
     wiringPiISR(ENCODER_4B, INT_EDGE_BOTH, &EncoderISR4);
 }
 
+// in these ISR's, we want to read the encoder A and B channels as soon as the ISR is fired
+// however, we don't want to update the count variable if another thread (that was maybe called from the other channel) is accessing it
+// so first read the encoder A and B channels, then wait until the encoder count is done being changed
+// then notify others that we are now changing the encoder count
+// then calculate the encoder change and update the encoder count
+// then notify others we are done changing the encoder count so that they can change it
 void EncoderISR1()
 {
     unsigned char curA = digitalRead(ENCODER_1A);
@@ -178,7 +201,8 @@ unsigned char CalculateEncoderChange(unsigned char encoderNum, unsigned char las
         }
     }
 
-    SetLastVars(encoderNum, curA, curB);
+    // update the lastxA and lastxB variables based on which encoder we are working with
+    SetLastVars(encoderNum, curA, curB); 
 
     return countChange;
 }

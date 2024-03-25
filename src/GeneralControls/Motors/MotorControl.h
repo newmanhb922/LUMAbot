@@ -20,6 +20,7 @@
 #define ENCODER_4A          28
 #define ENCODER_4B          29
 
+// hold the last value (1 or 0) of the encoder pins
 volatile unsigned char last1A;
 volatile unsigned char last1B;
 volatile unsigned char last2A;
@@ -29,11 +30,14 @@ volatile unsigned char last3B;
 volatile unsigned char last4A;
 volatile unsigned char last4B;
 
+// hold the number of encoder counts (positive is forward, negative is reverse)
 volatile int encoder1Count;
 volatile int encoder2Count;
 volatile int encoder3Count;
 volatile int encoder4Count;
 
+// true when the corresponding encoderxCount variable is being changed
+// used to prevent two threads modifying the same variables at once
 volatile bool count1Changing;
 volatile bool count2Changing;
 volatile bool count3Changing;
