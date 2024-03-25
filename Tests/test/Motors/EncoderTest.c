@@ -38,7 +38,7 @@ int main()
 
     for (int i = 0; i < 100; i++)
     {
-        direction = getChar();
+        scanf("%d", &direction);
         if (direction >= 0 && direction <= 1)
         {
             SetMotorDir(motorNum, direction);
