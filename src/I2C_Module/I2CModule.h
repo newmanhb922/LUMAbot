@@ -1,4 +1,5 @@
 #include <wiringPiI2C.h>
+#include <wiringPi.h>
 #include <stdio.h>
 
 // The SetPWM functions are not the only thing that needs to be done to move the motors
@@ -6,8 +7,8 @@
 // The direction pin on the driver board to High or Low 
 // (and that wouldn't be I2C so it wouldn't make sense to put it in this file)
 
-// not sure what the Id's should be yet
-#define PWM_BOARD_ID    0x00
+// run i2cdetect -y 1 to see address
+#define PWM_BOARD_ID    0x40
 
 
 // Motor data registers

@@ -27,5 +27,7 @@ int main()
             dirStr = "Reverse";
         }
         printf("Setting motor %d to move %s at %f%% duty cycle.\n", motorNum, dirStr, dutyCycle);
+        SetMotorDir(motorNum, direction);
+        SetMotorPWM(motorNum, dutyCycle);
     }
 }

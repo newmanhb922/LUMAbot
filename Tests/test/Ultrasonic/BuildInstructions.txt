@@ -1,0 +1,4 @@
+from root directory of repo run:
+gcc -c src/Sensors/Ultrasonic.c
+gcc -o UltrasonicTester Tests/Test/Ultrasonic/UltrasonicTest.c Ultrasonic.o -lwiringPi
+./UltrasonicTester
