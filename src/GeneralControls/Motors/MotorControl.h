@@ -20,6 +20,7 @@
 #define ENCODER_4A          28 // raspberry pi pin 38
 #define ENCODER_4B          29 // raspberry pi pin 40
 
+#define NUM_OF_MOTORS       4
 // hold the last value (1 or 0) of the encoder pins
 volatile unsigned char last1A;
 volatile unsigned char last1B;
