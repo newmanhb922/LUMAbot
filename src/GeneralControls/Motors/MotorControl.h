@@ -7,18 +7,18 @@
 
 // these are the wiringPi pin definitions.
 // see pinout.xyz/pinout/wiringpi for the corresponding rpi gpio pins
-#define MOTOR_1_DIR         3
-#define MOTOR_2_DIR         2
-#define MOTOR_3_DIR         22
-#define MOTOR_4_DIR         21
-#define ENCODER_1A          30
-#define ENCODER_1B          26
-#define ENCODER_2A          23
-#define ENCODER_2B          24
-#define ENCODER_3A          27
-#define ENCODER_3B          25
-#define ENCODER_4A          28
-#define ENCODER_4B          29
+#define MOTOR_1_DIR         3 // raspberry pi Pin 15
+#define MOTOR_2_DIR         2 // raspberry pi pin 13
+#define MOTOR_3_DIR         22 // raspberry pi pin 31
+#define MOTOR_4_DIR         21 // raspberry pi pin 29
+#define ENCODER_1A          30 // raspberry pi Pin 27
+#define ENCODER_1B          26 // raspberry pi pin 32
+#define ENCODER_2A          23 // raspberry pi pin 33
+#define ENCODER_2B          24 // raspberry pi pin 35
+#define ENCODER_3A          27 // raspberry pi pin 36
+#define ENCODER_3B          25 // raspberry pi pin 37
+#define ENCODER_4A          28 // raspberry pi pin 38
+#define ENCODER_4B          29 // raspberry pi pin 40
 
 // hold the last value (1 or 0) of the encoder pins
 volatile unsigned char last1A;

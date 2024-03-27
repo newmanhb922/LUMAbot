@@ -4,10 +4,10 @@ extern volatile float sensor1Val;
 extern volatile float sensor2Val;
 extern volatile float sensor3Val;
 extern volatile float sensor4Val;
-extern volatile float sensor5Val;
-extern volatile float sensor6Val;
-extern volatile float sensor7Val;
-extern volatile float sensor8Val;
+// extern volatile float sensor5Val;
+// extern volatile float sensor6Val;
+// extern volatile float sensor7Val;
+// extern volatile float sensor8Val;
 
 /// @brief interrupt function to be triggered on timer match
 void TimerInterrupt();
@@ -29,20 +29,20 @@ void UltrasonicInit()
     pinMode(SENSOR_2_TRIG, OUTPUT);
     pinMode(SENSOR_3_TRIG, OUTPUT);
     pinMode(SENSOR_4_TRIG, OUTPUT);
-    pinMode(SENSOR_5_TRIG, OUTPUT);
-    pinMode(SENSOR_6_TRIG, OUTPUT);
-    pinMode(SENSOR_7_TRIG, OUTPUT);
-    pinMode(SENSOR_8_TRIG, OUTPUT);
+    // pinMode(SENSOR_5_TRIG, OUTPUT);
+    // pinMode(SENSOR_6_TRIG, OUTPUT);
+    // pinMode(SENSOR_7_TRIG, OUTPUT);
+    // pinMode(SENSOR_8_TRIG, OUTPUT);
     
     sensorCounter = 0;
     sensor1Val = 0;
     sensor2Val = 0;
     sensor3Val = 0;
     sensor4Val = 0;
-    sensor5Val = 0;
-    sensor6Val = 0;
-    sensor7Val = 0;
-    sensor8Val = 0;
+    // sensor5Val = 0;
+    // sensor6Val = 0;
+    // sensor7Val = 0;
+    // sensor8Val = 0;
 }
 
 void StartSampling(int microSeconds)
@@ -120,12 +120,12 @@ float ReadSensorDistance(int sensorTrigPin, float oldSensorVal)
 
 void TimerInterrupt()
 {
-    if (sensorCounter > 0 && sensorCounter < 9)
+    if (sensorCounter > 0 && sensorCounter < NUM_OF_SENSORS + 1)
     {
         SampleSensor();
         sensorCounter++;
     }
-    if (sensorCounter < 1 || sensorCounter > 8)
+    if (sensorCounter < 1 || sensorCounter > NUM_OF_SENSORS)
     {
         sensorCounter = 1;
     }
