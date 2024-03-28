@@ -6,6 +6,11 @@ extern volatile int encoder2Count;
 extern volatile int encoder3Count;
 extern volatile int encoder4Count;
 
+extern volatile bool count1Changing;
+extern volatile bool count2Changing;
+extern volatile bool count3Changing;
+extern volatile bool count4Changing;
+
 /// @brief Initialize encoder pins and variables and set up hardware interrupts
 void SetupEncoders();
 

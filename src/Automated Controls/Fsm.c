@@ -1,5 +1,10 @@
 #include "Fsm.h"
 
+extern float motor1Power;
+extern float motor2Power;
+extern float motor3Power;
+extern float motor4Power;
+
 static FSM_STATE_T currentState;
 
 void (*stateFunctions[NUM_STATES])();
@@ -74,6 +79,10 @@ void StartState()
 //calculate angle function, while moving constantly caluclating the angle and data
 //for all 4 motors
 
+// FMM - don't need to calculate angle. Use CalculateMotorPowers in Position.c to 
+// get motor powers scaled from -1 to 1. Then multiply that by some duty cycle constant 
+// to set motor speeds. Maybe have some sort of "ramp up" speed function that 'slowly' increases
+// speed and then slow down to a lower speed when we are close to the point.
 
 
 //send message payload string ex: "(0,0)"
