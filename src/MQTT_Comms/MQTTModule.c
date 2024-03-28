@@ -8,17 +8,50 @@ void ConnectionLost(void * context, char * cause)
 int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_message * message)
 {
     printf("message arrived. Topic: %s, Message: %s\n", topicName, message->payload);
+    char * receivedMsg = message->payload;
+
     if (strcmp(topicName, CURRENT_POSITION_TOPIC) == 0)
     {
-        // should never receive a message with current position topic
+        // can receive the current position if user sets to home from UI, format is (x,y)
+        char * leftParenth = strchr(receivedMsg, '(');
+        char * comma = strchr(receivedMsg, ',');
+        char * rightParenth = strchr(receivedMsg, ')');
+        leftParenth++;
+        char * xCoord;
+        char * yCoord;
+        strncpy(xCoord, leftParenth, comma - leftParenth);
+        comma++;
+        strncpy(yCoord, comma, rightParenth - comma);
+        curPositionX = strtof(xCoord, NULL);
+        curPositionY = strtof(yCoord, NULL);
     }
     else if (strcmp(topicName, TARGET_POSITION_TOPIC) == 0)
     {
-        // set target position
+        // set target position format is (x,y) but x or y could be two digits and negative
+        char * leftParenth = strchr(receivedMsg, '(');
+        char * comma = strchr(receivedMsg, ',');
+        char * rightParenth = strchr(receivedMsg, ')');
+        leftParenth++;
+        char * xCoord;
+        char * yCoord;
+        strncpy(xCoord, leftParenth, comma - leftParenth);
+        comma++;
+        strncpy(yCoord, comma, rightParenth - comma);
+        targetPositionX = strtof(xCoord, NULL);
+        targetPositionY = strtof(yCoord, NULL);
     }
     else if (strcmp(topicName, COMMAND_TOPIC) == 0)
     {
         // execute command
+        if (strcmp(receivedMsg, "Go"))
+        {
+            // start movement to point
+        }
+        else if (strcmp(receivedMsg, "EStop"))
+        {
+            Debug("EStop pressed on UI, Shutting down...\n");
+            // estop pressed, shut down
+        }
     }
     else if (strcmp(topicName, DEBUG_TOPIC) == 0)
     {
