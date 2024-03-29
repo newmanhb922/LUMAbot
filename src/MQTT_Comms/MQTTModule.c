@@ -1,5 +1,11 @@
 #include "MQTTModule.h"
 
+extern float curPositionX;
+extern float curPositionY;
+extern float targetPositionX;
+extern float targetPositionY;
+extern bool eStopPressed;
+
 void ConnectionLost(void * context, char * cause)
 {
     // Connection Lost
@@ -11,7 +17,7 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
     char * receivedMsg = message->payload;
 
     if (strcmp(topicName, CURRENT_POSITION_TOPIC) == 0)
-    {
+    { 
         // should never receive a message with current position
         Debug ("Error, received current position in Raspberry Pi.\n");
     }
@@ -29,6 +35,7 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
         strncpy(yCoord, comma, rightParenth - comma);
         targetPositionX = strtof(xCoord, NULL);
         targetPositionY = strtof(yCoord, NULL);
+        //start moving
     }
     else if (strcmp(topicName, COMMAND_TOPIC) == 0)
     {
@@ -36,6 +43,7 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
         if (strcmp(receivedMsg, ESTOP_COMMAND))
         {
             Debug("EStop pressed on UI, Shutting down...\n");
+            eStopPressed = true;
             // estop pressed, shut down
         }
         else if (strcmp(receivedMsg, ESTOP_RESET_COMMAND))

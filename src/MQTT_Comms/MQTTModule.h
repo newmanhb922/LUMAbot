@@ -4,6 +4,7 @@
 #include "MQTTClient.h"
 #include <string.h>
 #include "Position.h"
+#include "Fsm.h"
 
 #define ADDRESS     "localhost"
 #define CLIENTID    "RaspPi"

@@ -19,6 +19,14 @@ void ReadEvents(int sigNum)
         if (e.type == JS_EVENT_AXIS)
         { // joystick moved
             printf("moving axis number %d to value %d\n", e.number, e.value);
+            if(e.number == 0)
+            {
+                xValue = e.value;
+            }
+            else if (e.number == 1)
+            {
+                yValue = e.value
+            }
         }
     }
 }
