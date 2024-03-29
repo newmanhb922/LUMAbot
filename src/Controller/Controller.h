@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-int fileDescrip;
-
 int InitController();
 
 #endif

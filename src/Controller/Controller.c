@@ -1,5 +1,7 @@
 #include "Controller.h"
 
+int fileDescrip;
+
 void ReadEvents();
 
 int InitController()
