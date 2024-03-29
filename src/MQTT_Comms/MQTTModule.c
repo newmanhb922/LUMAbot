@@ -12,18 +12,8 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
 
     if (strcmp(topicName, CURRENT_POSITION_TOPIC) == 0)
     {
-        // can receive the current position if user sets to home from UI, format is (x,y)
-        char * leftParenth = strchr(receivedMsg, '(');
-        char * comma = strchr(receivedMsg, ',');
-        char * rightParenth = strchr(receivedMsg, ')');
-        leftParenth++;
-        char * xCoord;
-        char * yCoord;
-        strncpy(xCoord, leftParenth, comma - leftParenth);
-        comma++;
-        strncpy(yCoord, comma, rightParenth - comma);
-        curPositionX = strtof(xCoord, NULL);
-        curPositionY = strtof(yCoord, NULL);
+        // should never receive a message with current position
+        Debug ("Error, received current position in Raspberry Pi.\n");
     }
     else if (strcmp(topicName, TARGET_POSITION_TOPIC) == 0)
     {
@@ -43,14 +33,23 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
     else if (strcmp(topicName, COMMAND_TOPIC) == 0)
     {
         // execute command
-        if (strcmp(receivedMsg, "Go"))
-        {
-            // start movement to point
-        }
-        else if (strcmp(receivedMsg, "EStop"))
+        if (strcmp(receivedMsg, ESTOP_COMMAND))
         {
             Debug("EStop pressed on UI, Shutting down...\n");
             // estop pressed, shut down
+        }
+        else if (strcmp(receivedMsg, ESTOP_RESET_COMMAND))
+        {
+            Debug("EStop pressed again on UI, good to move again.\n");
+            // e stop pressed again, good to move again
+            eStopPressed = false;
+        }
+        else if (strcmp(receivedMsg, ZERO_COMMAND))
+        {
+            Debug ("Zeroed from UI, setting current position to (0,0).\n");
+            curPositionX = 0;
+            curPositionY = 0;
+            hasBeenZeroed = true;
         }
     }
     else if (strcmp(topicName, DEBUG_TOPIC) == 0)

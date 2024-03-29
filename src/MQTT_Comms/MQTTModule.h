@@ -10,10 +10,13 @@
 #define QOS         1
 #define TIMEOUT     10000L
 
-#define CURRENT_POSITION_TOPIC    "CurrentPosition"
-#define TARGET_POSITION_TOPIC     "TargetPosition"
-#define COMMAND_TOPIC            "Command"
-#define DEBUG_TOPIC             "Debug"
+#define CURRENT_POSITION_TOPIC      "CurrentPosition"
+#define TARGET_POSITION_TOPIC       "TargetPosition"
+#define COMMAND_TOPIC               "Command"
+#define DEBUG_TOPIC                 "Debug"
+#define ESTOP_COMMAND               "EStop"
+#define ESTOP_RESET_COMMAND         "EStopReset"
+#define ZERO_COMMAND                "Zero"
 
 MQTTClient * mqttClient;
 
