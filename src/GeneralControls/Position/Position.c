@@ -93,9 +93,9 @@ void CalculateMotorPowers()
         yDiffAbs;
     }
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
-    motor1Power = (yDiffAbs + xDiffAbs) / max;
+    motor1Power = (yDiff + xDiff) / max;
     motor3Power = motor1Power; 
 
-    motor2Power = (yDiffAbs - xDiffAbs) / max;
+    motor2Power = (yDiff - xDiff) / max;
     motor4Power = motor2Power;
 }
