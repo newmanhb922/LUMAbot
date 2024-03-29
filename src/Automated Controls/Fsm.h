@@ -19,6 +19,8 @@ typedef enum
 bool eStopPressed;
 short xValue;
 short yValue;
+bool hasBeenZeroed;
+bool goPressed;
 
 void Init_States();
 

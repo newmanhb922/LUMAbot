@@ -11,6 +11,8 @@ extern float targetPositionY;
 extern bool eStopPressed;
 extern short xValue; 
 extern short yValue;
+extern bool hasBeenZeroed;
+extern bool goPressed;
 
 static FSM_STATE_T currentState;
 

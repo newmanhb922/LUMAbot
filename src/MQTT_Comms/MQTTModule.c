@@ -5,6 +5,8 @@ extern float curPositionY;
 extern float targetPositionX;
 extern float targetPositionY;
 extern bool eStopPressed;
+extern bool hasBeenZeroed;
+extern bool goPressed;
 
 void ConnectionLost(void * context, char * cause)
 {
@@ -35,7 +37,7 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
         strncpy(yCoord, comma, rightParenth - comma);
         targetPositionX = strtof(xCoord, NULL);
         targetPositionY = strtof(yCoord, NULL);
-        //start moving
+        goPressed = true;
     }
     else if (strcmp(topicName, COMMAND_TOPIC) == 0)
     {
