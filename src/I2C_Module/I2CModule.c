@@ -131,3 +131,11 @@ void MotorSetPWM(int motorOnLAddress, float dutyCycle)
     wiringPiI2CWriteReg8(fd, motorOnLAddress + 2, (unsigned char)(turnOffCount & 0xFF)); // write 8 LSBs to OFF_L
     wiringPiI2CWriteReg8(fd, motorOnLAddress + 3, (unsigned char)((turnOffCount >> 8) & 0xF)); // write 8 MSBs to OFF_H (only lower 4 bits can be non-zero)
 }
+
+void StopAllMotors()
+{
+    Motor1Off();
+    Motor2Off();
+    Motor3Off();
+    Motor4Off();
+}

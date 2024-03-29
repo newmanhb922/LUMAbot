@@ -8,6 +8,7 @@
 #include "Controller.h"
 #include "Ultrasonic.h"
 #include "Position.h"
+#include "I2CModule.h"
 
 typedef enum
 {

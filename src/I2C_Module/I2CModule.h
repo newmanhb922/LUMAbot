@@ -79,3 +79,6 @@ void Motor4Off();
 /// @brief sets speed of Motor 4
 /// @param dutyCycle duty cycle as a percentage
 void Motor4SetPWM(float dutyCycle);
+
+/// @brief Turns off all motors
+void StopAllMotors();
