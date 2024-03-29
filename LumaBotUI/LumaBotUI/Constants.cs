@@ -17,5 +17,9 @@ namespace LumaBotUI
         public const int MIN_STAGE_Y = -14;
         public const int MAX_STAGE_X = 14;
         public const int MAX_STAGE_Y = 0;
+
+        public const string ESTOP_COMMAND = "EStop";
+        public const string ESTOP_RESET_COMMAND = "EStopReset";
+        public const string ZERO_COMMAND = "Zero";
     }
 }

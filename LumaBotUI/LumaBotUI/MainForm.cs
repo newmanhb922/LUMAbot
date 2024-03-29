@@ -223,13 +223,13 @@ namespace LumaBotUI
         {
             if (!eStopPressed) // e stop hasn't been pressed yet, tell pi to stop
             {
-                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "EStop");
+                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), ESTOP_COMMAND);
                 eStopPressed = true;
                 eStopButton.Text = "Reset EStop";
             }
             else // e stop already pressed, tell pi we can go again
             {
-                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "EStopReset");
+                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), ESTOP_RESET_COMMAND);
                 eStopPressed = false;
                 eStopButton.Text = "Emergency Stop";
             }
@@ -250,7 +250,7 @@ namespace LumaBotUI
             string message = "Are you sure you want to set the robot's current position as the (0, 0) position (origin)?";
             if (MessageBox.Show(message, "Are you sure?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "SetOrigin");
+                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), ZERO_COMMAND);
             }
         }
     }
