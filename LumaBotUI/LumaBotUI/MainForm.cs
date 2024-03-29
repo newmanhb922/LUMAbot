@@ -227,7 +227,7 @@ namespace LumaBotUI
                 eStopPressed = true;
                 eStopButton.Text = "Reset EStop";
             }
-            else
+            else // e stop already pressed, tell pi we can go again
             {
                 mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "EStopReset");
                 eStopPressed = false;
