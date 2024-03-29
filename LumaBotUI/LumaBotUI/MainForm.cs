@@ -34,6 +34,8 @@ namespace LumaBotUI
         private MqttModule mqtt;
 
         private DebugForm debugForm;
+
+        private bool eStopPressed;
         #endregion
 
         #region Delegates
@@ -46,6 +48,7 @@ namespace LumaBotUI
         {
             ipAddress = "192.168.1.134"; // maybe get this dynamically somehow?!
             InitializeComponent();
+            eStopPressed = false;
         }
         #endregion
 
@@ -218,7 +221,18 @@ namespace LumaBotUI
         }
         private void eStopButton_Click(object sender, EventArgs e)
         {
-            mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "Stop");
+            if (!eStopPressed) // e stop hasn't been pressed yet, tell pi to stop
+            {
+                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "EStop");
+                eStopPressed = true;
+                eStopButton.Text = "Reset EStop";
+            }
+            else
+            {
+                mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), "EStopReset");
+                eStopPressed = false;
+                eStopButton.Text = "Emergency Stop";
+            }
         }
         #endregion
 
