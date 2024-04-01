@@ -4,6 +4,7 @@
 #include "I2CModule.h"
 #include "MQTTModule.h"
 #include "Position.h"
+#include "Fsm.h"
 
 //Objects
 MQTTClient client;
@@ -19,7 +20,6 @@ int main()
     SubscribeToTopic(&client, COMMAND_TOPIC);
 
     SetupI2C();
-    SetUpMotors();
     InitController();
     UltrasonicInit();
     InitPosition();

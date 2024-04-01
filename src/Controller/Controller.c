@@ -1,6 +1,8 @@
 #include "Controller.h"
 
 int fileDescrip;
+extern short controllerXValue;
+extern short controllerYValue;
 
 void InitController()
 {
@@ -17,11 +19,11 @@ void ReadJoystickEvents()
             printf("moving axis number %d to value %d\n", e.number, e.value);
             if(e.number == 0)
             {
-                xValue = e.value;
+                controllerXValue = e.value;
             }
             else if (e.number == 1)
             {
-                yValue = e.value
+                controllerYValue = e.value
             }
         }
     }
