@@ -1,17 +1,15 @@
 #include "Controller.h"
 
 int fileDescrip;
+extern short controllerXValue;
+extern short controllerYValue;
 
-void ReadEvents();
-
-int InitController()
+void InitController()
 {
     fileDescrip = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
-    signal(SIGALRM, ReadEvents);
-    ualarm(1000, 1000);
 }
 
-void ReadEvents(int sigNum)
+void ReadJoystickEvents()
 {
     struct js_event e;
     if (read(fileDescrip, &e, sizeof(e)) == sizeof(e))
@@ -21,11 +19,11 @@ void ReadEvents(int sigNum)
             printf("moving axis number %d to value %d\n", e.number, e.value);
             if(e.number == 0)
             {
-                xValue = e.value;
+                controllerXValue = e.value;
             }
             else if (e.number == 1)
             {
-                yValue = e.value
+                controllerYValue = e.value
             }
         }
     }

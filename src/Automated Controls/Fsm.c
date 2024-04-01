@@ -9,8 +9,8 @@ extern float curPositionY;
 extern float targetPositionX;
 extern float targetPositionY;
 extern bool eStopPressed;
-extern short xValue; 
-extern short yValue;
+extern short controllerXValue; 
+extern short controllerYValue;
 extern bool hasBeenZeroed;
 extern bool goPressed;
 
@@ -70,8 +70,7 @@ void ControllerMoveState()
     {
         SetState(E_STOP_STATE);
     }
-    
-    if(xValue == 0 && yValue == 0)
+    if(controllerXValue == 0 && controllerYValue == 0)
     {
         SetState(STOP_STATE);
     }    
@@ -94,11 +93,11 @@ void WaitingState()
     {
         SetState(E_STOP_STATE);
     }
-    if(goPressed && yValue == 0 && xValue == 0 && hasBeenZeroed)
+    if(goPressed && (controllerXValue == 0) && (controllerYValue == 0) && hasBeenZeroed)
     {
         SetState(AUTOMATED_MOVE_STATE);
     }
-    else if((yValue != 0 || xValue != 0) && !goPressed)
+    else if((controllerXValue != 0 || controllerYValue != 0) && !goPressed)
     {
         SetState(CONTROLLER_MOVE_STATE);
     }

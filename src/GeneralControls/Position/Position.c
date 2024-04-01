@@ -19,11 +19,42 @@ extern volatile bool count2Changing;
 extern volatile bool count3Changing;
 extern volatile bool count4Changing;
 
+extern float curVelocity1;
+extern float curVelocity2;
+extern float curVelocity3;
+extern float curVelocity4;
+
 void InitPosition()
 {
     curPositionX = 0.0f;
     curPositionY = 0.0f;
-    motorToWheelRatio = WHEEL_DIAM * PI / (GEAR_RATIO * sqrt(2));
+    targetPositionX = 0.0f;
+    targetPositionY = 0.0f;
+
+    curPosition1 = 0.0f;
+    curPosition2 = 0.0f;
+    curPosition3 = 0.0f;
+    curPosition4 = 0.0f;
+
+    motorToWheelRatio = WHEEL_DIAM * PI / GEAR_RATIO;
+    sqrt_2 = sqrt(2);
+}
+
+void StartSamplingData()
+{
+    readDataCounter = 1;
+    lastPosition1 = 0.0f;
+    lastPosition2 = 0.0f;
+    lastPosition3 = 0.0f;
+    lastPosition4 = 0.0f;
+
+    lastTime1 = micros();
+    lastTime2 = micros();
+    lastTime3 = micros();
+    lastTime4 = micros();
+
+    signal(SIGALRM, ReadData);
+    ualarm(1000, 1000); // ReadData function called every 1 ms
 }
 
 void CalculateCurPosition()
@@ -65,8 +96,34 @@ void CalculateCurPosition()
    // FR and BL wheels move robot forward and left when wheels move forward.
 
     // average encoder changes then multiply by wheel circumference and divide by gear ratio and sqrt(2) (wheel only moves forward sqrt(2) amount of rotation)
-    curPositionY += ((encoder1Change + encoder2Change + encoder3Change + encoder4Change)  / NUM_OF_MOTORS) * motorToWheelRatio;
-    curPositionX += (((encoder1Change + encoder3Change) / (NUM_OF_MOTORS / 2)) - ((encoder2Change + encoder4Change) / (NUM_OF_MOTORS / 2))) * motorToWheelRatio; 
+    curPosition1 += encoder1Change * motorToWheelRatio;
+    curPosition2 += encoder2Change * motorToWheelRatio;
+    curPosition3 += encoder3Change * motorToWheelRatio;
+    curPosition4 += encoder4Change * motorToWheelRatio;
+
+    curPositionY += (curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2);
+    curPositionX += (((curPosition1 + curPosition3) / (NUM_OF_MOTORS / 2)) - ((curPosition2 + curPosition4) / (NUM_OF_MOTORS / 2))) / sqrt_2; 
+}
+
+void CalculateCurVelocity()
+{   
+    Debug("Calculating velocities.\n");
+    int tempTime = micros();
+
+    curVelocity1 = (curPosition1 - lastPosition1) * 1000000 / (tempTime - lastTime1);
+    lastTime1 = tempTime;
+
+    tempTime = micros();
+    curVelocity2 = (curPosition2 - lastPosition2) * 1000000 / (tempTime - lastTime2);
+    lastTime2 = tempTime;
+
+    tempTime = micros();
+    curVelocity3 = (curPosition3 - lastPosition3) * 1000000 / (tempTime - lastTime3);
+    lastTime3 = tempTime;
+
+    tempTime = micros();
+    curVelocity4 = (curPosition4 - lastPosition4) * 1000000 / (tempTime - lastTime4);
+    lastTime4 = tempTime;
 }
 
 void CalculateMotorPowers()
@@ -98,4 +155,26 @@ void CalculateMotorPowers()
 
     motor2Power = (yDiff - xDiff) / max;
     motor4Power = motor2Power;
+}
+
+// use this to: read controller (joystick) input, 
+             // calculate motor velocity,
+             // read ultrasonic sensor data
+void ReadData()
+{
+    if ((readDataCounter % 50) == 0) // every 50 ms
+    {
+        ReadUltrasonicSensors();
+    }
+    if ((readDataCounter % 20) == 0) // every 20 ms
+    {
+        CalculateCurVelocity();
+    }
+    ReadJoystickData(); // every ms
+
+    readDataCounter++;
+    if (readDataCounter > 200)
+    {
+        readDataCounter = 1;
+    }
 }

@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <stdio.h>
-//#include "../MQTT_Comms/MQTTModule.h"
+#include "MQTTModule.h"
 
 // these are the wiringPi pin definitions.
 // see pinout.xyz/pinout/wiringpi for the corresponding rpi gpio pins
@@ -37,7 +37,6 @@ volatile float sensor4Val;
 /// @brief Initializes pins for ultrasonic sensors
 void UltrasonicInit();
 
-/// @brief Sets up timer and starts sampling sensors
-/// @param microSeconds interval in microseconds to trigger the timer
-void StartSampling(int microSeconds);
+/// @brief Reads the ultrasonic sensors
+void ReadUltrasonicSensors();
 #endif
