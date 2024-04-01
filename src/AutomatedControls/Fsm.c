@@ -39,7 +39,7 @@ void Init_States()
 
 }
 
-void SetState(enum FSM_STATE_T newState) 
+void SetState(FSM_STATE_T newState) 
 {
     currentState = newState;
 }
