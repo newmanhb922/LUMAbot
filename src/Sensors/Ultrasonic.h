@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <stdio.h>
-#include "src/MQTT_Comms/MQTTModule.h"
+#include "../MQTT_Comms/MQTTModule.h"
 
 // these are the wiringPi pin definitions.
 // see pinout.xyz/pinout/wiringpi for the corresponding rpi gpio pins

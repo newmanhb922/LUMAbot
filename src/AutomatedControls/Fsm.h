@@ -4,11 +4,11 @@
 #include <wiringPi.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "src/GeneralControls/Motors/MotorControl.h"
-#include "src/Controller/Controller.h"
-#include "src/Sensors/Ultrasonic.h"
-#include "src/GeneralControls/Position/Position.h"
-#include "src/I2C_Module/I2CModule.h"
+#include "../GeneralControls/Motors/MotorControl.h"
+#include "../Controller/Controller.h"
+#include "../Sensors/Ultrasonic.h"
+#include "../GeneralControls/Position/Position.h"
+#include "../I2C_Module/I2CModule.h"
 
 #define NUM_STATES          7
 
