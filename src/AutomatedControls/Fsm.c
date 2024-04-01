@@ -51,7 +51,7 @@ void RunStateFunction()
         return;
     }
 
-    stateFunctions[currentState];
+    (*stateFunctions[currentState])();
 }
 
 void AutomatedMoveState()
@@ -143,7 +143,7 @@ void StartState()
     {
         SetState(E_STOP_STATE);
     }
-    SetUpMotors();
+    SetupMotors();
 }
 
 void Fsm_Init()

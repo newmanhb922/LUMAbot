@@ -1,3 +1,6 @@
+#ifndef POSITION_H
+#define POSITION_H
+
 #include "../Motors/MotorControl.h"
 #include <math.h>
 #include <signal.h>
@@ -59,3 +62,7 @@ void CalculateCurVelocity();
 void CalculateCurPosition();
 
 void CalculateMotorPowers();
+
+void ReadData();
+
+#endif

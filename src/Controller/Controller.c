@@ -9,7 +9,7 @@ void InitController()
     fileDescrip = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
 }
 
-void ReadJoystickEvents()
+void ReadJoystickData()
 {
     struct js_event e;
     if (read(fileDescrip, &e, sizeof(e)) == sizeof(e))
@@ -23,7 +23,7 @@ void ReadJoystickEvents()
             }
             else if (e.number == 1)
             {
-                controllerYValue = e.value
+                controllerYValue = e.value;
             }
         }
     }

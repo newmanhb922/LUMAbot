@@ -33,4 +33,6 @@ void SetState(FSM_STATE_T newState);
 
 void Fsm_Init();
 
+void RunStateFunction();
+
 #endif

@@ -157,5 +157,7 @@ int Debug(char * message)
     if (mqttClient != NULL)
     {
         PublishMessage(mqttClient, DEBUG_TOPIC, message);
+	return 1;
     }
+    return -1;
 }

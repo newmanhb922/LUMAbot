@@ -1,6 +1,10 @@
+#ifndef I2CMODULE_H
+#define I2CMODULE_H
+
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
 #include <stdio.h>
+#include "../MQTT_Comms/MQTTModule.h"
 
 // The SetPWM functions are not the only thing that needs to be done to move the motors
 // The SetPWM function only controls the speed. The direction must be controlled by setting 
@@ -82,3 +86,5 @@ void Motor4SetPWM(float dutyCycle);
 
 /// @brief Turns off all motors
 void StopAllMotors();
+
+#endif

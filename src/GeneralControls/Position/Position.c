@@ -153,7 +153,7 @@ void CalculateMotorPowers()
 
     else
     {
-        yDiffAbs;
+	max = yDiffAbs;
     }
 
     // motors 1 and 3 are same and 2 and 4 are same when not rotating

@@ -16,8 +16,10 @@ TARGET = LUMABOT-1
 # clean:
 # 	rm -f $(OBJ) $(TARGET)
 
+all: Fsm.o Controller.o MotorControl.o Position.o I2CModule.o MQTTModule.o Ultrasonic.o $(TARGET)
+
 $(TARGET): src/main.c Fsm.o Controller.o MotorControl.o Position.o I2CModule.o MQTTModule.o Ultrasonic.o
-	$(CC) $(CFLAGS) -o ($TARGET) src/main.c
+	$(CC) $(CFLAGS) -o $(TARGET) src/main.c Fsm.o Controller.o MotorControl.o Position.o I2CModule.o MQTTModule.o Ultrasonic.o
 
 Fsm.o: src/AutomatedControls/Fsm.c
 	$(CC) $(CFLAGS) -c src/AutomatedControls/Fsm.c

@@ -11,5 +11,5 @@
 void InitController();
 
 /// @brief Reads an event from the joystick file
-void ReadJoystickEvents();
+void ReadJoystickData();
 #endif

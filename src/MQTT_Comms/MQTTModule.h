@@ -5,6 +5,7 @@
 #include <string.h>
 #include "../GeneralControls/Position/Position.h"
 #include "../AutomatedControls/Fsm.h"
+#include <stdlib.h>
 
 #define ADDRESS     "localhost"
 #define CLIENTID    "RaspPi"
