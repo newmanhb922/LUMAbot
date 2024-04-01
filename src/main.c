@@ -1,10 +1,10 @@
-#include "MotorControl.h"
-#include "Controller.h"
-#include "Ultrasonic.h"
-#include "I2CModule.h"
-#include "MQTTModule.h"
-#include "Position.h"
-#include "Fsm.h"
+#include "src/GeneralControls/Motors/MotorControl.h"
+#include "src/Controller/Controller.h"
+#include "src/Sensors/Ultrasonic.h"
+#include "src/I2C_Module/I2CModule.h"
+#include "src/MQTT_Comms/MQTTModule.h"
+#include "src/GeneralControls/Position/Position.h"
+#include "src/AutomatedControls/Fsm.h"
 
 //Objects
 MQTTClient client;
