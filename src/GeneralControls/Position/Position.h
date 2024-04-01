@@ -21,6 +21,7 @@ float curPosition1;
 float curPosition2;
 float curPosition3;
 float curPosition4;
+
 // last position of each motor in inches, used to calculate velocity
 float lastPosition1;
 float lastPosition2;

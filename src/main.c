@@ -24,6 +24,12 @@ int main()
     UltrasonicInit();
     InitPosition();
     StartSamplingData();
+    Fsm_Init();
+
+    while(1)
+    {
+        RunStateFunction();
+    }
 }
 
 
