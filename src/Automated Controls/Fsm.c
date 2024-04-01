@@ -18,7 +18,8 @@ static FSM_STATE_T currentState;
 
 void (*stateFunctions[NUM_STATES])();
 
-void MoveState();
+void AutomatedMoveState();
+void ControllerMoveState();
 void StopState();
 void WaitingState();
 void EStopState();
@@ -69,6 +70,7 @@ void ControllerMoveState()
     {
         SetState(E_STOP_STATE);
     }
+    
     if(xValue == 0 && yValue == 0)
     {
         SetState(STOP_STATE);
@@ -92,11 +94,11 @@ void WaitingState()
     {
         SetState(E_STOP_STATE);
     }
-    if(goPressed && controllerNumber == 0 && hasBeenZeroed)
+    if(goPressed && yValue == 0 && xValue == 0 && hasBeenZeroed)
     {
         SetState(AUTOMATED_MOVE_STATE);
     }
-    else if(controllerNumber != 0 && !goPressed)
+    else if((yValue != 0 || xValue != 0) && !goPressed)
     {
         SetState(CONTROLLER_MOVE_STATE);
     }
@@ -126,12 +128,14 @@ void StartState()
         SetState(E_STOP_STATE);
     }
     SetUpMotors();
+    StartSampling();
 }
 
 void Fsm_Init()
 {
     Init_States();
     RunStateFunction();
+    InitPosition();
 }
 
 
