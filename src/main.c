@@ -23,6 +23,7 @@ int main()
     InitController();
     UltrasonicInit();
     InitPosition();
+    StartSamplingData();
 }
 
 

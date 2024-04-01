@@ -7,6 +7,9 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-int InitController();
+/// @brief Initializes the joystick controller connection
+void InitController();
 
+/// @brief Reads an event from the joystick file
+void ReadJoystickEvents();
 #endif

@@ -9,9 +9,6 @@ extern volatile float sensor4Val;
 // extern volatile float sensor7Val;
 // extern volatile float sensor8Val;
 
-/// @brief interrupt function to be triggered on timer match
-void TimerInterrupt();
-
 /// @brief Samples the sensor value
 void SampleSensor();
 
@@ -34,7 +31,7 @@ void UltrasonicInit()
     // pinMode(SENSOR_7_TRIG, OUTPUT);
     // pinMode(SENSOR_8_TRIG, OUTPUT);
     
-    sensorCounter = 0;
+    sensorCounter = 1;
     sensor1Val = 0;
     sensor2Val = 0;
     sensor3Val = 0;
@@ -45,27 +42,24 @@ void UltrasonicInit()
     // sensor8Val = 0;
 }
 
-void StartSampling(int microSeconds)
-{
-    signal(SIGALRM, TimerInterrupt); // set TimerInterrupt as callback
-    ualarm(microSeconds, microSeconds); // set alarm interval to number of microseconds
-    sensorCounter = 1;
-}
-
 void SampleSensor()
 {
     switch (sensorCounter)
     {
         case 1:
+            Debug("Reading ultrasonic sensor 1.\n");
             sensor1Val = ReadSensorDistance(SENSOR_1_TRIG, sensor1Val);
             break;
         case 2:
+            Debug("Reading ultrasonic sensor 2.\n");
             sensor2Val = ReadSensorDistance(SENSOR_2_TRIG, sensor2Val);
             break;
         case 3:
+            Debug("Reading ultrasonic sensor 3.\n");
             sensor3Val = ReadSensorDistance(SENSOR_3_TRIG, sensor3Val);
             break;
         case 4:
+            Debug("Reading ultrasonic sensor 4.\n");
             sensor4Val = ReadSensorDistance(SENSOR_4_TRIG, sensor4Val);
             break;
         // we may only have 4 sensors now?
@@ -89,7 +83,7 @@ float ReadSensorDistance(int sensorTrigPin, float oldSensorVal)
     unsigned int startUSec = 0;
     unsigned int endUSec = 0;
     float distanceCm = oldSensorVal;
-    unsigned int timeout = 10000; // 1 second. if we reduce this to 10,000 that should cut off measurement at around 5 or 6 feet max
+    unsigned int timeout = 10000; // 10 ms. if we reduce this to 10,000 that should cut off measurement at around 5 or 6 feet max
     char debugMsg[100];
     
     digitalWrite(sensorTrigPin, HIGH); // pulse trig pin to tell sensor we want to read
@@ -118,7 +112,7 @@ float ReadSensorDistance(int sensorTrigPin, float oldSensorVal)
     return distanceCm;
 }
 
-void TimerInterrupt()
+void ReadUltrasonicSensors()
 {
     if (sensorCounter > 0 && sensorCounter < NUM_OF_SENSORS + 1)
     {
