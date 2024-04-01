@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "mqttmodule.h": "c",
+        "string.h": "c"
+    }
+}
