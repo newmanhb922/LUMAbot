@@ -8,10 +8,10 @@ OBJ = $(SRC:.c=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-    $(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.c
-    $(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-    rm -f $(OBJ) $(TARGET)
+	rm -f $(OBJ) $(TARGET)
