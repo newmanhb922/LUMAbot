@@ -3,8 +3,8 @@
 
 #include "MQTTClient.h"
 #include <string.h>
-#include "Position.h"
-#include "Fsm.h"
+#include "../GeneralControls/Position/Position.h"
+#include "../AutomatedControls/Fsm.h"
 
 #define ADDRESS     "localhost"
 #define CLIENTID    "RaspPi"

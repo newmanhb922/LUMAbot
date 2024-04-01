@@ -1,10 +1,10 @@
-#include "MotorControl.h"
+#include "../Motors/MotorControl.h"
 #include <math.h>
 #include <signal.h>
 #include <unistd.h>
-#include "Controller.h"
-#include "Ultrasonic.h"
-#include "MQTTModule.h"
+#include "../../Controller/Controller.h"
+#include "../../Sensors/Ultrasonic.h"
+#include "../../MQTT_Comms/MQTTModule.h"
 
 #define GEAR_RATIO          15.0f
 #define WHEEL_DIAM          4.0f // inches

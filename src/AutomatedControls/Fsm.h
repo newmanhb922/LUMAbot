@@ -4,11 +4,11 @@
 #include <wiringPi.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "MotorControl.h"
-#include "Controller.h"
-#include "Ultrasonic.h"
-#include "Position.h"
-#include "I2CModule.h"
+#include "../GeneralControls/Motors/MotorControl.h"
+#include "../Controller/Controller.h"
+#include "../Sensors/Ultrasonic.h"
+#include "../GeneralControls/Position/Position.h"
+#include "../I2C_Module/I2CModule.h"
 
 #define NUM_STATES          7
 #define MaxDutyCycle        80
