@@ -64,15 +64,14 @@ void AutomatedMoveState()
     CalculateCurPosition();
     CalculateCurVelocity();
 
-    //
+    float xDistance = abs(curPositionX - targetPositionX);
+    float yDistance = abs(curPositionY - targetPositionY);
+    float theta = tan(yDistance/xDistance);
 
-    //calculate the velocities each wheel would need to travel
-    //want the velocity to be like 1ft/s
-    //use trig to find the velocity in x and y directions
-    //get the motors to turn at that speed
-    //move at some angle at 1ft/s
+    velocityX = Velocity * cos(theta);
+    velocityY = Velocity * sin(theta);
 
-
+    
     if((curPositionX == targetPositionX) && (curPositionY == targetPositionY))
     {
         SetState(STOP_STATE);
