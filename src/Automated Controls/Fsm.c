@@ -64,12 +64,29 @@ void AutomatedMoveState()
 
 }
 
+float ScaleControllerValue(float controllerValue)
+{
+    float scaled = (controllerValue / MaxControllerValue) * 5;
+    return scaled;
+}
+
 void ControllerMoveState()
 {
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
     }
+    
+    targetPositionX = ScaleControllerValue(controllerXValue) + curPositionX;
+    targetPositionY = ScaleControllerValue(controllerYValue) + curPositionY;
+
+    CalculateMotorPowers();
+
+    SetMotorPWM(1, motor1Power);
+    SetMotorPWM(2, motor2Power);
+    SetMotorPWM(3, motor3Power);
+    SetMotorPWM(4, motor4Power);
+    
     if(controllerXValue == 0 && controllerYValue == 0)
     {
         SetState(STOP_STATE);
@@ -127,14 +144,11 @@ void StartState()
         SetState(E_STOP_STATE);
     }
     SetUpMotors();
-    StartSampling();
 }
 
 void Fsm_Init()
 {
     Init_States();
-    RunStateFunction();
-    InitPosition();
 }
 
 

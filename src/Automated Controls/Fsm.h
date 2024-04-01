@@ -11,6 +11,9 @@
 #include "I2CModule.h"
 
 #define NUM_STATES          7
+#define MaxDutyCycle        80
+#define MinDutyCycle        20
+#define MaxControllerValue  32767
 
 typedef enum
 {

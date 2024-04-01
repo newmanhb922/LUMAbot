@@ -132,29 +132,61 @@ void CalculateMotorPowers()
     float xDiff = targetPositionX - curPositionX;
     float yDiffAbs = yDiff;
     float xDiffAbs = xDiff;
+    float dutyCycleMotors1_3;
+    float dutyCycleMotors2_4;
     float max = 0;
+
     if (yDiffAbs < 0)
     {
         yDiffAbs = yDiffAbs * -1;
     }
+
     if (xDiffAbs < 0)
     {
         xDiffAbs = xDiffAbs * -1;
     }
+
     if (xDiffAbs > yDiffAbs)
     {
         max = xDiffAbs;
     }
+
     else
     {
         yDiffAbs;
     }
+
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
     motor1Power = (yDiff + xDiff) / max;
     motor3Power = motor1Power; 
 
     motor2Power = (yDiff - xDiff) / max;
     motor4Power = motor2Power;
+
+    dutyCycleMotors1_3 = (motor1Power / 1) * 100;
+    dutyCycleMotors2_4 = (motor2Power / 1) * 100;
+
+    if(dutyCycleMotors1_3 > MaxDutyCycle)
+    {
+        dutyCycleMotors1_3 = MaxDutyCycle;
+    }
+    else if (dutyCycleMotors2_4 > MaxDutyCycle)
+    {
+        dutyCycleMotors2_4 = MaxDutyCycle;
+    }
+    else if(dutyCycleMotors1_3 < MinDutyCycle)
+    {
+        dutyCycleMotors1_3 = MinDutyCycle;
+    }
+    else if (dutyCycleMotors2_4 < MinDutyCycle)
+    {
+        dutyCycleMotors2_4 = MinDutyCycle;
+    }
+
+    motor1Power = dutyCycleMotors1_3;
+    motor2Power = dutyCycleMotors2_4;
+    motor3Power = dutyCycleMotors1_3;
+    motor4Power = dutyCycleMotors2_4;
 }
 
 // use this to: read controller (joystick) input, 
