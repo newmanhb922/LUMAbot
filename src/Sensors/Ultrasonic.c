@@ -1,9 +1,11 @@
 #include "Ultrasonic.h"
 
-extern volatile float sensor1Val;
-extern volatile float sensor2Val;
-extern volatile float sensor3Val;
-extern volatile float sensor4Val;
+int sensorCounter;
+
+volatile float sensor1Val;
+volatile float sensor2Val;
+volatile float sensor3Val;
+volatile float sensor4Val;
 // extern volatile float sensor5Val;
 // extern volatile float sensor6Val;
 // extern volatile float sensor7Val;

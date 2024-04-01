@@ -23,12 +23,11 @@
 #define SPEED_OF_SOUND      343.8 // approximate speed of sound in 69.8 degree F air
 
 #define NUM_OF_SENSORS      4
-int sensorCounter;
 
-volatile float sensor1Val;
-volatile float sensor2Val;
-volatile float sensor3Val;
-volatile float sensor4Val;
+extern volatile float sensor1Val;
+extern volatile float sensor2Val;
+extern volatile float sensor3Val;
+extern volatile float sensor4Val;
 // volatile float sensor5Val;
 // volatile float sensor6Val;
 // volatile float sensor7Val;

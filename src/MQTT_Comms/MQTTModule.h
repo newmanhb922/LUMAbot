@@ -20,8 +20,6 @@
 #define ESTOP_RESET_COMMAND         "EStopReset"
 #define ZERO_COMMAND                "Zero"
 
-MQTTClient * mqttClient;
-
 /// @brief Connects to mqtt server and returns a return code.
 /// @param client pointer to an MQTTClient object 
 /// @return returns a code specifying whether the connection succeeded.

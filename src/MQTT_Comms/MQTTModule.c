@@ -1,5 +1,7 @@
 #include "MQTTModule.h"
 
+MQTTClient * mqttClient;
+
 extern float curPositionX;
 extern float curPositionY;
 extern float targetPositionX;

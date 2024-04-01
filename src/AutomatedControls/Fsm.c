@@ -8,11 +8,11 @@ extern float curPositionX;
 extern float curPositionY;
 extern float targetPositionX;
 extern float targetPositionY;
-extern bool eStopPressed;
-extern short controllerXValue; 
-extern short controllerYValue;
-extern bool hasBeenZeroed;
-extern bool goPressed;
+bool eStopPressed;
+short controllerXValue; 
+short controllerYValue;
+bool hasBeenZeroed;
+bool goPressed;
 
 static FSM_STATE_T currentState;
 

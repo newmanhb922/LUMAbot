@@ -21,11 +21,11 @@ typedef enum
     OBSTACLE_AVOIDANCE_STATE, START_STATE
 } FSM_STATE_T;
 
-bool eStopPressed;
-short controllerXValue;
-short controllerYValue;
-bool hasBeenZeroed;
-bool goPressed;
+extern bool eStopPressed;
+extern short controllerXValue;
+extern short controllerYValue;
+extern bool hasBeenZeroed;
+extern bool goPressed;
 
 void Init_States();
 

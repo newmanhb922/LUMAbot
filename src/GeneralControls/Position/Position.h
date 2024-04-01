@@ -14,44 +14,21 @@
 #define PI                  3.14159265f
 
 // position in inches
-float curPositionX;
-float curPositionY;
-float targetPositionX;
-float targetPositionY;
+extern float curPositionX;
+extern float curPositionY;
+extern float targetPositionX;
+extern float targetPositionY;
 
-// position of each motor in inches, used to calculate velocity
-float curPosition1;
-float curPosition2;
-float curPosition3;
-float curPosition4;
+extern float motor1Power; // front left
+extern float motor2Power; // front right
+extern float motor3Power; // back right
+extern float motor4Power; // back left
 
-// last position of each motor in inches, used to calculate velocity
-float lastPosition1;
-float lastPosition2;
-float lastPosition3;
-float lastPosition4;
-
-float motor1Power; // front left
-float motor2Power; // front right
-float motor3Power; // back right
-float motor4Power; // back left
-
-float motorToWheelRatio;
-float sqrt_2;
-
-// whee velocity in inches / second
-float curVelocity1;
-float curVelocity2;
-float curVelocity3;
-float curVelocity4;
-
-// last time we calculated motor velocity
-int lastTime1;
-int lastTime2;
-int lastTime3;
-int lastTime4;
-
-unsigned char readDataCounter;
+// wheel velocity in inches / second
+extern float curVelocity1;
+extern float curVelocity2;
+extern float curVelocity3;
+extern float curVelocity4;
 
 void InitPosition();
 

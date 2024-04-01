@@ -1,15 +1,25 @@
 #include "MotorControl.h"
 
 // these variables store the encoder counts for each motor
-extern volatile int encoder1Count;
-extern volatile int encoder2Count;
-extern volatile int encoder3Count;
-extern volatile int encoder4Count;
+volatile int encoder1Count;
+volatile int encoder2Count;
+volatile int encoder3Count;
+volatile int encoder4Count;
 
-extern volatile bool count1Changing;
-extern volatile bool count2Changing;
-extern volatile bool count3Changing;
-extern volatile bool count4Changing;
+volatile bool count1Changing;
+volatile bool count2Changing;
+volatile bool count3Changing;
+volatile bool count4Changing;
+
+// hold the last value (1 or 0) of the encoder pins
+volatile unsigned char last1A;
+volatile unsigned char last1B;
+volatile unsigned char last2A;
+volatile unsigned char last2B;
+volatile unsigned char last3A;
+volatile unsigned char last3B;
+volatile unsigned char last4A;
+volatile unsigned char last4B;
 
 /// @brief Initialize encoder pins and variables and set up hardware interrupts
 void SetupEncoders();

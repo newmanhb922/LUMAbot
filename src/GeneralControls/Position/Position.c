@@ -1,13 +1,14 @@
 #include "Position.h"
 
-extern float curPositionX;
-extern float curPositionY;
-extern float targetPositionX;
-extern float targetPositionY;
-extern float motor1Power;
-extern float motor2Power;
-extern float motor3Power;
-extern float motor4Power;
+float curPositionX;
+float curPositionY;
+float targetPositionX;
+float targetPositionY;
+
+float motor1Power;
+float motor2Power;
+float motor3Power;
+float motor4Power;
 
 extern volatile int encoder1Count;
 extern volatile int encoder2Count;
@@ -19,10 +20,33 @@ extern volatile bool count2Changing;
 extern volatile bool count3Changing;
 extern volatile bool count4Changing;
 
-extern float curVelocity1;
-extern float curVelocity2;
-extern float curVelocity3;
-extern float curVelocity4;
+float curVelocity1;
+float curVelocity2;
+float curVelocity3;
+float curVelocity4;
+
+// position of each motor in inches, used to calculate velocity
+float curPosition1;
+float curPosition2;
+float curPosition3;
+float curPosition4;
+
+// last position of each motor in inches, used to calculate velocity
+float lastPosition1;
+float lastPosition2;
+float lastPosition3;
+float lastPosition4;
+
+float motorToWheelRatio;
+float sqrt_2;
+
+// last time we calculated motor velocity
+int lastTime1;
+int lastTime2;
+int lastTime3;
+int lastTime4;
+
+unsigned char readDataCounter;
 
 void InitPosition()
 {
