@@ -1,0 +1,4 @@
+From main repo directory run:
+gcc -c src/Controller/Controller.c src/Controller/Controller.h
+gcc -o ControllerTest Tests/test/Controller/ControllerTest.c Controller.o src/Controller/Controller.h
+

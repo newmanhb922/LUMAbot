@@ -1,0 +1,9 @@
+Instructions for building MQTTModule with paho.mqtt.c library
+
+MQTTTests.c in Tests/test/MQTT_Comms is target and this assumes we are using raspberry pi
+
+1.) Ensure that paho.mqtt.c repo is cloned. Navigate to paho.mqtt.c directory.
+2.) Run 'make' then 'sudo make install' (mqtt library is now installed in usr/local/lib)
+3.) Navigate to the root directory.
+4.) Build MQTTModule using 'gcc -c src/MQTT_Comms/MQTTModule.c -lpaho-mqtt3c'
+5.) Build MQTTTests using 'gcc -o MQTTTestApp Tests/test/MQTT_Comms/MQTTTests.c MQTTModule.o -lpaho-mqtt3c'
