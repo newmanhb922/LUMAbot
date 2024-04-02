@@ -1,6 +1,7 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -g -lpaho-mqtt3c -lwiringPi
+CFLAGS = -Wall -Wextra -g
 TARGET = LUMABOT-1
+LFLAGS = -lwiringPi -lpaho-mqtt3c -lm
 # SRC_DIR = src
 # SRC = $(wildcard $(SRC_DIR)/*.c)
 # OBJ = $(SRC:.c=.o)
@@ -19,7 +20,7 @@ TARGET = LUMABOT-1
 all: Fsm.o Controller.o MotorControl.o Position.o I2CModule.o MQTTModule.o Ultrasonic.o $(TARGET)
 
 $(TARGET): src/main.c Fsm.o Controller.o MotorControl.o Position.o I2CModule.o MQTTModule.o Ultrasonic.o
-	$(CC) $(CFLAGS) -o $(TARGET) src/main.c Fsm.o Controller.o MotorControl.o Position.o I2CModule.o MQTTModule.o Ultrasonic.o
+	$(CC) $(CFLAGS) -o $(TARGET) src/main.c Fsm.o Controller.o MotorControl.o Position.o I2CModule.o MQTTModule.o Ultrasonic.o $(LFLAGS)
 
 Fsm.o: src/AutomatedControls/Fsm.c
 	$(CC) $(CFLAGS) -c src/AutomatedControls/Fsm.c
