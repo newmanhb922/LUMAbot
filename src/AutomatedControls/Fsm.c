@@ -105,17 +105,19 @@ void AutomatedMoveState()
     float motor4VelocityError = motor4TargetVelocity - curVelocity4;
 
     
+    // need to use velocity error as feedback to get motors to that velocity by
+    // setting duty cycle, below code isn't what we need to do.
 
     //convert velocity to a percentage to use for duty cycle
-    motor1Power = (motor1Velocity / Velocity) * 100;
-    motor2Power = (motor2Velocity / Velocity) * 100;
-    motor3Power = (motor3Velocity / Velocity) * 100;
-    motor4Power = (motor4Velocity / Velocity) * 100;
+    // motor1Power = (motor1Velocity / Velocity) * 100;
+    // motor2Power = (motor2Velocity / Velocity) * 100;
+    // motor3Power = (motor3Velocity / Velocity) * 100;
+    // motor4Power = (motor4Velocity / Velocity) * 100;
 
-    SetMotorPWM(1, motor1Power);
-    SetMotorPWM(2, motor2Power);
-    SetMotorPWM(3, motor3Power);
-    SetMotorPWM(4, motor4Power);
+    // SetMotorPWM(1, motor1Power);
+    // SetMotorPWM(2, motor2Power);
+    // SetMotorPWM(3, motor3Power);
+    // SetMotorPWM(4, motor4Power);
 
     if((xDistance < 1) && (yDistance < 1))
     {
