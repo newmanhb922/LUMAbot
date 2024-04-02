@@ -14,6 +14,7 @@
 #define MaxDutyCycle        80
 #define MinDutyCycle        20
 #define MaxControllerValue  32767
+#define Velocity            0.5
 
 typedef enum
 {

@@ -60,8 +60,21 @@ void AutomatedMoveState()
     {
         SetState(E_STOP_STATE);
     }
-    SetState(STOP_STATE);
 
+    CalculateCurPosition();
+    CalculateCurVelocity();
+
+    float xDistance = abs(curPositionX - targetPositionX);
+    float yDistance = abs(curPositionY - targetPositionY);
+    float theta = tan(yDistance/xDistance);
+
+    velocityX = Velocity * cos(theta);
+    velocityY = Velocity * sin(theta);
+    
+    if((curPositionX == targetPositionX) && (curPositionY == targetPositionY))
+    {
+        SetState(STOP_STATE);
+    }
 }
 
 float ScaleControllerValue(float controllerValue)

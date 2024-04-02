@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "mqttmodule.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "position.h": "c",
+        "controller.h": "c"
     }
 }
