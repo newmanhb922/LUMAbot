@@ -37,7 +37,7 @@ void EncoderISR4();
 /// @param curA current value of the encoder channel A
 /// @param curB current value of the encoder channel B
 /// @return the encoder change, will be 1 for motor moving forward, -1 for motor moving backwards
-unsigned char CalculateEncoderChange(unsigned char encoderNum, unsigned char lastA, unsigned char lastB, unsigned char curA, unsigned char curB);
+int CalculateEncoderChange(unsigned char encoderNum, unsigned char lastA, unsigned char lastB, unsigned char curA, unsigned char curB);
 
 /// @brief Updates the lastxA and lastxB variables for the specified encoder
 /// @param encoderNum number of the encoder we are working with (1 - 4)
@@ -62,6 +62,7 @@ void SetupMotors()
     pinMode(MOTOR_4_DIR, OUTPUT);
 
     SetupEncoders();
+	printf("Encoders setup\n");
 }
 
 void SetMotorDir(int motorNum, bool forward)
@@ -179,12 +180,12 @@ void EncoderISR4()
     count4Changing = false; // we are done changing count, let other threads change it
 }
 
-unsigned char CalculateEncoderChange(unsigned char encoderNum, unsigned char lastA, unsigned char lastB, unsigned char curA, unsigned char curB)
+int CalculateEncoderChange(unsigned char encoderNum, unsigned char lastA, unsigned char lastB, unsigned char curA, unsigned char curB)
 {
-    char countChange = 0;
+    int countChange = 0;
 
     // calculate whether to increment or decrement count (countChange will be 1 or -1)
-
+//	printf("lastA: %d, lastB: %d, curA: %d, curB: %d\n", lastA, lastB, curA, curB);
     if (lastA != lastB) // A and B were different
     { 
         if (lastB != curB) // B changed so we count up
