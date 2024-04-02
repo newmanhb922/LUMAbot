@@ -234,7 +234,6 @@ void StartState()
     {
         SetState(E_STOP_STATE);
     }
-    SetupMotors();
 }
 
 void Fsm_Init()

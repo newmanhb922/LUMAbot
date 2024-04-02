@@ -20,6 +20,7 @@ int main()
     SubscribeToTopic(&client, COMMAND_TOPIC);
 
     SetupI2C();
+    SetupMotors();
     InitController();
     UltrasonicInit();
     InitPosition();
