@@ -2,10 +2,10 @@
 
 int sensorCounter;
 
-volatile float sensor1Val;
-volatile float sensor2Val;
-volatile float sensor3Val;
-volatile float sensor4Val;
+volatile float sensor1Val; //front
+volatile float sensor2Val; //right
+volatile float sensor3Val; //back
+volatile float sensor4Val; //left
 // extern volatile float sensor5Val;
 // extern volatile float sensor6Val;
 // extern volatile float sensor7Val;

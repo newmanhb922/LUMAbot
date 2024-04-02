@@ -4,10 +4,18 @@ extern float motor1Power;
 extern float motor2Power;
 extern float motor3Power;
 extern float motor4Power;
+
 extern float curPositionX;
 extern float curPositionY;
+
 extern float targetPositionX;
 extern float targetPositionY;
+
+extern float curVelocity1;
+extern float curVelocity2;
+extern float curVelocity3;
+extern float curVelocity4;
+
 bool eStopPressed;
 short controllerXValue; 
 short controllerYValue;
@@ -15,6 +23,7 @@ bool hasBeenZeroed;
 bool goPressed;
 
 static FSM_STATE_T currentState;
+static FSM_STATE_T previousState;
 
 void (*stateFunctions[NUM_STATES])();
 
@@ -56,12 +65,19 @@ void RunStateFunction()
 
 void AutomatedMoveState()
 {
+    previousState = currentState;
+
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
     }
 
     CalculateCurPosition();
+
+    if(sensor1Val < 12 || sensor2Val < 12 || sensor3Val < 12 || sensor4Val < 12)
+    {
+        SetState(OBSTACLE_AVOIDANCE_STATE);
+    }
 
     //convert from ft to in
     targetPositionX = targetPositionX * 12; 
@@ -76,11 +92,19 @@ void AutomatedMoveState()
     float velocityX = Velocity * cos(theta);
     float velocityY = Velocity * sin(theta);
 
-    //motor velocities
-    float motor1Velocity = velocityX + velocityY;
-    float motor2Velocity = -velocityX + velocityY;
-    float motor3Velocity = velocityX + velocityY;
-    float motor4Velocity = -velocityX + velocityY;
+    //target motor velocities
+    float motor1TargetVelocity = velocityX + velocityY;
+    float motor2TargetVelocity = -velocityX + velocityY;
+    float motor3TargetVelocity = velocityX + velocityY;
+    float motor4TargetVelocity = -velocityX + velocityY;
+
+    //find error
+    float motor1VelocityError = motor1TargetVelocity - curVelocity1;
+    float motor2VelocityError = motor2TargetVelocity - curVelocity2;
+    float motor3VelocityError = motor3TargetVelocity - curVelocity3;
+    float motor4VelocityError = motor4TargetVelocity - curVelocity4;
+
+    
 
     //convert velocity to a percentage to use for duty cycle
     motor1Power = (motor1Velocity / Velocity) * 100;
@@ -93,7 +117,7 @@ void AutomatedMoveState()
     SetMotorPWM(3, motor3Power);
     SetMotorPWM(4, motor4Power);
 
-    if((curPositionX == targetPositionX) && (curPositionY == targetPositionY))
+    if((xDistance < 1) && (yDistance < 1))
     {
         SetState(STOP_STATE);
     }
@@ -107,16 +131,21 @@ float ScaleControllerValue(float controllerValue)
 
 void ControllerMoveState()
 {
+    previousState = currentState;
+
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
     }
     
+    //Scale controller value down to find the target position, at max 5 in away from current position
     targetPositionX = ScaleControllerValue(controllerXValue) + curPositionX;
     targetPositionY = ScaleControllerValue(controllerYValue) + curPositionY;
 
+    //converts motor power to the duty cycle and maps the duty cycle within the allowed constraints
     CalculateMotorPowers();
 
+    //sets motor power
     SetMotorPWM(1, motor1Power);
     SetMotorPWM(2, motor2Power);
     SetMotorPWM(3, motor3Power);
@@ -130,17 +159,33 @@ void ControllerMoveState()
 
 void StopState()
 {
+    previousState = currentState;
+
     StopAllMotors();
+
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
     }
-    SetState(WAITING_STATE);
-    
+   
+    if(previousState != OBSTACLE_AVOIDANCE_STATE)
+    {
+        SetState(WAITING_STATE);
+    }
+
+    else
+    {
+        if(sensor1Val > 4 && sensor2Val > 4 && sensor3Val > 4 && sensor4Val > 4)
+        {
+            SetState(AUTOMATED_MOVE_STATE);
+        }
+    }
 }
 
 void WaitingState()
 {
+    previousState = currentState;
+
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
@@ -157,23 +202,34 @@ void WaitingState()
 
 void EStopState()
 {
+    previousState = currentState;
+
     StopAllMotors();
     if(!eStopPressed)
     {
-        SetState(WAITING_STATE);
+        SetState(START_STATE);
     }
 }
 
 void ObstacleAvoidanceState()
 {
+    previousState = currentState;
+
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
+    }
+
+    if(sensor1Val < 4 || sensor2Val < 4 || sensor3Val < 4 || sensor4Val < 4)
+    {
+        SetState(STOP_STATE);
     }
 }
 
 void StartState()
 {
+    previousState = currentState;
+
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
