@@ -24,6 +24,9 @@
 
 #define NUM_OF_SENSORS      4
 
+#define CM_PER_IN            2.54f
+
+// distance from sensor to object in inches
 extern volatile float sensor1Val;
 extern volatile float sensor2Val;
 extern volatile float sensor3Val;

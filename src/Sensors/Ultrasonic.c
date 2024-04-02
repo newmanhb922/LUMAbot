@@ -2,6 +2,7 @@
 
 int sensorCounter;
 
+// distance from sensor to object in inches
 volatile float sensor1Val; //front
 volatile float sensor2Val; //right
 volatile float sensor3Val; //back
@@ -17,7 +18,7 @@ void SampleSensor();
 /// @brief Reads the sensor distance
 /// @param sensorTrigPin the gpio pin on the raspberry pi that is wired to the trigger pin of the sensor
 /// @param oldSensorVal the previously read sensor value
-/// @return returns the distance in cm
+/// @return returns the distance in inches
 float ReadSensorDistance(int sensorTrigPin, float oldSensorVal);
 
 void UltrasonicInit()
@@ -111,7 +112,7 @@ float ReadSensorDistance(int sensorTrigPin, float oldSensorVal)
     // (100 (cm / meter) * (elapsed time (microseconds) / 1000000 (microseconds / second)) * speed of sound (meters / second)) / 2.
     // we divide by two because the elapsed time is the time to travel to object and back to sensor so it travelled double the distance that we want.
     distanceCm = (100.0f * ((endUSec - startUSec) / 1000000.0f) * SPEED_OF_SOUND) / 2.0;
-    return distanceCm;
+    return (distanceCm / CM_PER_IN);
 }
 
 void ReadUltrasonicSensors()
