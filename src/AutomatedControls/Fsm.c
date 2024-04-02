@@ -63,22 +63,30 @@ void AutomatedMoveState()
 
     CalculateCurPosition();
 
+    //convert from ft to in
+    targetPositionX = targetPositionX * 12; 
+    targetPositionY = targetPositionY * 12;
+
+    //find the distance we need to move
     float xDistance = targetPositionX - curPositionX;
     float yDistance = targetPositionY - curPositionY;
 
+    //find the angle of movement and velocity of x and y on that angle
     float theta = atan(yDistance/xDistance);
     float velocityX = Velocity * cos(theta);
     float velocityY = Velocity * sin(theta);
 
+    //motor velocities
     float motor1Velocity = velocityX + velocityY;
     float motor2Velocity = -velocityX + velocityY;
     float motor3Velocity = velocityX + velocityY;
     float motor4Velocity = -velocityX + velocityY;
 
-    motor1Power = (motor1Velocity / 12) * 100;
-    motor2Power = (motor2Velocity / 12) * 100;
-    motor3Power = (motor3Velocity / 12) * 100;
-    motor4Power = (motor4Velocity / 12) * 100;
+    //convert velocity to a percentage to use for duty cycle
+    motor1Power = (motor1Velocity / Velocity) * 100;
+    motor2Power = (motor2Velocity / Velocity) * 100;
+    motor3Power = (motor3Velocity / Velocity) * 100;
+    motor4Power = (motor4Velocity / Velocity) * 100;
 
     SetMotorPWM(1, motor1Power);
     SetMotorPWM(2, motor2Power);
