@@ -62,15 +62,29 @@ void AutomatedMoveState()
     }
 
     CalculateCurPosition();
-    CalculateCurVelocity();
 
-    float xDistance = abs(curPositionX - targetPositionX);
-    float yDistance = abs(curPositionY - targetPositionY);
-    float theta = tan(yDistance/xDistance);
+    float xDistance = targetPositionX - curPositionX;
+    float yDistance = targetPositionY - curPositionY;
 
-    velocityX = Velocity * cos(theta);
-    velocityY = Velocity * sin(theta);
-    
+    float theta = atan(yDistance/xDistance);
+    float velocityX = Velocity * cos(theta);
+    float velocityY = Velocity * sin(theta);
+
+    float motor1Velocity = velocityX + velocityY;
+    float motor2Velocity = -velocityX + velocityY;
+    float motor3Velocity = velocityX + velocityY;
+    float motor4Velocity = -velocityX + velocityY;
+
+    motor1Power = (motor1Velocity / 12) * 100;
+    motor2Power = (motor2Velocity / 12) * 100;
+    motor3Power = (motor3Velocity / 12) * 100;
+    motor4Power = (motor4Velocity / 12) * 100;
+
+    SetMotorPWM(1, motor1Power);
+    SetMotorPWM(2, motor2Power);
+    SetMotorPWM(3, motor3Power);
+    SetMotorPWM(4, motor4Power);
+
     if((curPositionX == targetPositionX) && (curPositionY == targetPositionY))
     {
         SetState(STOP_STATE);
@@ -165,9 +179,6 @@ void Fsm_Init()
 }
 
 
-//when trying to move, go into move state
-//in the move state, it'll get current position
-
 // FMM - don't need to calculate angle. Use CalculateMotorPowers in Position.c to 
 // get motor powers scaled from -1 to 1. Then multiply that by some duty cycle constant 
 // to set motor speeds. Maybe have some sort of "ramp up" speed function that 'slowly' increases
@@ -186,10 +197,3 @@ void Fsm_Init()
 //subtract new coord from old one ex: new = P (-7,-14), old = B (7,0)
 // move -14 on x, move -14 on y 
 
-
-//whenever you recieve a message in controller.c you would 
-//axis 1 = y
-//axis 0 = x
-//goes from signed 16 bit: - 32768 to 32767
-
-//only
