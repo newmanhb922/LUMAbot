@@ -50,6 +50,7 @@ void Init_States()
 
 void SetState(FSM_STATE_T newState) 
 {
+    printf("Setting state to: %s\n", xstr(newState));
     currentState = newState;
 }
 
@@ -87,7 +88,7 @@ void AutomatedMoveState()
     float xDistance = targetPositionX - curPositionX;
     float yDistance = targetPositionY - curPositionY;
 
-    //find the angle of movement and velocity of x and y on that angle
+    //find the angle of movement and desired velocity of x and y on that angle
     float theta = atan(yDistance/xDistance);
     float velocityX = Velocity * cos(theta);
     float velocityY = Velocity * sin(theta);
@@ -152,6 +153,8 @@ void ControllerMoveState()
     SetMotorPWM(2, motor2Power);
     SetMotorPWM(3, motor3Power);
     SetMotorPWM(4, motor4Power);
+
+    // have to set direction here as well with SetMotorDir
     
     if(controllerXValue == 0 && controllerYValue == 0)
     {

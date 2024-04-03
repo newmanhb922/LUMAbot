@@ -16,13 +16,14 @@ void ReadJoystickData()
     { // event read
         if (e.type == JS_EVENT_AXIS)
         { // joystick moved
-            printf("moving axis number %d to value %d\n", e.number, e.value);
             if(e.number == 0)
             {
+                printf("setting controllerXValue to %d\n", e.value);
                 controllerXValue = e.value;
             }
             else if (e.number == 1)
             {
+                printf("setting controllerYValue to %d\n", e.value);
                 controllerYValue = e.value;
             }
         }

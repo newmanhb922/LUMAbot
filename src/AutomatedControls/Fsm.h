@@ -16,6 +16,10 @@
 #define MaxControllerValue  32767
 #define Velocity            12
 
+// for converting enum to string
+#define str(x) #x
+#define xstr(x) str(x)
+
 typedef enum
 {
     AUTOMATED_MOVE_STATE, CONTROLLER_MOVE_STATE,  STOP_STATE, WAITING_STATE, E_STOP_STATE, 
