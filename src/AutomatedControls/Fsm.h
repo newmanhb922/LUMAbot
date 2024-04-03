@@ -14,7 +14,8 @@
 #define MaxDutyCycle        80
 #define MinDutyCycle        20
 #define MaxControllerValue  32767
-#define Velocity            12
+#define Velocity            12 // 1 ft/s
+#define MaxAvoidance        42 //3.5 ft
 
 // for converting enum to string
 #define str(x) #x

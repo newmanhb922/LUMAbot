@@ -16,6 +16,13 @@ extern float curVelocity2;
 extern float curVelocity3;
 extern float curVelocity4;
 
+float OffCourseSensor1;
+float OffCourseSensor2;
+float OffCourseSensor3;
+float OffCourseSensor4;
+float saveXValue;
+float saveYValue;
+
 extern bool motor1Dir;
 extern bool motor2Dir;
 extern bool motor3Dir;
@@ -83,7 +90,14 @@ void AutomatedMoveState()
     if(sensor1Val < 12 || sensor2Val < 12 || sensor3Val < 12 || sensor4Val < 12)
     {
         SetState(OBSTACLE_AVOIDANCE_STATE);
+        saveXValue = targetPositionX;
+        saveYValue = targetPositionY;
     }
+
+    OffCourseSensor1 = 0;
+    OffCourseSensor2 = 0;
+    OffCourseSensor3 = 0;
+    OffCourseSensor4 = 0;
 
     //convert from ft to in
     targetPositionX = targetPositionX * 12; 
@@ -238,6 +252,73 @@ void ObstacleAvoidanceState()
     {
         SetState(STOP_STATE);
     }
+    
+    else
+    {
+        
+        if(sensor1Val < 12) //move away in x direction
+        {
+            targetPositionX = curPositionX + 1;
+            OffCourseSensor1++;
+            if(sensor1Val > 12)
+            {
+                targetPositionX = saveXValue;
+
+                //move forward until side sensor doesn't see object
+                //move to other x side the number of off course
+            }
+            if(sensor2Val < 12 || sensor3Val < 12 || sensor4Val < 12)
+            {
+                SetState(OBSTACLE_AVOIDANCE_STATE);
+            }
+        }
+        else if (sensor2Val < 12) //move away in y direction
+        {
+            targetPositionY = curPositionY + 1;
+            OffCourseSensor2++;
+            if(sensor2Val > 12)
+            {
+                targetPositionY = saveYValue;
+            }
+            if(sensor1Val < 12 || sensor3Val < 12 || sensor4Val < 12)
+            {
+                SetState(OBSTACLE_AVOIDANCE_STATE);
+            }
+        }
+        else if(sensor3Val < 12) //x dir
+        {
+            targetPositionX = curPositionX + 1;
+            OffCourseSensor3++;
+            if(sensor3Val > 12)
+            {
+                targetPositionX = saveXValue;
+            }
+            if(sensor2Val < 12 || sensor1Val < 12 || sensor4Val < 12)
+            {
+                SetState(OBSTACLE_AVOIDANCE_STATE);
+            }  b   
+        }
+        else if (sensor4Val < 12) //y dir
+        {
+            targetPositionY = curPositionY + 1;
+            OffCourseSensor4++;
+            if(sensor4Val > 12)
+            {
+                targetPositionY = saveYValue;
+            }
+            if(sensor2Val < 12 || sensor3Val < 12 || sensor1Val < 12)
+            {
+                SetState(STOP_STATE);
+            }
+        }
+
+        CalculateMotorPowers();
+
+        SetMotorPWM(1, motor1Power);
+        SetMotorPWM(2, motor2Power);
+        SetMotorPWM(3, motor3Power);
+        SetMotorPWM(4, motor4Power);
+}
 }
 
 void StartState()
