@@ -30,8 +30,10 @@ extern float curVelocity2;
 extern float curVelocity3;
 extern float curVelocity4;
 
-extern bool motor1_3Dir;
-extern bool motor2_4Dir;
+extern bool motor1Dir;
+extern bool motor2Dir;
+extern bool motor3Dir;
+extern bool motor4Dir;
 
 void InitPosition();
 

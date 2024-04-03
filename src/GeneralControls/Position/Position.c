@@ -40,8 +40,10 @@ float lastPosition4;
 float motorToWheelRatio;
 float sqrt_2;
 
-bool motor1_3Dir;
-bool motor2_4Dir;
+bool motor1Dir;
+bool motor2Dir;
+bool motor3Dir;
+bool motor4Dir;
 
 // last time we calculated motor velocity
 int lastTime1;
@@ -192,21 +194,25 @@ void CalculateMotorPowers()
 
     if (motor1Power >= 0)
     {
-        motor1_3Dir = 1; // go forward
+        motor1Dir = 1; // go forward
+        motor3Dir = 0;
     }
     else
     {
-        motor1_3Dir = 0; // go backward
+        motor1Dir = 0; // go backward
+        motor3Dir = 1;
         motor1Power = motor1Power * -1; // duty cycle values always positive
     }
 
     if (motor2Power >= 0)
     {
-        motor2_4Dir = 1; // go forward
+        motor2Dir = 1; // go forward
+        motor4Dir = 0;
     }
     else
     {
-        motor2_4Dir = 0; // go backward
+        motor2Dir = 0; // go backward
+        motor4Dir = 1;
         motor2Power = motor2Power * -1; // duty cycle values always positive
     }
 
@@ -217,13 +223,14 @@ void CalculateMotorPowers()
     {
         dutyCycleMotors1_3 = MaxDutyCycle;
     }
-    else if (dutyCycleMotors2_4 > MaxDutyCycle)
-    {
-        dutyCycleMotors2_4 = MaxDutyCycle;
-    }
     else if(dutyCycleMotors1_3 < MinDutyCycle)
     {
         dutyCycleMotors1_3 = MinDutyCycle;
+    }
+
+    if (dutyCycleMotors2_4 > MaxDutyCycle)
+    {
+        dutyCycleMotors2_4 = MaxDutyCycle;
     }
     else if (dutyCycleMotors2_4 < MinDutyCycle)
     {
