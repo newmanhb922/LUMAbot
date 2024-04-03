@@ -16,6 +16,9 @@ extern float curVelocity2;
 extern float curVelocity3;
 extern float curVelocity4;
 
+extern bool motor1_3Dir;
+extern bool motor2_4Dir;
+
 bool eStopPressed;
 short controllerXValue; 
 short controllerYValue;
@@ -155,7 +158,11 @@ void ControllerMoveState()
     SetMotorPWM(4, motor4Power);
 
     // have to set direction here as well with SetMotorDir
-    
+    SetMotorDir(1, motor1_3Dir);
+    SetMotorDir(2, motor2_4Dir);
+    SetMotorDir(3, motor1_3Dir);
+    SetMotorDir(4, motor2_4Dir);
+
     if(controllerXValue == 0 && controllerYValue == 0)
     {
         SetState(STOP_STATE);

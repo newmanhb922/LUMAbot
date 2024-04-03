@@ -30,6 +30,9 @@ extern float curVelocity2;
 extern float curVelocity3;
 extern float curVelocity4;
 
+extern bool motor1_3Dir;
+extern bool motor2_4Dir;
+
 void InitPosition();
 
 void StartSamplingData();

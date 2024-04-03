@@ -40,6 +40,9 @@ float lastPosition4;
 float motorToWheelRatio;
 float sqrt_2;
 
+bool motor1_3Dir;
+bool motor2_4Dir;
+
 // last time we calculated motor velocity
 int lastTime1;
 int lastTime2;
@@ -182,10 +185,30 @@ void CalculateMotorPowers()
 
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
     motor1Power = (yDiff + xDiff) / max;
-    motor3Power = motor1Power; 
+    //motor3Power = motor1Power; 
 
     motor2Power = (yDiff - xDiff) / max;
-    motor4Power = motor2Power;
+    //motor4Power = motor2Power;
+
+    if (motor1Power >= 0)
+    {
+        motor1_3Dir = 1; // go forward
+    }
+    else
+    {
+        motor1_3Dir = 0; // go backward
+        motor1Power = motor1Power * -1; // duty cycle values always positive
+    }
+
+    if (motor2Power >= 0)
+    {
+        motor2_4Dir = 1; // go forward
+    }
+    else
+    {
+        motor2_4Dir = 0; // go backward
+        motor2Power = motor2Power * -1; // duty cycle values always positive
+    }
 
     dutyCycleMotors1_3 = (motor1Power / 1) * 100;
     dutyCycleMotors2_4 = (motor2Power / 1) * 100;
