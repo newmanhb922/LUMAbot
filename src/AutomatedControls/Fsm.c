@@ -78,6 +78,16 @@ void RunStateFunction()
 
 void AutomatedMoveState()
 {
+    float integralError1;
+    float integralError2;
+    float integralError3;
+    float integralError4;
+
+    float previousError1;
+    float previousError2;
+    float previousError3;
+    float previousError4;
+
     previousState = currentState;
 
     if(eStopPressed)
@@ -124,23 +134,38 @@ void AutomatedMoveState()
     float motor3VelocityError = motor3TargetVelocity - curVelocity3;
     float motor4VelocityError = motor4TargetVelocity - curVelocity4;
 
-    
-    // need to use velocity error as feedback to get motors to that velocity by
-    // setting duty cycle, below code isn't what we need to do.
+    integralError1 += motor1VelocityError;
+    integralError2 += motor2VelocityError;
+    integralError3 += motor3VelocityError;
+    integralError4 += motor4VelocityError;
 
-    //convert velocity to a percentage to use for duty cycle
-    // motor1Power = (motor1Velocity / Velocity) * 100;
-    // motor2Power = (motor2Velocity / Velocity) * 100;
-    // motor3Power = (motor3Velocity / Velocity) * 100;
-    // motor4Power = (motor4Velocity / Velocity) * 100;
+    float pidOutput1 = KP * motor1VelocityError + KI * integralError1 + KD * (motor1VelocityError - previousError1);
+    float pidOutput2 = KP * motor2VelocityError + KI * integralError2 + KD * (motor2VelocityError - previousError2);
+    float pidOutput3 = KP * motor3VelocityError + KI * integralError3 + KD * (motor3VelocityError - previousError3);
+    float pidOutput4 = KP * motor4VelocityError + KI * integralError4 + KD * (motor4VelocityError - previousError4);
 
-    // SetMotorPWM(1, motor1Power);
-    // SetMotorPWM(2, motor2Power);
-    // SetMotorPWM(3, motor3Power);
-    // SetMotorPWM(4, motor4Power);
+    previousError1 = motor1VelocityError;
+    previousError2 = motor2VelocityError;
+    previousError3 = motor3VelocityError;
+    previousError4 = motor4VelocityError;
+
+    motor1Power = pidOutput1;
+    motor2Power = pidOutput2;
+    motor3Power = pidOutput3;
+    motor4Power = pidOutput4;
+
+    SetMotorPWM(1, motor1Power);
+    SetMotorPWM(2, motor2Power);
+    SetMotorPWM(3, motor3Power);
+    SetMotorPWM(4, motor4Power);
 
     if((xDistance < 1) && (yDistance < 1))
     {
+        integralError1 = 0;
+        integralError2 = 0;
+        integralError3 = 0;
+        integralError4 = 0;
+    
         SetState(STOP_STATE);
     }
 }
@@ -248,77 +273,7 @@ void ObstacleAvoidanceState()
         SetState(E_STOP_STATE);
     }
 
-    if(sensor1Val < 4 || sensor2Val < 4 || sensor3Val < 4 || sensor4Val < 4)
-    {
-        SetState(STOP_STATE);
-    }
-    
-    else
-    {
-        
-        if(sensor1Val < 12) //move away in x direction
-        {
-            targetPositionX = curPositionX + 1;
-            OffCourseSensor1++;
-            if(sensor1Val > 12)
-            {
-                targetPositionX = saveXValue;
-
-                //move forward until side sensor doesn't see object
-                //move to other x side the number of off course
-            }
-            if(sensor2Val < 12 || sensor3Val < 12 || sensor4Val < 12)
-            {
-                SetState(OBSTACLE_AVOIDANCE_STATE);
-            }
-        }
-        else if (sensor2Val < 12) //move away in y direction
-        {
-            targetPositionY = curPositionY + 1;
-            OffCourseSensor2++;
-            if(sensor2Val > 12)
-            {
-                targetPositionY = saveYValue;
-            }
-            if(sensor1Val < 12 || sensor3Val < 12 || sensor4Val < 12)
-            {
-                SetState(OBSTACLE_AVOIDANCE_STATE);
-            }
-        }
-        else if(sensor3Val < 12) //x dir
-        {
-            targetPositionX = curPositionX + 1;
-            OffCourseSensor3++;
-            if(sensor3Val > 12)
-            {
-                targetPositionX = saveXValue;
-            }
-            if(sensor2Val < 12 || sensor1Val < 12 || sensor4Val < 12)
-            {
-                SetState(OBSTACLE_AVOIDANCE_STATE);
-            }  b   
-        }
-        else if (sensor4Val < 12) //y dir
-        {
-            targetPositionY = curPositionY + 1;
-            OffCourseSensor4++;
-            if(sensor4Val > 12)
-            {
-                targetPositionY = saveYValue;
-            }
-            if(sensor2Val < 12 || sensor3Val < 12 || sensor1Val < 12)
-            {
-                SetState(STOP_STATE);
-            }
-        }
-
-        CalculateMotorPowers();
-
-        SetMotorPWM(1, motor1Power);
-        SetMotorPWM(2, motor2Power);
-        SetMotorPWM(3, motor3Power);
-        SetMotorPWM(4, motor4Power);
-}
+   
 }
 
 void StartState()
