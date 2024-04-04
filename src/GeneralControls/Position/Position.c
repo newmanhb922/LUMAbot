@@ -225,7 +225,8 @@ void CalculateMotorPowers()
     motor2Power = (yDiff - xDiff) / max;
     //motor4Power = motor2Power;
 
-
+    CalculateMotorDir();
+    
     dutyCycleMotors1_3 = (motor1Power / 1) * 100;
     dutyCycleMotors2_4 = (motor2Power / 1) * 100;
 
