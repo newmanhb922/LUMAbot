@@ -20,10 +20,6 @@
 #define KI                  1
 #define KP                  1
 
-// for converting enum to string
-#define str(x) #x
-#define xstr(x) str(x)
-
 typedef enum
 {
     AUTOMATED_MOVE_STATE, CONTROLLER_MOVE_STATE,  STOP_STATE, WAITING_STATE, E_STOP_STATE, 

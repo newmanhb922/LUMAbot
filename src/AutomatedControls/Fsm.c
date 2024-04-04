@@ -46,7 +46,7 @@ void WaitingState();
 void EStopState();
 void ObstacleAvoidanceState();
 void StartState();
-
+char * StateToString(FSM_STATE_T state);
 void Init_States()
 {
     currentState = START_STATE;
@@ -62,7 +62,7 @@ void Init_States()
 
 void SetState(FSM_STATE_T newState) 
 {
-    printf("Setting state to: %s\n", xstr(newState));
+    printf("Setting state to: %s\n", StateToString(newState));
     currentState = newState;
 }
 
@@ -305,6 +305,26 @@ void Fsm_Init()
     Init_States();
 }
 
+char * StateToString(FSM_STATE_T state)
+{
+    switch (state)
+    {
+        case AUTOMATED_MOVE_STATE:
+            return "Automated Move State";
+        case CONTROLLER_MOVE_STATE:
+            return "Controller Move State";
+        case STOP_STATE:
+            return "Stop State";
+        case WAITING_STATE:
+            return "Waiting State";
+        case E_STOP_STATE:
+            return "E Stop State";
+        case OBSTACLE_AVOIDANCE_STATE:
+            return "Obstacle Avoidance State";
+        case START_STATE:
+            return "Start State";
+    }
+}
 
 // FMM - don't need to calculate angle. Use CalculateMotorPowers in Position.c to 
 // get motor powers scaled from -1 to 1. Then multiply that by some duty cycle constant 
