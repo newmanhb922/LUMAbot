@@ -78,10 +78,10 @@ void RunStateFunction()
 
 void AutomatedMoveState()
 {
-    float integralError1;
-    float integralError2;
-    float integralError3;
-    float integralError4;
+    static float integralError1;
+    static float integralError2;
+    static float integralError3;
+    static float integralError4;
 
     float previousError1;
     float previousError2;
@@ -158,6 +158,8 @@ void AutomatedMoveState()
     SetMotorPWM(2, motor2Power);
     SetMotorPWM(3, motor3Power);
     SetMotorPWM(4, motor4Power);
+
+    // have to set directions
 
     if((xDistance < 1) && (yDistance < 1))
     {

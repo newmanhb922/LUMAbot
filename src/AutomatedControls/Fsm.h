@@ -16,6 +16,9 @@
 #define MaxControllerValue  32767
 #define Velocity            12 // 1 ft/s
 #define MaxAvoidance        42 //3.5 ft
+#define KD                  1
+#define KI                  1
+#define KP                  1
 
 // for converting enum to string
 #define str(x) #x

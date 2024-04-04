@@ -82,6 +82,13 @@ void StartSamplingData()
     lastTime3 = micros();
     lastTime4 = micros();
 
+    curVelocity1 = 0.0f;
+    curVelocity2 = 0.0f;
+    curVelocity3 = 0.0f;
+    curVelocity4 = 0.0f;
+
+    CalculateCurVelocity();
+    
     signal(SIGALRM, ReadData);
     ualarm(1000, 1000); // ReadData function called every 1 ms
 }
