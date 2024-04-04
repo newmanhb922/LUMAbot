@@ -1,8 +1,8 @@
 #include "Controller.h"
 
 int fileDescrip;
-extern short controllerXValue;
-extern short controllerYValue;
+short controllerXValue;
+short controllerYValue;
 
 void InitController()
 {
@@ -24,7 +24,7 @@ void ReadJoystickData()
             else if (e.number == 1)
             {
                 printf("setting controllerYValue to %d\n", e.value);
-                controllerYValue = e.value;
+                controllerYValue = e.value * -1; // moving joystick down gives a positive value, we want that to be negative.
             }
         }
     }

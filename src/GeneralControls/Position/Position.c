@@ -46,10 +46,10 @@ bool motor3Dir;
 bool motor4Dir;
 
 // last time we calculated motor velocity
-int lastTime1;
-int lastTime2;
-int lastTime3;
-int lastTime4;
+unsigned int lastTime1;
+unsigned int lastTime2;
+unsigned int lastTime3;
+unsigned int lastTime4;
 
 unsigned char readDataCounter;
 
@@ -88,7 +88,6 @@ void StartSamplingData()
     curVelocity4 = 0.0f;
 
     CalculateCurVelocity();
-    
     signal(SIGALRM, ReadData);
     ualarm(1000, 1000); // ReadData function called every 1 ms
 }
@@ -143,8 +142,7 @@ void CalculateCurPosition()
 
 void CalculateCurVelocity()
 {   
-    Debug("Calculating velocities.\n");
-    int tempTime = micros();
+    unsigned int tempTime = micros();
 
     curVelocity1 = (curPosition1 - lastPosition1) * 1000000 / (tempTime - lastTime1);
     lastTime1 = tempTime;
@@ -164,6 +162,7 @@ void CalculateCurVelocity()
 
 void CalculateMotorDir()
 {
+     printf("xDiff: %.2f, yDiff: %.2f, motor1Power: %.2f, motor2Power: %.2f\n", xDiff, yDiff, motor1Power, motor2Power);
     if (motor1Power >= 0)
     {
         motor1Dir = 1; // go forward
@@ -226,7 +225,6 @@ void CalculateMotorPowers()
     motor2Power = (yDiff - xDiff) / max;
     //motor4Power = motor2Power;
 
-    CalculateMotorDir();
 
     dutyCycleMotors1_3 = (motor1Power / 1) * 100;
     dutyCycleMotors2_4 = (motor2Power / 1) * 100;
@@ -260,13 +258,13 @@ void CalculateMotorPowers()
              // read ultrasonic sensor data
 void ReadData()
 {
+    if ((readDataCounter % 100) == 0) // every 100 ms
+    {
+	CalculateCurVelocity();
+    }
     if ((readDataCounter % 50) == 0) // every 50 ms
     {
-        ReadUltrasonicSensors();
-    }
-    if ((readDataCounter % 20) == 0) // every 20 ms
-    {
-        CalculateCurVelocity();
+//        ReadUltrasonicSensors(); don't run this until sensors are wired in
     }
     ReadJoystickData(); // every ms
 
