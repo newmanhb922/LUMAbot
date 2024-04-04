@@ -44,19 +44,19 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
     else if (strcmp(topicName, COMMAND_TOPIC) == 0)
     {
         // execute command
-        if (strcmp(receivedMsg, ESTOP_COMMAND))
+        if (strcmp(receivedMsg, ESTOP_COMMAND) == 0)
         {
             Debug("EStop pressed on UI, Shutting down...\n");
             eStopPressed = true;
             // estop pressed, shut down
         }
-        else if (strcmp(receivedMsg, ESTOP_RESET_COMMAND))
+        else if (strcmp(receivedMsg, ESTOP_RESET_COMMAND) == 0)
         {
             Debug("EStop pressed again on UI, good to move again.\n");
             // e stop pressed again, good to move again
             eStopPressed = false;
         }
-        else if (strcmp(receivedMsg, ZERO_COMMAND))
+        else if (strcmp(receivedMsg, ZERO_COMMAND) == 0)
         {
             Debug ("Zeroed from UI, setting current position to (0,0).\n");
             curPositionX = 0;
