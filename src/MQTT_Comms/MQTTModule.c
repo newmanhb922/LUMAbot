@@ -32,8 +32,8 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
         char * comma = strchr(receivedMsg, ',');
         char * rightParenth = strchr(receivedMsg, ')');
         leftParenth++;
-        char [10] xCoord;
-        char [10] yCoord;
+        char xCoord[10];
+        char yCoord[10];
         strncpy(xCoord, leftParenth, comma - leftParenth);
         comma++;
         strncpy(yCoord, comma, rightParenth - comma);
