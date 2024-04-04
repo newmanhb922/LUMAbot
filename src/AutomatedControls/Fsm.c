@@ -286,6 +286,7 @@ void StartState()
     {
         SetState(E_STOP_STATE);
     }
+    SetState(WAITING_STATE);
 }
 
 void Fsm_Init()
