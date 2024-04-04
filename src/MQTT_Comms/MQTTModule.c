@@ -149,8 +149,8 @@ int PublishMessage(MQTTClient * client, const char * topicName, char * message)
         // error
         printf("error publishing message\n");
     }
-    returnCode = MQTTClient_waitForCompletion(*client, deliveryToken, TIMEOUT);
-    printf("Message Published: %s, DeliveryToken: %d\n", message, deliveryToken);
+ //   returnCode = MQTTClient_waitForCompletion(*client, deliveryToken, TIMEOUT);
+//    printf("Message Published: %s, DeliveryToken: %d\n", message, deliveryToken);
     return returnCode;
 }
 
