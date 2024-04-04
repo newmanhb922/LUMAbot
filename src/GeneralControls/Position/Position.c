@@ -162,6 +162,33 @@ void CalculateCurVelocity()
     lastTime4 = tempTime;
 }
 
+void CalculateMotorDir()
+{
+    if (motor1Power >= 0)
+    {
+        motor1Dir = 1; // go forward
+        motor3Dir = 0;
+    }
+    else
+    {
+        motor1Dir = 0; // go backward
+        motor3Dir = 1;
+        motor1Power = motor1Power * -1; // duty cycle values always positive
+    }
+
+    if (motor2Power >= 0)
+    {
+        motor2Dir = 1; // go forward
+        motor4Dir = 0;
+    }
+    else
+    {
+        motor2Dir = 0; // go backward
+        motor4Dir = 1;
+        motor2Power = motor2Power * -1; // duty cycle values always positive
+    }
+}
+
 void CalculateMotorPowers()
 {
     float yDiff = targetPositionY - curPositionY;
@@ -199,29 +226,7 @@ void CalculateMotorPowers()
     motor2Power = (yDiff - xDiff) / max;
     //motor4Power = motor2Power;
 
-    if (motor1Power >= 0)
-    {
-        motor1Dir = 1; // go forward
-        motor3Dir = 0;
-    }
-    else
-    {
-        motor1Dir = 0; // go backward
-        motor3Dir = 1;
-        motor1Power = motor1Power * -1; // duty cycle values always positive
-    }
-
-    if (motor2Power >= 0)
-    {
-        motor2Dir = 1; // go forward
-        motor4Dir = 0;
-    }
-    else
-    {
-        motor2Dir = 0; // go backward
-        motor4Dir = 1;
-        motor2Power = motor2Power * -1; // duty cycle values always positive
-    }
+    CalculateMotorDir();
 
     dutyCycleMotors1_3 = (motor1Power / 1) * 100;
     dutyCycleMotors2_4 = (motor2Power / 1) * 100;

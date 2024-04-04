@@ -154,12 +154,18 @@ void AutomatedMoveState()
     motor3Power = pidOutput3;
     motor4Power = pidOutput4;
 
+    CalculateMotorDir();
+
     SetMotorPWM(1, motor1Power);
     SetMotorPWM(2, motor2Power);
     SetMotorPWM(3, motor3Power);
     SetMotorPWM(4, motor4Power);
 
-    // have to set directions
+    // have to set direction here as well with SetMotorDir
+    SetMotorDir(1, motor1Dir);
+    SetMotorDir(2, motor2Dir);
+    SetMotorDir(3, motor3Dir);
+    SetMotorDir(4, motor4Dir);
 
     if((xDistance < 1) && (yDistance < 1))
     {
@@ -275,7 +281,12 @@ void ObstacleAvoidanceState()
         SetState(E_STOP_STATE);
     }
 
-   
+    if(sensor1Val < 4 || sensor2Val < 4 || sensor3Val < 4 || sensor4Val < 4)
+    {
+        SetState(STOP_STATE);
+    }
+    
+    
 }
 
 void StartState()
