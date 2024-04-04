@@ -162,7 +162,6 @@ void CalculateCurVelocity()
 
 void CalculateMotorDir()
 {
-     printf("xDiff: %.2f, yDiff: %.2f, motor1Power: %.2f, motor2Power: %.2f\n", xDiff, yDiff, motor1Power, motor2Power);
     if (motor1Power >= 0)
     {
         motor1Dir = 1; // go forward
@@ -226,7 +225,7 @@ void CalculateMotorPowers()
     //motor4Power = motor2Power;
 
     CalculateMotorDir();
-    
+
     dutyCycleMotors1_3 = (motor1Power / 1) * 100;
     dutyCycleMotors2_4 = (motor2Power / 1) * 100;
 

@@ -47,4 +47,6 @@ void CalculateMotorPowers();
 
 void ReadData();
 
+void CalculateMotorDir();
+
 #endif
