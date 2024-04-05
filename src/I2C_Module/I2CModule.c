@@ -91,7 +91,6 @@ void Motor4Off()
 
 void Motor1SetPWM(float dutyCyle)
 {
-    Debug("Setting Motor 1 PWM\n");
     MotorSetPWM(MOTOR1_ON_L, dutyCyle);
 }
 

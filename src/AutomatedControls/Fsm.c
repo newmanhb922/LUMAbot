@@ -27,13 +27,23 @@ extern bool motor3Dir;
 extern bool motor4Dir;
 
 bool eStopPressed;
-short controllerXValue; 
-short controllerYValue;
+extern short controllerXValue; 
+extern short controllerYValue;
 bool hasBeenZeroed;
 bool goPressed;
 
 static FSM_STATE_T currentState;
 static FSM_STATE_T previousState;
+
+float integralError1;
+float integralError2;
+float integralError3;
+float integralError4;
+
+float previousError1;
+float previousError2;
+float previousError3;
+float previousError4;
 
 void (*stateFunctions[NUM_STATES])();
 
@@ -76,15 +86,7 @@ void RunStateFunction()
 
 void AutomatedMoveState()
 {
-    static float integralError1;
-    static float integralError2;
-    static float integralError3;
-    static float integralError4;
 
-    float previousError1;
-    float previousError2;
-    float previousError3;
-    float previousError4;
 
     previousState = currentState;
 
@@ -92,8 +94,6 @@ void AutomatedMoveState()
     {
         SetState(E_STOP_STATE);
     }
-
-    CalculateCurPosition();
 
     if(sensor1Val < MinDistance || sensor2Val < MinDistance || sensor3Val < MinDistance || sensor4Val < MinDistance)
     {
@@ -118,17 +118,24 @@ void AutomatedMoveState()
     float velocityX = Velocity * cos(theta);
     float velocityY = Velocity * sin(theta);
 
+    char helperStr[200];
+    sprintf(helperStr, "theta: %.2f, xDistance: %.2f, yDistance: %.2f\n", theta, xDistance, yDistance);
+    Debug(helperStr);
     //target motor velocities
     float motor1TargetVelocity = velocityX + velocityY; 
     float motor2TargetVelocity = -velocityX + velocityY; 
     float motor3TargetVelocity = velocityX + velocityY; 
     float motor4TargetVelocity = -velocityX + velocityY;
-
+    sprintf(helperStr, "motor1TargetVel: %.2f, motor2TargetVel: %.2f\n", motor1TargetVelocity, motor2TargetVelocity);
+    Debug(helperStr);
     //find error
     float motor1VelocityError = motor1TargetVelocity - curVelocity1;
     float motor2VelocityError = motor2TargetVelocity - curVelocity2;
     float motor3VelocityError = motor3TargetVelocity - curVelocity3;
     float motor4VelocityError = motor4TargetVelocity - curVelocity4;
+
+    sprintf(helperStr, "motor1VelError: %.2f, motor2VelError: %.2f\n", motor1VelocityError, motor2VelocityError);
+    Debug(helperStr);
 
     integralError1 += motor1VelocityError;
     integralError2 += motor2VelocityError;
@@ -145,6 +152,8 @@ void AutomatedMoveState()
     previousError3 = motor3VelocityError;
     previousError4 = motor4VelocityError;
 
+    sprintf(helperStr, "pid1: %.2f, pid2: %.2f\n", pidOutput1, pidOutput2);
+    Debug(helperStr);
     motor1Power = pidOutput1;
     motor2Power = pidOutput2;
     motor3Power = pidOutput3;
@@ -152,6 +161,9 @@ void AutomatedMoveState()
 
     CalculateMotorDir();
 
+    BoundMotorPowers();
+    sprintf(helperStr, "after bounding powers motor1Power: %.2f, motor2Power: %.2f\n", motor1Power, motor2Power);
+    Debug(helperStr);
     SetMotorPWM(1, motor1Power);
     SetMotorPWM(2, motor2Power);
     SetMotorPWM(3, motor3Power);
@@ -386,6 +398,16 @@ void StartState()
 
 void Fsm_Init()
 {
+    integralError1 = 0;
+    integralError2 = 0;
+    integralError3 = 0;
+    integralError4 = 0;
+    
+    previousError1 = 0;
+    previousError2 = 0;
+    previousError3 = 0;
+    previousError4 = 0;
+
     Init_States();
 }
 
