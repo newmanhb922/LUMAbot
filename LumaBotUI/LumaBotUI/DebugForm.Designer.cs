@@ -35,10 +35,11 @@ namespace LumaBotUI
             // debugBox
             // 
             this.debugBox.Location = new System.Drawing.Point(9, 10);
-            this.debugBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.debugBox.Margin = new System.Windows.Forms.Padding(2);
             this.debugBox.Multiline = true;
             this.debugBox.Name = "debugBox";
             this.debugBox.ReadOnly = true;
+            this.debugBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.debugBox.Size = new System.Drawing.Size(583, 347);
             this.debugBox.TabIndex = 0;
             // 
@@ -48,7 +49,7 @@ namespace LumaBotUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.debugBox);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "DebugForm";
             this.Text = "Debug";
             this.ResumeLayout(false);

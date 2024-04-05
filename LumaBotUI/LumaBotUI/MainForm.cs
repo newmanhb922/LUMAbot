@@ -46,7 +46,8 @@ namespace LumaBotUI
         #region Constructor
         public MainForm()
         {
-            ipAddress = "192.168.1.134"; // maybe get this dynamically somehow?!
+            ipAddress = "192.168.43.65"; // maybe get this dynamically somehow?!
+            //ipAddress = "172.30.233.63";
             InitializeComponent();
             eStopPressed = false;
         }
@@ -159,53 +160,53 @@ namespace LumaBotUI
         }
         private void goButton_Click(object sender, EventArgs e)
         {
-            string coordToSend = "(0,0)";
+            string coordToSend = C_COORD;
             switch (pointSelectionCombo.SelectedItem.ToString())
             {
                 case "A":
-                    coordToSend = "(14,0)";
+                    coordToSend = A_COORD;
                     break;
                 case "B":
-                    coordToSend = "(7,0)";
+                    coordToSend = B_COORD;
                     break;
                 case "C":
-                    coordToSend = "(0,0)";
+                    coordToSend = C_COORD;
                     break;
                 case "D":
-                    coordToSend = "(-7,0)";
+                    coordToSend = D_COORD;
                     break;
                 case "E":
-                    coordToSend = "(-14,0)";
+                    coordToSend = E_COORD;
                     break;
                 case "F":
-                    coordToSend = "(14,-7)";
+                    coordToSend = F_COORD;
                     break;
                 case "G":
-                    coordToSend = "(7,-7)";
+                    coordToSend = G_COORD;
                     break;
                 case "H":
-                    coordToSend = "(0,-7)";
+                    coordToSend = H_COORD;
                     break;
                 case "J":
-                    coordToSend = "(-7,-7)";
+                    coordToSend = J_COORD;
                     break;
                 case "K":
-                    coordToSend = "(-14,-7)";
+                    coordToSend = K_COORD;
                     break;
                 case "L":
-                    coordToSend = "(14,-14)";
+                    coordToSend = L_COORD;
                     break;
                 case "M":
-                    coordToSend = "(7,-14)";
+                    coordToSend = M_COORD;
                     break;
                 case "N":
-                    coordToSend = "(0,-14)";
+                    coordToSend = N_COORD;
                     break;
                 case "P":
-                    coordToSend = "(-7,-14)";
+                    coordToSend = P_COORD;
                     break;
                 case "Q":
-                    coordToSend = "(-14,-14)";
+                    coordToSend = Q_COORD;
                     break;
             }
             mqtt.PublishMessage(MqttModule.Topic.TargetPosition.ToString(), coordToSend);
