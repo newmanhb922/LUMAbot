@@ -7,6 +7,9 @@
 #include <stdio.h>
 #include <fcntl.h>
 
+extern short controllerXValue;
+extern short controllerYValue;
+
 /// @brief Initializes the joystick controller connection
 void InitController();
 

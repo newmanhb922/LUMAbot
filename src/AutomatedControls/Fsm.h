@@ -28,8 +28,6 @@ typedef enum
 } FSM_STATE_T;
 
 extern bool eStopPressed;
-extern short controllerXValue;
-extern short controllerYValue;
 extern bool hasBeenZeroed;
 extern bool goPressed;
 

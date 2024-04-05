@@ -27,8 +27,8 @@ extern bool motor3Dir;
 extern bool motor4Dir;
 
 bool eStopPressed;
-short controllerXValue; 
-short controllerYValue;
+extern short controllerXValue; 
+extern short controllerYValue;
 bool hasBeenZeroed;
 bool goPressed;
 
