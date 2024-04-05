@@ -35,6 +35,16 @@ bool goPressed;
 static FSM_STATE_T currentState;
 static FSM_STATE_T previousState;
 
+float integralError1;
+float integralError2;
+float integralError3;
+float integralError4;
+
+float previousError1;
+float previousError2;
+float previousError3;
+float previousError4;
+
 void (*stateFunctions[NUM_STATES])();
 
 void AutomatedMoveState();
@@ -76,15 +86,7 @@ void RunStateFunction()
 
 void AutomatedMoveState()
 {
-    static float integralError1;
-    static float integralError2;
-    static float integralError3;
-    static float integralError4;
 
-    float previousError1;
-    float previousError2;
-    float previousError3;
-    float previousError4;
 
     previousState = currentState;
 
@@ -152,6 +154,8 @@ void AutomatedMoveState()
 
     CalculateMotorDir();
 
+    BoundMotorPowers();
+    
     SetMotorPWM(1, motor1Power);
     SetMotorPWM(2, motor2Power);
     SetMotorPWM(3, motor3Power);
@@ -369,6 +373,16 @@ void StartState()
 
 void Fsm_Init()
 {
+    integralError1 = 0;
+    integralError2 = 0;
+    integralError3 = 0;
+    integralError4 = 0;
+    
+    previousError1 = 0;
+    previousError2 = 0;
+    previousError3 = 0;
+    previousError4 = 0;
+
     Init_States();
 }
 

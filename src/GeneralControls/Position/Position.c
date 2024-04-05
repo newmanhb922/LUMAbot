@@ -218,41 +218,55 @@ void CalculateMotorPowers()
     }
 
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
-    motor1Power = (yDiff + xDiff) / max;
-    //motor3Power = motor1Power; 
+    motor1Power = 100 * (yDiff + xDiff) / max;
+    motor3Power = motor1Power; 
 
-    motor2Power = (yDiff - xDiff) / max;
-    //motor4Power = motor2Power;
+    motor2Power = 100 * (yDiff - xDiff) / max;
+    motor4Power = motor2Power;
 
     CalculateMotorDir();
 
-    dutyCycleMotors1_3 = (motor1Power / 1) * 100;
-    dutyCycleMotors2_4 = (motor2Power / 1) * 100;
-
-    if(dutyCycleMotors1_3 > MaxDutyCycle)
-    {
-        dutyCycleMotors1_3 = MaxDutyCycle;
-    }
-    else if(dutyCycleMotors1_3 < MinDutyCycle)
-    {
-        dutyCycleMotors1_3 = MinDutyCycle;
-    }
-
-    if (dutyCycleMotors2_4 > MaxDutyCycle)
-    {
-        dutyCycleMotors2_4 = MaxDutyCycle;
-    }
-    else if (dutyCycleMotors2_4 < MinDutyCycle)
-    {
-        dutyCycleMotors2_4 = MinDutyCycle;
-    }
-
-    motor1Power = dutyCycleMotors1_3;
-    motor2Power = dutyCycleMotors2_4;
-    motor3Power = dutyCycleMotors1_3;
-    motor4Power = dutyCycleMotors2_4;
+    BoundMotorPowers();
 }
 
+void BoundMotorPowers()
+{
+    if (motor1Power > MaxDutyCycle)
+    {
+        motor1Power = MaxDutyCycle;
+    }
+    else if (motor1Power < MinDutyCycle)
+    {
+        motor1Power = MinDutyCycle;
+    }
+
+    if (motor2Power > MaxDutyCycle)
+    {
+        motor2Power = MaxDutyCycle;
+    }
+    else if (motor2Power < MinDutyCycle)
+    {
+        motor2Power = MinDutyCycle;
+    }
+
+    if (motor3Power > MaxDutyCycle)
+    {
+        motor3Power = MaxDutyCycle;
+    }
+    else if (motor3Power < MinDutyCycle)
+    {
+        motor3Power = MinDutyCycle;
+    }
+
+    if (motor4Power > MaxDutyCycle)
+    {
+        motor4Power = MaxDutyCycle;
+    }
+    else if (motor4Power < MinDutyCycle)
+    {
+        motor4Power = MinDutyCycle;
+    }
+}
 // use this to: read controller (joystick) input, 
              // calculate motor velocity,
              // read ultrasonic sensor data
