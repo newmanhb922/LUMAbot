@@ -120,17 +120,24 @@ void AutomatedMoveState()
     float velocityX = Velocity * cos(theta);
     float velocityY = Velocity * sin(theta);
 
+    char helperStr[200];
+    sprintf(helperStr, "theta: %.2f, xDistance: %.2f, yDistance: %.2f\n", theta, xDistance, yDistance);
+    Debug(helperStr);
     //target motor velocities
     float motor1TargetVelocity = velocityX + velocityY; 
     float motor2TargetVelocity = -velocityX + velocityY; 
     float motor3TargetVelocity = velocityX + velocityY; 
     float motor4TargetVelocity = -velocityX + velocityY;
-
+    sprintf(helperStr, "motor1TargetVel: %.2f, motor2TargetVel: %.2f\n", motor1TargetVelocity, motor2TargetVelocity);
+    Debug(helperStr);
     //find error
     float motor1VelocityError = motor1TargetVelocity - curVelocity1;
     float motor2VelocityError = motor2TargetVelocity - curVelocity2;
     float motor3VelocityError = motor3TargetVelocity - curVelocity3;
     float motor4VelocityError = motor4TargetVelocity - curVelocity4;
+
+    sprintf(helperStr, "motor1VelError: %.2f, motor2VelError: %.2f\n", motor1VelocityError, motor2VelocityError);
+    Debug(helperStr);
 
     integralError1 += motor1VelocityError;
     integralError2 += motor2VelocityError;
@@ -147,6 +154,8 @@ void AutomatedMoveState()
     previousError3 = motor3VelocityError;
     previousError4 = motor4VelocityError;
 
+    sprintf(helperStr, "pid1: %.2f, pid2: %.2f\n", pidOutput1, pidOutput2);
+    Debug(helperStr);
     motor1Power = pidOutput1;
     motor2Power = pidOutput2;
     motor3Power = pidOutput3;
@@ -155,7 +164,8 @@ void AutomatedMoveState()
     CalculateMotorDir();
 
     BoundMotorPowers();
-    
+    sprintf(helperStr, "after bounding powers motor1Power: %.2f, motor2Power: %.2f\n", motor1Power, motor2Power);
+    Debug(helperStr);
     SetMotorPWM(1, motor1Power);
     SetMotorPWM(2, motor2Power);
     SetMotorPWM(3, motor3Power);
