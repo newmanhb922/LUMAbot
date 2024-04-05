@@ -284,58 +284,76 @@ void ObstacleAvoidanceState()
     
     else
     {
-        
-        if(sensor1Val < MinDistance) //move away in x direction
+        if(sensor1Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor1Val)) //move away in x direction add that sensor 1 is less than all other sensors
         {
             targetPositionX = curPositionX + 1;
             OffCourseSensor1++;
-            if(sensor1Val > MinDistance)
-            {
-                targetPositionX = curPositionX - OffCourseSensor1;
-                //move forward until side sensor doesn't see object
-            }
             if((sensor2Val < MinDistance && sensor2Val < sensor1Val) || (sensor3Val < MinDistance && sensor3Val < sensor1Val) || (sensor4Val < MinDistance && sensor4Val < sensor1Val))
             {
                 SetState(OBSTACLE_AVOIDANCE_STATE);
             }
         }
-        else if (sensor2Val < MinDistance) //move away in -y direction
+        else if (sensor2Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor2Val)) //move away in -y direction
         {
             targetPositionY = curPositionY - 1;
             OffCourseSensor2--;
-            if(sensor2Val > MinDistance)
-            {
-                targetPositionY = curPositionY - OffCourseSensor2;
-            }
             if((sensor1Val < MinDistance && sensor1Val < sensor2Val) || (sensor3Val < MinDistance && sensor3Val < sensor2Val) || (sensor4Val < MinDistance && sensor4Val < sensor2Val))
             {
                 SetState(OBSTACLE_AVOIDANCE_STATE);
             }
         }
-        else if(sensor3Val < MinDistance) //-x dir
+        else if(sensor3Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor3Val)) //-x dir
         {
             targetPositionX = curPositionX - 1;
             OffCourseSensor3--;
-            if(sensor3Val > MinDistance)
-            {
-                targetPositionX = curPositionX - OffCourseSensor3;
-            }
             if((sensor1Val < MinDistance && sensor1Val < sensor3Val) || (sensor2Val < MinDistance && sensor2Val < sensor3Val) || (sensor4Val < MinDistance && sensor4Val < sensor3Val))
             {
                 SetState(OBSTACLE_AVOIDANCE_STATE);
             }  
         }
-        else if (sensor4Val < MinDistance) //-y dir
+        else if (sensor4Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor1Val4)) //-y dir
         {
-            targetPositionY = curPositionY - 1;
+            targetPositionY = curPositionY - 1; 
             OffCourseSensor4--;
-            if(sensor4Val > MinDistance)
-            {
-                targetPositionY = curPositionY - OffCourseSensor4;
-            }
             if((sensor1Val < MinDistance && sensor1Val < sensor4Val) || (sensor2Val < MinDistance && sensor2Val < sensor4Val) || (sensor3Val < MinDistance && sensor3Val < sensor4Val))
             {
                 SetState(OBSTACLE_AVOIDANCE_STATE);
+            }
+        }
+        
+        if (sensor1Val > MinDistance && sensor2Val > MinDistance && sensor3Val > MinDistance && sensor4Val > MinDistance)
+        {
+            if(OffCourseSensor1 == 0 && OffCourseSensor2 == 0 && OffCourseSensor3 == 0 && OffCourseSensor4 == 0)
+            {
+                SetState(AUTOMATED_MOVE_STATE);
+            }
+            else
+            {
+                if(OffCourseSensor1 > 0)
+                {
+                    //checking sensor 4 for side
+                    targetPositionX = curPositionX - OffCourseSensor1;
+                    OffCourseSensor1 = 0;
+                    //move forward until side sensor doesn't see object
+                }
+                if(OffCourseSensor2 > 0)
+                {
+                    //checking sensor 1
+                    targetPositionY = curPositionY - OffCourseSensor2;
+                    OffCourseSensor2 = 0;
+                }
+                if(OffCourseSensor3 > 0)
+                {
+                    //checking sensor 2
+                    targetPositionX = curPositionX - OffCourseSensor3;
+                    OffCourseSensor3 = 0;
+                }
+                if(OffCourseSensor4 > 0)
+                {
+                    //checking sensor 1
+                    targetPositionY = curPositionY - OffCourseSensor4;
+                    OffCourseSensor4 = 0;
+                }
             }
         }
 
@@ -352,8 +370,7 @@ void ObstacleAvoidanceState()
         SetMotorDir(2, motor2Dir);
         SetMotorDir(3, motor3Dir);
         SetMotorDir(4, motor4Dir);
-        
-}
+    }
 }
 
 void StartState()
