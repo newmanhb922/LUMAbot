@@ -95,8 +95,6 @@ void AutomatedMoveState()
         SetState(E_STOP_STATE);
     }
 
-    CalculateCurPosition();
-
     if(sensor1Val < MinDistance || sensor2Val < MinDistance || sensor3Val < MinDistance || sensor4Val < MinDistance)
     {
         SetState(OBSTACLE_AVOIDANCE_STATE);

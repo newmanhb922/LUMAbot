@@ -274,7 +274,8 @@ void ReadData()
 {
     if ((readDataCounter % 100) == 0) // every 100 ms
     {
-	CalculateCurVelocity();
+        CalculateCurPosition();
+	    CalculateCurVelocity();
     }
     if ((readDataCounter % 50) == 0) // every 50 ms
     {
