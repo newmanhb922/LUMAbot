@@ -110,22 +110,26 @@ void AutomatedMoveState()
     OffCourseSensor4 = 0;
 
     //convert from ft to in
-    targetPositionX = targetPositionX * 12; 
+    targetPositionX = targetPositionX * 12;
     targetPositionY = targetPositionY * 12;
 
     //find the distance we need to move
-    float xDistance = targetPositionX - curPositionX;
+    float xDistance = targetPositionX - curPositionX; 
     float yDistance = targetPositionY - curPositionY;
 
     //find the angle of movement and desired velocity of x and y on that angle
-    float theta = atan(yDistance/xDistance);
+    float theta = PI / 2;
+    if(xDistance != 0)
+    {
+        theta = atan(yDistance/xDistance);
+    }
     float velocityX = Velocity * cos(theta);
     float velocityY = Velocity * sin(theta);
 
     //target motor velocities
-    float motor1TargetVelocity = velocityX + velocityY;
-    float motor2TargetVelocity = -velocityX + velocityY;
-    float motor3TargetVelocity = velocityX + velocityY;
+    float motor1TargetVelocity = velocityX + velocityY; 
+    float motor2TargetVelocity = -velocityX + velocityY; 
+    float motor3TargetVelocity = velocityX + velocityY; 
     float motor4TargetVelocity = -velocityX + velocityY;
 
     //find error
