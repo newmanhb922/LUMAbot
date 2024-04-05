@@ -109,10 +109,6 @@ void AutomatedMoveState()
     OffCourseSensor3 = 0;
     OffCourseSensor4 = 0;
 
-    //convert from ft to in
-    targetPositionX = targetPositionX * 12;
-    targetPositionY = targetPositionY * 12;
-
     //find the distance we need to move
     float xDistance = targetPositionX - curPositionX; 
     float yDistance = targetPositionY - curPositionY;
