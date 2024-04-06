@@ -65,7 +65,7 @@ void InitPosition()
     curPosition3 = 0.0f;
     curPosition4 = 0.0f;
 
-    motorToWheelRatio = WHEEL_DIAM * PI / GEAR_RATIO;
+    motorToWheelRatio = WHEEL_DIAM * PI / (GEAR_RATIO * COUNTS_PER_MOTOR_REV);
     sqrt_2 = sqrt(2);
 }
 

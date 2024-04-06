@@ -9,9 +9,10 @@
 #include "../../Sensors/Ultrasonic.h"
 #include "../../MQTT_Comms/MQTTModule.h"
 
-#define GEAR_RATIO          15.0f
-#define WHEEL_DIAM          4.0f // inches
-#define PI                  3.14159265f
+#define GEAR_RATIO              20.0f
+#define WHEEL_DIAM              4.0f // inches
+#define PI                      3.14159265f
+#define COUNTS_PER_MOTOR_REV    28.0f
 
 // position in inches
 extern float curPositionX;
