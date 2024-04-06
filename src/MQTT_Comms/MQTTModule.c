@@ -163,3 +163,10 @@ int Debug(char * message)
     }
     return -1;
 }
+
+void SendCurPositionToUI()
+{
+    char helperStr[100];
+    sprintf(helperStr, "%.2f, %.2f", curPositionX, curPositionY);
+    PublishMessage(mqttClient, CURRENT_POSITION_TOPIC, helperStr);
+}

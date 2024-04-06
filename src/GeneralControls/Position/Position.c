@@ -138,6 +138,7 @@ void CalculateCurPosition()
 
     curPositionY += (curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2);
     curPositionX += (((curPosition1 + curPosition3) / (NUM_OF_MOTORS / 2)) - ((curPosition2 + curPosition4) / (NUM_OF_MOTORS / 2))) / sqrt_2; 
+    SendCurPositionToUI();
 }
 
 void CalculateCurVelocity()
@@ -164,13 +165,13 @@ void CalculateMotorDir()
 {
     if (motor1Power >= 0)
     {
-        motor1Dir = 1; // go forward
-        motor3Dir = 0;
+        motor1Dir = 0; // go forward
+        motor3Dir = 1;
     }
     else
     {
-        motor1Dir = 0; // go backward
-        motor3Dir = 1;
+        motor1Dir = 1; // go backward
+        motor3Dir = 0;
         motor1Power = motor1Power * -1; // duty cycle values always positive
     }
 
@@ -219,12 +220,12 @@ void CalculateMotorPowers()
 
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
     motor1Power = 100 * (yDiff + xDiff) / max;
-    motor3Power = motor1Power; 
-
     motor2Power = 100 * (yDiff - xDiff) / max;
-    motor4Power = motor2Power;
 
     CalculateMotorDir();
+
+    motor3Power = motor1Power;
+    motor4Power = motor2Power;
 
     BoundMotorPowers();
 }

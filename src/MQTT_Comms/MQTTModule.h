@@ -42,4 +42,7 @@ int PublishMessage(MQTTClient * client, const char * topicName, char * message);
 /// @param message message to publish
 /// @return return code specifying success or failure
 int Debug(char * message);
+
+/// @brief Sends the curPositionX and curPositionY to the UI
+void SendCurPositionToUI();
 #endif
