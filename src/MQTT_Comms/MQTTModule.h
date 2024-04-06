@@ -1,7 +1,8 @@
 #ifndef MQTT_H
 #define MQTT_H
 
-#include "MQTTClient.h"
+//#include "MQTTClient.h"
+#include <MQTTAsync.h>
 #include <string.h>
 #include "../GeneralControls/Position/Position.h"
 #include "../AutomatedControls/Fsm.h"
@@ -20,23 +21,23 @@
 #define ESTOP_RESET_COMMAND         "EStopReset"
 #define ZERO_COMMAND                "Zero"
 
-/// @brief Connects to mqtt server and returns a return code.
-/// @param client pointer to an MQTTClient object 
-/// @return returns a code specifying whether the connection succeeded.
-int ConnectToMQTT(MQTTClient * client);
+// /// @brief Connects to mqtt server and returns a return code.
+// /// @param client pointer to an MQTTClient object 
+// /// @return returns a code specifying whether the connection succeeded.
+// int ConnectToMQTT(MQTTClient * client);
 
-/// @brief Subscribes to topic specified by topicName
-/// @param client pointer to MQTTClient object
-/// @param topicName topic name to subscribe to
-/// @return returns a code specifying success or failure
-int SubscribeToTopic(MQTTClient * client, const char * topicName);
+// /// @brief Subscribes to topic specified by topicName
+// /// @param client pointer to MQTTClient object
+// /// @param topicName topic name to subscribe to
+// /// @return returns a code specifying success or failure
+// int SubscribeToTopic(MQTTClient * client, const char * topicName);
 
-/// @brief Publishes a message
-/// @param client pointer to MQTTClient object
-/// @param topicName topic name to send message to
-/// @param message message contents
-/// @return returns a code specifying success or failure
-int PublishMessage(MQTTClient * client, const char * topicName, char * message);
+// /// @brief Publishes a message
+// /// @param client pointer to MQTTClient object
+// /// @param topicName topic name to send message to
+// /// @param message message contents
+// /// @return returns a code specifying success or failure
+// int PublishMessage(MQTTClient * client, const char * topicName, char * message);
 
 /// @brief Publishes a debug message
 /// @param message message to publish
@@ -45,4 +46,23 @@ int Debug(char * message);
 
 /// @brief Sends the curPositionX and curPositionY to the UI
 void SendCurPositionToUI();
+
+/// @brief Connects to mqtt server and returns a return code.
+/// @param client pointer to an MQTTClient object 
+/// @return returns a code specifying whether the connection succeeded.
+int ConnectToMQTT(MQTTAsync * client);
+
+/// @brief Subscribes to topic specified by topicName
+/// @param client pointer to MQTTClient object
+/// @param topicName topic name to subscribe to
+/// @return returns a code specifying success or failure
+int SubscribeToTopic(MQTTAsync * client, const char * topicName);
+
+/// @brief Publishes a message
+/// @param client pointer to MQTTClient object
+/// @param topicName topic name to send message to
+/// @param message message contents
+/// @return returns a code specifying success or failure
+int PublishMessage(MQTTAsync * client, const char * topicName, char * message);
+
 #endif
