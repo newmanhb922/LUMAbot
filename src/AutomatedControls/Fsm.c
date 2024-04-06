@@ -55,6 +55,8 @@ void EStopState();
 void ObstacleAvoidanceState();
 void StartState();
 char * StateToString(FSM_STATE_T state);
+float MinFloats(float val1, float val2, float val3, float val4);
+
 void Init_States()
 {
     currentState = START_STATE;
@@ -296,7 +298,7 @@ void ObstacleAvoidanceState()
     
     else
     {
-        if(sensor1Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor1Val)) //move away in x direction add that sensor 1 is less than all other sensors
+        if(sensor1Val < MinDistance && (MinFloats(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor1Val)) //move away in x direction add that sensor 1 is less than all other sensors
         {
             targetPositionX = curPositionX + 1;
             OffCourseSensor1++;
@@ -305,7 +307,7 @@ void ObstacleAvoidanceState()
                 SetState(OBSTACLE_AVOIDANCE_STATE);
             }
         }
-        else if (sensor2Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor2Val)) //move away in -y direction
+        else if (sensor2Val < MinDistance && (MinFloats(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor2Val)) //move away in -y direction
         {
             targetPositionY = curPositionY - 1;
             OffCourseSensor2--;
@@ -314,7 +316,7 @@ void ObstacleAvoidanceState()
                 SetState(OBSTACLE_AVOIDANCE_STATE);
             }
         }
-        else if(sensor3Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor3Val)) //-x dir
+        else if(sensor3Val < MinDistance && (MinFloats(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor3Val)) //-x dir
         {
             targetPositionX = curPositionX - 1;
             OffCourseSensor3--;
@@ -323,7 +325,7 @@ void ObstacleAvoidanceState()
                 SetState(OBSTACLE_AVOIDANCE_STATE);
             }  
         }
-        else if (sensor4Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor4Val)) //-y dir
+        else if (sensor4Val < MinDistance && (MinFloats(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor4Val)) //-y dir
         {
             targetPositionY = curPositionY - 1; 
             OffCourseSensor4--;
@@ -430,6 +432,13 @@ char * StateToString(FSM_STATE_T state)
         case START_STATE:
             return "Start State";
     }
+}
+
+float MinFloats(float val1, float val2, float val3, float val4)
+{
+    float minVal = fminf(val1, val2);
+    minVal = fminf(val3, minVal);
+    return fminf(val4, minVal);
 }
 
 // FMM - don't need to calculate angle. Use CalculateMotorPowers in Position.c to 
