@@ -51,7 +51,7 @@ unsigned int lastTime2;
 unsigned int lastTime3;
 unsigned int lastTime4;
 
-unsigned char readDataCounter;
+unsigned short readDataCounter;
 
 void InitPosition()
 {
@@ -138,7 +138,6 @@ void CalculateCurPosition()
 
     curPositionY += (curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2);
     curPositionX += (((curPosition1 + curPosition3) / (NUM_OF_MOTORS / 2)) - ((curPosition2 + curPosition4) / (NUM_OF_MOTORS / 2))) / sqrt_2; 
-    SendCurPositionToUI();
 }
 
 void CalculateCurVelocity()
@@ -271,21 +270,29 @@ void BoundMotorPowers()
 // use this to: read controller (joystick) input, 
              // calculate motor velocity,
              // read ultrasonic sensor data
+             // send position data to UI
 void ReadData()
 {
-    if ((readDataCounter % 100) == 0) // every 100 ms
+    if ((readDataCounter % 1000) == 0) // every second
+    {
+        SendCurPositionToUI();
+    }
+    else if ((readDataCounter % 70) == 0) // every 70 ms
     {
         CalculateCurPosition();
-	    CalculateCurVelocity();
     }
-    if ((readDataCounter % 50) == 0) // every 50 ms
+    else if ((readDataCounter % 60) == 0) // every 50 ms
     {
-//        ReadUltrasonicSensors(); don't run this until sensors are wired in
+        CalculateCurVelocity();
+    }
+    else if ((readDataCounter % 50) == 0) // every 50 ms
+    {
+        ReadUltrasonicSensors(); //don't run this until sensors are wired in
     }
     ReadJoystickData(); // every ms
 
     readDataCounter++;
-    if (readDataCounter > 200)
+    if (readDataCounter > 1000)
     {
         readDataCounter = 1;
     }
