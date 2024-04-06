@@ -323,7 +323,7 @@ void ObstacleAvoidanceState()
                 SetState(OBSTACLE_AVOIDANCE_STATE);
             }  
         }
-        else if (sensor4Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor1Val4)) //-y dir
+        else if (sensor4Val < MinDistance && (min(sensor1Val, sensor2Val, sensor3Val, sensor4Val) == sensor4Val)) //-y dir
         {
             targetPositionY = curPositionY - 1; 
             OffCourseSensor4--;
