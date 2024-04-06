@@ -86,7 +86,7 @@ int ConnectToMQTT(MQTTAsync * client)
     int returnCode = -1;
     connected = false;
     // create client object
-    if ((returnCode = MQTTAsync_create(client, ADDRESS, CLIENTID, MQTTASYNC_PERSISTENCE_NONE, NULL)) != MQTTASYNC_SUCCESS)
+    if ((returnCode = MQTTAsync_create(client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL)) != MQTTASYNC_SUCCESS)
     {
         // error
         printf("error creating client\n");
