@@ -166,16 +166,16 @@ void AutomatedMoveState()
     BoundMotorPowers();
     sprintf(helperStr, "after bounding powers motor1Power: %.2f, motor2Power: %.2f\n", motor1Power, motor2Power);
     Debug(helperStr);
-    SetMotorPWM(1, motor1Power);
-    SetMotorPWM(2, motor2Power);
-    SetMotorPWM(3, motor3Power);
-    SetMotorPWM(4, motor4Power);
+    SetMotorPWM(1, motor1Power, motor1TargetVelocity > 0);
+    SetMotorPWM(2, motor2Power, motor2TargetVelocity > 0);
+    SetMotorPWM(3, motor3Power, motor3TargetVelocity > 0);
+    SetMotorPWM(4, motor4Power, motor4TargetVelocity > 0);
 
     // have to set direction here as well with SetMotorDir
-    SetMotorDir(1, motor1Dir);
-    SetMotorDir(2, motor2Dir);
-    SetMotorDir(3, motor3Dir);
-    SetMotorDir(4, motor4Dir);
+  //  SetMotorDir(1, motor1Dir);
+    //SetMotorDir(2, motor2Dir);
+    //SetMotorDir(3, motor3Dir);
+    //SetMotorDir(4, motor4Dir);
 
     if((xDistance < 1) && (yDistance < 1))
     {
@@ -377,10 +377,10 @@ void ObstacleAvoidanceState()
         CalculateMotorPowers();
 
         //sets motor power
-        SetMotorPWM(1, motor1Power);
-        SetMotorPWM(2, motor2Power);
-        SetMotorPWM(3, motor3Power);
-        SetMotorPWM(4, motor4Power);
+     //   SetMotorPWM(1, motor1Power);
+     //   SetMotorPWM(2, motor2Power);
+     //   SetMotorPWM(3, motor3Power);
+     //   SetMotorPWM(4, motor4Power);
 
         // have to set direction here as well with SetMotorDir
         SetMotorDir(1, motor1Dir);
@@ -523,11 +523,7 @@ void CalculatePID(float velocityXTarget, float velocityYTarget)
     motor3Power += pidOutput3;
     motor4Power += pidOutput4;
     //Debug(helperStr);
-    motor1Power = pidOutput1;
     printf(helperStr);
-    motor2Power = pidOutput2;
-    motor3Power = pidOutput3;
-    motor4Power = pidOutput4;
 }
 
 float CalculateTheta(float xVal, float yVal)
