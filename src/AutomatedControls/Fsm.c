@@ -45,6 +45,8 @@ float previousError2;
 float previousError3;
 float previousError4;
 
+
+
 void (*stateFunctions[NUM_STATES])();
 
 void AutomatedMoveState();
@@ -56,6 +58,22 @@ void ObstacleAvoidanceState();
 void StartState();
 char * StateToString(FSM_STATE_T state);
 float MinFloats(float val1, float val2, float val3, float val4);
+
+/// @brief Calculates the motor power as specified by the PID controller. Updates the motorxPower variables
+/// @param velocityXTarget target velocity in the Y direction
+/// @param velocityYTarget target velocity in the x direction
+void CalculatePID(float velocityXTarget, float velocityYTarget);
+
+/// @brief Calculates the angle formed by the horizontal length (xVal) and the vertical length (yVal)
+/// @param xVal the horizontal length or value
+/// @param yVal the vertical length or value
+/// @return returns the angle in radians
+float CalculateTheta(float xVal, float yVal);
+
+/// @brief Scales the controller value to a percentage based on the max controller value
+/// @param controllerVal controller value (-32768 to 32767)
+/// @return 
+float ScaleControllerValue(float controllerValue);
 
 void Init_States()
 {
@@ -72,6 +90,18 @@ void Init_States()
 
 void SetState(FSM_STATE_T newState) 
 {
+    if (newState == AUTOMATED_MOVE_STATE || newState == CONTROLLER_MOVE_STATE)
+    { // if new state is automated or controller move, clear the error vars used in PID calculations.
+        previousError1 = 0;
+        previousError2 = 0;
+        previousError3 = 0;
+        previousError4 = 0;
+
+        integralError1 = 0;
+        integralError2 = 0;
+        integralError3 = 0;
+        integralError4 = 0;
+    }
     printf("Setting state to: %s\n", StateToString(newState));
     currentState = newState;
 }
@@ -112,54 +142,16 @@ void AutomatedMoveState()
     float yDistance = targetPositionY - curPositionY;
 
     //find the angle of movement and desired velocity of x and y on that angle
-    float theta = PI / 2;
-    if(xDistance != 0)
-    {
-        theta = atan(yDistance/xDistance);
-    }
-    float velocityX = Velocity * cos(theta);
-    float velocityY = Velocity * sin(theta);
+    float theta = CalculateTheta(xDistance, yDistance);
+    
+    float velocityXTarget = Velocity * cos(theta);
+    float velocityYTarget = Velocity * sin(theta);
 
     char helperStr[200];
     sprintf(helperStr, "theta: %.2f, xDistance: %.2f, yDistance: %.2f\n", theta, xDistance, yDistance);
     Debug(helperStr);
-    //target motor velocities
-    float motor1TargetVelocity = velocityX + velocityY; 
-    float motor2TargetVelocity = -velocityX + velocityY; 
-    float motor3TargetVelocity = velocityX + velocityY; 
-    float motor4TargetVelocity = -velocityX + velocityY;
-    sprintf(helperStr, "motor1TargetVel: %.2f, motor2TargetVel: %.2f\n", motor1TargetVelocity, motor2TargetVelocity);
-    Debug(helperStr);
-    //find error
-    float motor1VelocityError = motor1TargetVelocity - curVelocity1;
-    float motor2VelocityError = motor2TargetVelocity - curVelocity2;
-    float motor3VelocityError = motor3TargetVelocity - curVelocity3;
-    float motor4VelocityError = motor4TargetVelocity - curVelocity4;
 
-    sprintf(helperStr, "motor1VelError: %.2f, motor2VelError: %.2f\n", motor1VelocityError, motor2VelocityError);
-    Debug(helperStr);
-
-    integralError1 += motor1VelocityError;
-    integralError2 += motor2VelocityError;
-    integralError3 += motor3VelocityError;
-    integralError4 += motor4VelocityError;
-
-    float pidOutput1 = KP * motor1VelocityError + KI * integralError1 + KD * (motor1VelocityError - previousError1);
-    float pidOutput2 = KP * motor2VelocityError + KI * integralError2 + KD * (motor2VelocityError - previousError2);
-    float pidOutput3 = KP * motor3VelocityError + KI * integralError3 + KD * (motor3VelocityError - previousError3);
-    float pidOutput4 = KP * motor4VelocityError + KI * integralError4 + KD * (motor4VelocityError - previousError4);
-
-    previousError1 = motor1VelocityError;
-    previousError2 = motor2VelocityError;
-    previousError3 = motor3VelocityError;
-    previousError4 = motor4VelocityError;
-
-    sprintf(helperStr, "pid1: %.2f, pid2: %.2f\n", pidOutput1, pidOutput2);
-    Debug(helperStr);
-    motor1Power = pidOutput1;
-    motor2Power = pidOutput2;
-    motor3Power = pidOutput3;
-    motor4Power = pidOutput4;
+    CalculatePID(velocityXTarget, velocityYTarget);
 
     CalculateMotorDir();
 
@@ -188,12 +180,6 @@ void AutomatedMoveState()
     }
 }
 
-float ScaleControllerValue(float controllerValue)
-{
-    float scaled = (controllerValue / MaxControllerValue) * 5;
-    return scaled;
-}
-
 void ControllerMoveState()
 {
     previousState = currentState;
@@ -203,12 +189,17 @@ void ControllerMoveState()
         SetState(E_STOP_STATE);
     }
     
-    //Scale controller value down to find the target position, at max 5 in away from current position
-    targetPositionX = ScaleControllerValue(controllerXValue) + curPositionX;
-    targetPositionY = ScaleControllerValue(controllerYValue) + curPositionY;
+    float theta = CalculateTheta(controllerXValue, controllerYValue);
 
-    //converts motor power to the duty cycle and maps the duty cycle within the allowed constraints
-    CalculateMotorPowers();
+    float velocityXTarget = ScaleControllerValue(controllerXValue) * Velocity * cos(theta);
+    float velocityYTarget = ScaleControllerValue(controllerYValue) * Velocity * sin(theta);
+
+
+    CalculatePID(velocityXTarget, velocityYTarget);
+
+    CalculateMotorDir();
+
+    BoundMotorPowers();
 
     //sets motor power
     SetMotorPWM(1, motor1Power);
@@ -439,6 +430,68 @@ float MinFloats(float val1, float val2, float val3, float val4)
     float minVal = fminf(val1, val2);
     minVal = fminf(val3, minVal);
     return fminf(val4, minVal);
+}
+
+void CalculatePID(float velocityXTarget, float velocityYTarget)
+{
+    char helperStr[200];
+
+    float motor1TargetVelocity = velocityXTarget + velocityYTarget; 
+    float motor2TargetVelocity = -velocityXTarget + velocityYTarget; 
+    float motor3TargetVelocity = velocityXTarget + velocityYTarget; 
+    float motor4TargetVelocity = -velocityXTarget + velocityYTarget;
+    sprintf(helperStr, "motor1TargetVel: %.2f, motor2TargetVel: %.2f\n", motor1TargetVelocity, motor2TargetVelocity);
+    Debug(helperStr);
+    //find error
+    float motor1VelocityError = motor1TargetVelocity - curVelocity1;
+    float motor2VelocityError = motor2TargetVelocity - curVelocity2;
+    float motor3VelocityError = motor3TargetVelocity - curVelocity3;
+    float motor4VelocityError = motor4TargetVelocity - curVelocity4;
+
+    sprintf(helperStr, "motor1VelError: %.2f, motor2VelError: %.2f\n", motor1VelocityError, motor2VelocityError);
+    Debug(helperStr);
+
+    integralError1 += motor1VelocityError;
+    integralError2 += motor2VelocityError;
+    integralError3 += motor3VelocityError;
+    integralError4 += motor4VelocityError;
+
+    float pidOutput1 = KP * motor1VelocityError + KI * integralError1 + KD * (motor1VelocityError - previousError1);
+    float pidOutput2 = KP * motor2VelocityError + KI * integralError2 + KD * (motor2VelocityError - previousError2);
+    float pidOutput3 = KP * motor3VelocityError + KI * integralError3 + KD * (motor3VelocityError - previousError3);
+    float pidOutput4 = KP * motor4VelocityError + KI * integralError4 + KD * (motor4VelocityError - previousError4);
+
+    previousError1 = motor1VelocityError;
+    previousError2 = motor2VelocityError;
+    previousError3 = motor3VelocityError;
+    previousError4 = motor4VelocityError;
+
+    sprintf(helperStr, "pid1: %.2f, pid2: %.2f\n", pidOutput1, pidOutput2);
+    Debug(helperStr);
+    motor1Power = pidOutput1;
+    motor2Power = pidOutput2;
+    motor3Power = pidOutput3;
+    motor4Power = pidOutput4;
+}
+
+float CalculateTheta(float xVal, float yVal)
+{
+    float theta = PI / 2;
+    if (xVal != 0)
+    {
+        theta = atan(yVal / xVal); // only returns values from - pi / 2 to pi / 2 (quadrants 1 and 4)
+    }
+    if (xVal < 0)
+    { // if we should be in quadrants 2 or 3, add PI to theta to get to these quadrants
+        theta = theta + PI;
+    }
+    return theta;
+}
+
+float ScaleControllerValue(float controllerValue)
+{
+    float scaled = (controllerValue / MaxControllerValue);
+    return scaled;
 }
 
 // FMM - don't need to calculate angle. Use CalculateMotorPowers in Position.c to 
