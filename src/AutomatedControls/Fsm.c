@@ -466,6 +466,43 @@ void CalculatePID(float velocityXTarget, float velocityYTarget)
     previousError3 = motor3VelocityError;
     previousError4 = motor4VelocityError;
 
+    // we always want pidOutputx to be same sign as motorxTargetVelocity
+    if (pidOutput1 < 0 && motor1TargetVelocity > 0)
+    {
+        pidOutput1 = pidOutput1 * -1;
+    }
+    else if (pidOutput1 > 0 && motor1TargetVelocity < 0)
+    {
+        pidOutput1 = pidOutput1 * -1;
+    }
+
+    if (pidOutput2 < 0 && motor2TargetVelocity > 0)
+    {
+        pidOutput2 = pidOutput2 * -1;
+    }
+    else if (pidOutput2 > 0 && motor2TargetVelocity < 0)
+    {
+        pidOutput2 = pidOutput2 * -1;
+    }
+
+    if (pidOutput3 < 0 && motor3TargetVelocity > 0)
+    {
+        pidOutput3 = pidOutput3 * -1;
+    }
+    else if (pidOutput3 > 0 && motor3TargetVelocity < 0)
+    {
+        pidOutput3 = pidOutput3 * -1;
+    }
+
+    if (pidOutput4 < 0 && motor4TargetVelocity > 0)
+    {
+        pidOutput4 = pidOutput4 * -1;
+    }
+    else if (pidOutput4 > 0 && motor4TargetVelocity < 0)
+    {
+        pidOutput4 = pidOutput4 * -1;
+    }
+    
     sprintf(helperStr, "pid1: %.2f, pid2: %.2f\n", pidOutput1, pidOutput2);
     Debug(helperStr);
     motor1Power = pidOutput1;
