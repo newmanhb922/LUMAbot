@@ -12,7 +12,7 @@
 
 #define NUM_STATES          7
 #define MaxDutyCycle        80
-#define MinDutyCycle        20
+#define MinDutyCycle        10
 #define MaxControllerValue  32767
 #define Velocity            12 // 1 ft/s
 #define KD                  1
@@ -20,6 +20,7 @@
 #define KP                  1
 #define MinDistance         12
 #define VeryCloseDistance   4
+#define ControllerDutyCycle 30
 
 typedef enum
 {

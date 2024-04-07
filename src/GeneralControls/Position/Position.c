@@ -218,8 +218,8 @@ void CalculateMotorPowers()
     }
 
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
-    motor1Power = 100 * (yDiff + xDiff) / max;
-    motor2Power = 100 * (yDiff - xDiff) / max;
+    motor1Power = ControllerDutyCycle * (yDiff + xDiff) / max;
+    motor2Power = ControllerDutyCycle * (yDiff - xDiff) / max;
 
     CalculateMotorDir();
 
