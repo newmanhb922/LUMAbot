@@ -11,7 +11,10 @@
 // see pinout.xyz/pinout/wiringpi for the corresponding rpi gpio pins
 // echo pin can't be wired directly into raspberry pi
 // have to use voltage divider circuit to generate 3.3 V from sensors 5 V output
-#define ECHO_PIN            5 // raspberry pi pin 18
+#define SENSOR_1_ECHO		0 // raspberry pi pin 11
+#define SENSOR_2_ECHO		1 // raspberry pi pin 12
+#define SENSOR_3_ECHO		4 // raspberry pi pin 16
+#define SENSOR_4_ECHO       5 // raspberry pi pin 18
 #define SENSOR_1_TRIG       6 // raspberry pi pin 22
 #define SENSOR_2_TRIG       10 // raspberry pi pin 24
 #define SENSOR_3_TRIG       11 // raspberry pi pin 26

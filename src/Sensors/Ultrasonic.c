@@ -16,15 +16,19 @@ volatile float sensor4Val; //left
 void SampleSensor();
 
 /// @brief Reads the sensor distance
-/// @param sensorTrigPin the gpio pin on the raspberry pi that is wired to the trigger pin of the sensor
+/// @param sensorTrigPin the gpio pin on the raspberry pi that is wired to the trigger pin of the sensor (wiringPi version)
+/// @param echoPin the gpio pin on the raspberry pi that is wired to echo (wiringPi version)
 /// @param oldSensorVal the previously read sensor value
 /// @return returns the distance in inches
-float ReadSensorDistance(int sensorTrigPin, float oldSensorVal);
+float ReadSensorDistance(int sensorTrigPin, int echoPin, float oldSensorVal);
 
 void UltrasonicInit()
 {
     wiringPiSetup();
-    pinMode(ECHO_PIN, INPUT);
+    pinMode(SENSOR_1_ECHO, INPUT);
+    pinMode(SENSOR_2_ECHO, INPUT);
+    pinMode(SENSOR_3_ECHO, INPUT);
+    pinMode(SENSOR_4_ECHO, INPUT);
     pinMode(SENSOR_1_TRIG, OUTPUT);
     pinMode(SENSOR_2_TRIG, OUTPUT);
     pinMode(SENSOR_3_TRIG, OUTPUT);
@@ -35,10 +39,10 @@ void UltrasonicInit()
     // pinMode(SENSOR_8_TRIG, OUTPUT);
     
     sensorCounter = 1;
-    sensor1Val = 0;
-    sensor2Val = 0;
-    sensor3Val = 0;
-    sensor4Val = 0;
+    sensor1Val = 20;
+    sensor2Val = 20;
+    sensor3Val = 20;
+    sensor4Val = 20;
     // sensor5Val = 0;
     // sensor6Val = 0;
     // sensor7Val = 0;
@@ -50,20 +54,20 @@ void SampleSensor()
     switch (sensorCounter)
     {
         case 1:
-            Debug("Reading ultrasonic sensor 1.\n");
-            sensor1Val = ReadSensorDistance(SENSOR_1_TRIG, sensor1Val);
+//            Debug("Reading ultrasonic sensor 1.\n");
+            sensor1Val = ReadSensorDistance(SENSOR_1_TRIG, SENSOR_1_ECHO, sensor1Val);
             break;
         case 2:
-            Debug("Reading ultrasonic sensor 2.\n");
-            sensor2Val = ReadSensorDistance(SENSOR_2_TRIG, sensor2Val);
+  //          Debug("Reading ultrasonic sensor 2.\n");
+            sensor2Val = ReadSensorDistance(SENSOR_2_TRIG, SENSOR_2_ECHO, sensor2Val);
             break;
         case 3:
-            Debug("Reading ultrasonic sensor 3.\n");
-            sensor3Val = ReadSensorDistance(SENSOR_3_TRIG, sensor3Val);
+    //        Debug("Reading ultrasonic sensor 3.\n");
+            sensor3Val = ReadSensorDistance(SENSOR_3_TRIG, SENSOR_3_ECHO, sensor3Val);
             break;
         case 4:
-            Debug("Reading ultrasonic sensor 4.\n");
-            sensor4Val = ReadSensorDistance(SENSOR_4_TRIG, sensor4Val);
+      //      Debug("Reading ultrasonic sensor 4.\n");
+            sensor4Val = ReadSensorDistance(SENSOR_4_TRIG, SENSOR_4_ECHO, sensor4Val);
             break;
         // we may only have 4 sensors now?
         case 5:
@@ -81,7 +85,7 @@ void SampleSensor()
     }
 }
 
-float ReadSensorDistance(int sensorTrigPin, float oldSensorVal)
+float ReadSensorDistance(int sensorTrigPin, int echoPin, float oldSensorVal)
 {
     unsigned int startUSec = 0;
     unsigned int endUSec = 0;
@@ -93,21 +97,23 @@ float ReadSensorDistance(int sensorTrigPin, float oldSensorVal)
     delayMicroseconds(10);
     digitalWrite(sensorTrigPin, LOW);
     startUSec = micros();
-    while (digitalRead(ECHO_PIN) == LOW && (micros() - startUSec) < timeout); // wait until echo goes high
+    while (digitalRead(echoPin) == LOW && (micros() - startUSec) < timeout); // wait until echo goes high
     if (micros() - startUSec >= timeout)
     { // timeout was reason that the while ended, echo never went high
         sprintf(debugMsg, "Echo pin never went high, error with sensor trigger pin %d\n", sensorTrigPin);
         //Debug(debugMsg);
-        return distanceCm; // return old value
+     	printf(debugMsg);
+	   return distanceCm; // return old value
     }
     startUSec = micros(); // record start time
-    while (digitalRead(ECHO_PIN) == HIGH && (micros() - startUSec) < timeout); // wait until echo goes low.
+    while (digitalRead(echoPin) == HIGH && (micros() - startUSec) < timeout); // wait until echo goes low.
     // can add a timeout here as well so that if something is really far away we don't pay care so we don't want to waste time waiting for the signal to come back
     endUSec = micros(); // record end time
     if (micros() - startUSec >= timeout)
     { // timeout was reason that the while ended, echo never went low
-        sprintf(debugMsg, "Echo pin never went low, object at max distance for sensor with trig pin %d\n", sensorTrigPin);
+	sprintf(debugMsg, "Echo pin never went low, object at max distance for sensor with trig pin %d\n", sensorTrigPin);
         //Debug(debugMsg);
+	printf(debugMsg);
     }
     // (100 (cm / meter) * (elapsed time (microseconds) / 1000000 (microseconds / second)) * speed of sound (meters / second)) / 2.
     // we divide by two because the elapsed time is the time to travel to object and back to sensor so it travelled double the distance that we want.
