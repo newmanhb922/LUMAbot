@@ -50,21 +50,47 @@ void TurnMotorOff(int motorNum)
     }
 }
 
-void SetMotorPWM(int motorNum, float dutyCycle)
+void SetMotorPWM(int motorNum, float dutyCycle, bool forward)
 {
+    if (forward)
+    {
+        if (dutyCycle < MinDutyCycle)
+        {
+            dutyCycle = MinDutyCycle;
+        }
+        else if (dutyCycle > MaxDutyCycle)
+        {
+            dutyCycle = MaxDutyCycle;
+        }
+    }
+    else
+    {
+        if (dutyCycle > MinDutyCycle * -1)
+        {
+            dutyCycle = MinDutyCycle;
+        }
+        else if (dutyCycle < MaxDutyCycle * -1)
+        {
+            dutyCycle = MaxDutyCycle;
+        }
+    }
     switch (motorNum)
     {
         case 1:
             Motor1SetPWM(dutyCycle);
+            SetMotorDir(1, !forward); // motors 1 and 4 turn backwards to turn wheel forward
             break;
         case 2:
             Motor2SetPWM(dutyCycle);
+            SetMotorDir(2, forward);
             break;
         case 3:
             Motor3SetPWM(dutyCycle);
+            SetMotorDir(3, forward);
             break;
         case 4:
             Motor4SetPWM(dutyCycle);
+            SetMotorDir(4, !forward);
             break;
     }
 }

@@ -45,7 +45,10 @@ float previousError2;
 float previousError3;
 float previousError4;
 
-
+float motor1TargetVelocity;
+float motor2TargetVelocity;
+float motor3TargetVelocity;
+float motor4TargetVelocity;
 
 void (*stateFunctions[NUM_STATES])();
 
@@ -101,6 +104,11 @@ void SetState(FSM_STATE_T newState)
         integralError2 = 0;
         integralError3 = 0;
         integralError4 = 0;
+
+        motor1Power = 0;
+        motor2Power = 0;
+        motor3Power = 0;
+        motor4Power = 0;
     }
     printf("Setting state to: %s\n", StateToString(newState));
     currentState = newState;
@@ -197,21 +205,21 @@ void ControllerMoveState()
 
     CalculatePID(velocityXTarget, velocityYTarget);
 
-    CalculateMotorDir();
+    //CalculateMotorDir();
 
-    BoundMotorPowers();
+    //BoundMotorPowers();
 
     //sets motor power
-    SetMotorPWM(1, motor1Power);
-    SetMotorPWM(2, motor2Power);
-    SetMotorPWM(3, motor3Power);
-    SetMotorPWM(4, motor4Power);
+    SetMotorPWM(1, motor1Power, motor1TargetVelocity > 0);
+    SetMotorPWM(2, motor2Power, motor2TargetVelocity > 0);
+    SetMotorPWM(3, motor3Power, motor3TargetVelocity > 0);
+    SetMotorPWM(4, motor4Power, motor4TargetVelocity > 0);
 
     // have to set direction here as well with SetMotorDir
-    SetMotorDir(1, motor1Dir);
-    SetMotorDir(2, motor2Dir);
-    SetMotorDir(3, motor3Dir);
-    SetMotorDir(4, motor4Dir);
+    // SetMotorDir(1, motor1Dir);
+    // SetMotorDir(2, motor2Dir);
+    // SetMotorDir(3, motor3Dir);
+    // SetMotorDir(4, motor4Dir);
 
     if(controllerXValue == 0 && controllerYValue == 0)
     {
@@ -436,10 +444,10 @@ void CalculatePID(float velocityXTarget, float velocityYTarget)
 {
     char helperStr[200];
 
-    float motor1TargetVelocity = velocityXTarget + velocityYTarget; 
-    float motor2TargetVelocity = -velocityXTarget + velocityYTarget; 
-    float motor3TargetVelocity = velocityXTarget + velocityYTarget; 
-    float motor4TargetVelocity = -velocityXTarget + velocityYTarget;
+    motor1TargetVelocity = velocityXTarget + velocityYTarget; 
+    motor2TargetVelocity = -velocityXTarget + velocityYTarget; 
+    motor3TargetVelocity = velocityXTarget + velocityYTarget; 
+    motor4TargetVelocity = -velocityXTarget + velocityYTarget;
     sprintf(helperStr, "motor1TargetVel: %.2f, motor2TargetVel: %.2f\n", motor1TargetVelocity, motor2TargetVelocity);
     Debug(helperStr);
     //find error
@@ -467,48 +475,48 @@ void CalculatePID(float velocityXTarget, float velocityYTarget)
     previousError4 = motor4VelocityError;
 
     // we always want pidOutputx to be same sign as motorxTargetVelocity
-    if (pidOutput1 < 0 && motor1TargetVelocity > 0)
-    {
-        pidOutput1 = pidOutput1 * -1;
-    }
-    else if (pidOutput1 > 0 && motor1TargetVelocity < 0)
-    {
-        pidOutput1 = pidOutput1 * -1;
-    }
+    // if (pidOutput1 < 0 && motor1TargetVelocity > 0)
+    // {
+    //     pidOutput1 = pidOutput1 * -1;
+    // }
+    // else if (pidOutput1 > 0 && motor1TargetVelocity < 0)
+    // {
+    //     pidOutput1 = pidOutput1 * -1;
+    // }
 
-    if (pidOutput2 < 0 && motor2TargetVelocity > 0)
-    {
-        pidOutput2 = pidOutput2 * -1;
-    }
-    else if (pidOutput2 > 0 && motor2TargetVelocity < 0)
-    {
-        pidOutput2 = pidOutput2 * -1;
-    }
+    // if (pidOutput2 < 0 && motor2TargetVelocity > 0)
+    // {
+    //     pidOutput2 = pidOutput2 * -1;
+    // }
+    // else if (pidOutput2 > 0 && motor2TargetVelocity < 0)
+    // {
+    //     pidOutput2 = pidOutput2 * -1;
+    // }
 
-    if (pidOutput3 < 0 && motor3TargetVelocity > 0)
-    {
-        pidOutput3 = pidOutput3 * -1;
-    }
-    else if (pidOutput3 > 0 && motor3TargetVelocity < 0)
-    {
-        pidOutput3 = pidOutput3 * -1;
-    }
+    // if (pidOutput3 < 0 && motor3TargetVelocity > 0)
+    // {
+    //     pidOutput3 = pidOutput3 * -1;
+    // }
+    // else if (pidOutput3 > 0 && motor3TargetVelocity < 0)
+    // {
+    //     pidOutput3 = pidOutput3 * -1;
+    // }
 
-    if (pidOutput4 < 0 && motor4TargetVelocity > 0)
-    {
-        pidOutput4 = pidOutput4 * -1;
-    }
-    else if (pidOutput4 > 0 && motor4TargetVelocity < 0)
-    {
-        pidOutput4 = pidOutput4 * -1;
-    }
-    
+    // if (pidOutput4 < 0 && motor4TargetVelocity > 0)
+    // {
+    //     pidOutput4 = pidOutput4 * -1;
+    // }
+    // else if (pidOutput4 > 0 && motor4TargetVelocity < 0)
+    // {
+    //     pidOutput4 = pidOutput4 * -1;
+    // }
+
     sprintf(helperStr, "pid1: %.2f, pid2: %.2f\n", pidOutput1, pidOutput2);
     Debug(helperStr);
-    motor1Power = pidOutput1;
-    motor2Power = pidOutput2;
-    motor3Power = pidOutput3;
-    motor4Power = pidOutput4;
+    motor1Power += pidOutput1;
+    motor2Power += pidOutput2;
+    motor3Power += pidOutput3;
+    motor4Power += pidOutput4;
 }
 
 float CalculateTheta(float xVal, float yVal)
