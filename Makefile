@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g
 TARGET = LUMABOT-1
-LFLAGS = -lwiringPi -lpaho-mqtt3c -lm
+LFLAGS = -lwiringPi -lpaho-mqtt3c -lm -lpaho-mqtt3a
 # SRC_DIR = src
 # SRC = $(wildcard $(SRC_DIR)/*.c)
 # OBJ = $(SRC:.c=.o)
