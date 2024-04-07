@@ -131,9 +131,10 @@ void CalculateCurPosition()
    // FR and BL wheels move robot forward and left when wheels move forward.
 
     // average encoder changes then multiply by wheel circumference and divide by gear ratio and sqrt(2) (wheel only moves forward sqrt(2) amount of rotation)
+    // when 1 and 4 wheel move forward, encoders move forward, when 2 and 3 wheel move forward, encoder/motor moves backward so subtract count
     curPosition1 += encoder1Change * motorToWheelRatio;
-    curPosition2 += encoder2Change * motorToWheelRatio;
-    curPosition3 += encoder3Change * motorToWheelRatio;
+    curPosition2 -= encoder2Change * motorToWheelRatio;
+    curPosition3 -= encoder3Change * motorToWheelRatio;
     curPosition4 += encoder4Change * motorToWheelRatio;
 
     curPositionY += (curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2);
@@ -146,18 +147,22 @@ void CalculateCurVelocity()
 
     curVelocity1 = (curPosition1 - lastPosition1) * 1000000 / (tempTime - lastTime1);
     lastTime1 = tempTime;
+	lastPosition1 = curPosition1;
 
     tempTime = micros();
     curVelocity2 = (curPosition2 - lastPosition2) * 1000000 / (tempTime - lastTime2);
     lastTime2 = tempTime;
+	lastPosition2 = curPosition2;
 
     tempTime = micros();
     curVelocity3 = (curPosition3 - lastPosition3) * 1000000 / (tempTime - lastTime3);
     lastTime3 = tempTime;
+	lastPosition3 = curPosition3;
 
     tempTime = micros();
     curVelocity4 = (curPosition4 - lastPosition4) * 1000000 / (tempTime - lastTime4);
     lastTime4 = tempTime;
+	lastPosition4 = curPosition4;
 }
 
 void CalculateMotorDir()
@@ -172,6 +177,7 @@ void CalculateMotorDir()
         motor1Dir = 1; // go backward
         motor3Dir = 0;
         motor1Power = motor1Power * -1; // duty cycle values always positive
+	motor3Power = motor3Power * -1;
     }
 
     if (motor2Power >= 0)
@@ -184,6 +190,7 @@ void CalculateMotorDir()
         motor2Dir = 0; // go backward
         motor4Dir = 1;
         motor2Power = motor2Power * -1; // duty cycle values always positive
+	motor4Power = motor4Power * -1;
     }
 }
 
