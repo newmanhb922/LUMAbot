@@ -61,6 +61,7 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTAsync_mes
         else if (strcmp(receivedMsg, ZERO_COMMAND) == 0)
         {
             Debug ("Zeroed from UI, setting current position to (0,0).\n");
+            ResetEncoderCounts();
             curPositionX = 0;
             curPositionY = 0;
             hasBeenZeroed = true;

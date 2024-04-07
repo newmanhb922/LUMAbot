@@ -94,36 +94,36 @@ void StartSamplingData()
 
 void CalculateCurPosition()
 {
-    int encoder1Change = 0;
-    int encoder2Change = 0;
-    int encoder3Change = 0;
-    int encoder4Change = 0;
+    // int encoder1Change = 0;
+    // int encoder2Change = 0;
+    // int encoder3Change = 0;
+    // int encoder4Change = 0;
 
-    // not sure if waiting for all of these to stop will take too long 
-    // but we need to make sure the variables aren't being accessed by multiple threads
-    while (count1Changing) {};
-    count1Changing = true;
-    encoder1Change = encoder1Count;
-    encoder1Count = 0;
-    count1Changing = false;
+    // // not sure if waiting for all of these to stop will take too long 
+    // // but we need to make sure the variables aren't being accessed by multiple threads
+    // while (count1Changing) {};
+    // count1Changing = true;
+    // encoder1Change = encoder1Count;
+    // encoder1Count = 0;
+    // count1Changing = false;
 
-    while (count2Changing) {};
-    count2Changing = true;
-    encoder2Change = encoder2Count;
-    encoder2Count = 0;
-    count2Changing = false;
+    // while (count2Changing) {};
+    // count2Changing = true;
+    // encoder2Change = encoder2Count;
+    // encoder2Count = 0;
+    // count2Changing = false;
 
-    while (count3Changing) {};
-    count3Changing = true;
-    encoder3Change = encoder3Count;
-    encoder3Count = 0;
-    count3Changing = false;
+    // while (count3Changing) {};
+    // count3Changing = true;
+    // encoder3Change = encoder3Count;
+    // encoder3Count = 0;
+    // count3Changing = false;
 
-    while (count4Changing) {};
-    count4Changing = true;
-    encoder4Change = encoder4Count;
-    encoder4Count = 0;
-    count4Changing = false;
+    // while (count4Changing) {};
+    // count4Changing = true;
+    // encoder4Change = encoder4Count;
+    // encoder4Count = 0;
+    // count4Changing = false;
 
    // https://github.com/FTC7393/EVLib/wiki/Mecanum-Wheels
 
@@ -132,13 +132,36 @@ void CalculateCurPosition()
 
     // average encoder changes then multiply by wheel circumference and divide by gear ratio and sqrt(2) (wheel only moves forward sqrt(2) amount of rotation)
     // when 1 and 4 wheel move forward, encoders move forward, when 2 and 3 wheel move forward, encoder/motor moves backward so subtract count
-    curPosition1 += encoder1Change * motorToWheelRatio;
-    curPosition2 -= encoder2Change * motorToWheelRatio;
-    curPosition3 -= encoder3Change * motorToWheelRatio;
-    curPosition4 += encoder4Change * motorToWheelRatio;
+    curPosition1 = encoder1Count * motorToWheelRatio;
+    curPosition2 = encoder2Count * motorToWheelRatio * -1;
+    curPosition3 = encoder3Count * motorToWheelRatio * -1;
+    curPosition4 = encoder4Count * motorToWheelRatio;
 
     curPositionY += (curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2);
     curPositionX += (((curPosition1 + curPosition3) / (NUM_OF_MOTORS / 2)) - ((curPosition2 + curPosition4) / (NUM_OF_MOTORS / 2))) / sqrt_2; 
+}
+
+void ResetEncoderCounts()
+{
+    while (count1Changing) {};
+    count1Changing = true;
+    encoder1Count = 0;
+    count1Changing = false;
+
+    while (count2Changing) {};
+    count2Changing = true;
+    encoder2Count = 0;
+    count2Changing = false;
+
+    while (count3Changing) {};
+    count3Changing = true;
+    encoder3Count = 0;
+    count3Changing = false;
+
+    while (count4Changing) {};
+    count4Changing = true;
+    encoder4Count = 0;
+    count4Changing = false;
 }
 
 void CalculateCurVelocity()
