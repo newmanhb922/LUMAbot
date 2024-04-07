@@ -209,6 +209,9 @@ void ControllerMoveState()
 
     //BoundMotorPowers();
 
+	printf("Motor1Power: %.2f, motor2Power: %.2f, motor3Power: %.2f, motor4Power: %.2f\n", motor1Power, motor2Power, motor3Power, motor4Power);
+	printf("motor1Dir: %d, motor2Dir: %d, motor3Dir: %d, motor4Dir: %d\n", motor1Dir, motor2Dir, motor3Dir, motor4Dir);
+
     //sets motor power
     SetMotorPWM(1, motor1Power, motor1TargetVelocity > 0);
     SetMotorPWM(2, motor2Power, motor2TargetVelocity > 0);
@@ -223,6 +226,7 @@ void ControllerMoveState()
 
     if(controllerXValue == 0 && controllerYValue == 0)
     {
+	Debug("controllerXValue and controllerYValue are both 0, should be stopping motors\n");
         SetState(STOP_STATE);
     }    
 }
@@ -449,7 +453,8 @@ void CalculatePID(float velocityXTarget, float velocityYTarget)
     motor3TargetVelocity = velocityXTarget + velocityYTarget; 
     motor4TargetVelocity = -velocityXTarget + velocityYTarget;
     sprintf(helperStr, "motor1TargetVel: %.2f, motor2TargetVel: %.2f\n", motor1TargetVelocity, motor2TargetVelocity);
-    Debug(helperStr);
+    //Debug(helperStr);
+	printf(helperStr);
     //find error
     float motor1VelocityError = motor1TargetVelocity - curVelocity1;
     float motor2VelocityError = motor2TargetVelocity - curVelocity2;
@@ -457,8 +462,8 @@ void CalculatePID(float velocityXTarget, float velocityYTarget)
     float motor4VelocityError = motor4TargetVelocity - curVelocity4;
 
     sprintf(helperStr, "motor1VelError: %.2f, motor2VelError: %.2f\n", motor1VelocityError, motor2VelocityError);
-    Debug(helperStr);
-
+//    Debug(helperStr);
+	printf(helperStr);
     integralError1 += motor1VelocityError;
     integralError2 += motor2VelocityError;
     integralError3 += motor3VelocityError;
@@ -517,6 +522,12 @@ void CalculatePID(float velocityXTarget, float velocityYTarget)
     motor2Power += pidOutput2;
     motor3Power += pidOutput3;
     motor4Power += pidOutput4;
+    //Debug(helperStr);
+    motor1Power = pidOutput1;
+    printf(helperStr);
+    motor2Power = pidOutput2;
+    motor3Power = pidOutput3;
+    motor4Power = pidOutput4;
 }
 
 float CalculateTheta(float xVal, float yVal)
