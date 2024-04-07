@@ -45,6 +45,9 @@ float previousError2;
 float previousError3;
 float previousError4;
 
+extern float lastMotor1Power;
+extern float lastMotor2Power;
+
 void (*stateFunctions[NUM_STATES])();
 
 void AutomatedMoveState();
@@ -72,6 +75,11 @@ void Init_States()
 
 void SetState(FSM_STATE_T newState) 
 {
+    if (newState == CONTROLLER_MOVE_STATE)
+    {
+        lastMotor1Power = 0.0f;
+        lastMotor2Power = 0.0f;
+    }
     printf("Setting state to: %s\n", StateToString(newState));
     currentState = newState;
 }

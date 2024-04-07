@@ -25,6 +25,9 @@ extern float motor2Power; // front right
 extern float motor3Power; // back right
 extern float motor4Power; // back left
 
+extern float lastMotor1Power;
+extern float lastMotor2Power;
+
 // wheel velocity in inches / second
 extern float curVelocity1;
 extern float curVelocity2;

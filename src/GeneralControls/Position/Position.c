@@ -37,6 +37,9 @@ float lastPosition2;
 float lastPosition3;
 float lastPosition4;
 
+float lastMotor1Power;
+float lastMotor2Power;
+
 float motorToWheelRatio;
 float sqrt_2;
 
@@ -64,6 +67,9 @@ void InitPosition()
     curPosition2 = 0.0f;
     curPosition3 = 0.0f;
     curPosition4 = 0.0f;
+
+    lastMotor1Power = 0.0f;
+    lastMotor2Power = 0.0f;
 
     motorToWheelRatio = WHEEL_DIAM * PI / (GEAR_RATIO * COUNTS_PER_MOTOR_REV);
     sqrt_2 = sqrt(2);
@@ -220,6 +226,25 @@ void CalculateMotorPowers()
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
     motor1Power = ControllerDutyCycle * (yDiff + xDiff) / max;
     motor2Power = ControllerDutyCycle * (yDiff - xDiff) / max;
+
+    // slow down the acceleration and deceleration
+    if ((motor1Power - lastMotor1Power) > MAX_DUTY_CHANGE)
+    {
+        motor1Power = lastMotor1Power + MAX_DUTY_CHANGE;
+    }
+    else if ((motor1Power - lastMotor1Power) < (MAX_DUTY_CHANGE * -1))
+    {
+        motor1Power = lastMotor1Power - MAX_DUTY_CHANGE;
+    }
+
+    if ((motor2Power - lastMotor2Power) > MAX_DUTY_CHANGE)
+    {
+        motor2Power = lastMotor2Power + MAX_DUTY_CHANGE;
+    }
+    else if ((motor2Power - lastMotor2Power) < (MAX_DUTY_CHANGE * -1))
+    {
+        motor2Power = lastMotor2Power - MAX_DUTY_CHANGE;
+    }
 
     CalculateMotorDir();
 
