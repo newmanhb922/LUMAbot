@@ -6,9 +6,13 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <stdbool.h>
+#include <wiringPi.h>
 
 extern short controllerXValue;
 extern short controllerYValue;
+
+extern bool controllerConnected; // whether the controller is connected and ready to use.
 
 /// @brief Initializes the joystick controller connection
 void InitController();

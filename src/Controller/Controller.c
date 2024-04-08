@@ -3,10 +3,18 @@
 int fileDescrip;
 short controllerXValue;
 short controllerYValue;
+bool controllerConnected;
 
 void InitController()
 {
+    controllerConnected = false;
+    int startTime = micros();
     fileDescrip = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
+    printf("Time to open controller file descriptor: %d microseconds\n", micros() - startTime); // for testing only
+    if (fileDescrip != -1)
+    {
+        controllerConnected = true;
+    }
 }
 
 void ReadJoystickData()

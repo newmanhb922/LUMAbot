@@ -56,6 +56,8 @@ unsigned int lastTime4;
 
 unsigned short readDataCounter;
 
+extern bool controllerConnected;
+
 void InitPosition()
 {
     curPositionX = 0.0f;
@@ -313,7 +315,15 @@ void ReadData()
     {
         ReadUltrasonicSensors(); //don't run this until sensors are wired in
     }
-    ReadJoystickData(); // every ms
+    
+    if (controllerConnected)
+    { // if controller is connected and ready, read joystick data every ms
+        ReadJoystickData();
+    }
+    else if ((readDataCounter % 1000) == 0) // if controller isn't connected, try to connect/init it every 1 second
+    {
+        InitController();
+    }
 
     readDataCounter++;
     if (readDataCounter > 1000)
