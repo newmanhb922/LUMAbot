@@ -17,7 +17,7 @@
 #define Velocity            12 // 1 ft/s
 #define KD                  0
 #define KI                  0
-#define KP                  3
+#define KP                  0.01f
 #define MinDistance         12
 #define VeryCloseDistance   4
 #define ControllerDutyCycle 35

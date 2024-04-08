@@ -61,5 +61,6 @@ void ResetEncoderCounts();
 
 void AccelMotorPowers();
 
+/// dutyCycle can be positive or negative, positive means move motor forward, negative means move motor backward
 void SetMotorSpeed(int motorNum, float DutyCycle);
 #endif

@@ -169,7 +169,8 @@ int Debug(char * message)
 }
 
 void SendCurPositionToUI()
-{
+{ // this sometimes causes program to break, investigate further
+    printf("SendCurPositionToUI starting\n");
     char helperStr[100];
     sprintf(helperStr, "%.2f, %.2f", curPositionX, curPositionY);
     PublishMessage(mqttClient, CURRENT_POSITION_TOPIC, helperStr);

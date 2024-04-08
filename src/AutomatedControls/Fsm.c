@@ -525,6 +525,7 @@ void StopAllMotorsWithDecel()
         
         if (motor1PowerDecel == 0.0f && motor2PowerDecel == 0.0f)
         {
+            StopAllMotors();
             break;
         }
         

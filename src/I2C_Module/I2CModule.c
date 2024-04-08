@@ -52,7 +52,11 @@ void TurnMotorOff(int motorNum)
 
 void SetMotorPWM(int motorNum, float dutyCycle)
 {
-    if (dutyCycle > MaxDutyCycle)
+    if (dutyCycle < 1.0f)
+    {
+        dutyCycle = 0.0f;
+    }
+    else if (dutyCycle > MaxDutyCycle)
     {
         dutyCycle = MaxDutyCycle;
     }

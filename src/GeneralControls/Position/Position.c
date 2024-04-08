@@ -351,19 +351,23 @@ void ReadData()
 {
     if ((readDataCounter % 100) == 0) // every second
     {
+        int startTime = micros();
         SendCurPositionToUI();
+        printf("Time to SendCurPositionToUI: %d microSeconds\n", micros() - startTime);
     }
     else if ((readDataCounter % 7) == 0) // every 70 ms
     {
         CalculateCurPosition();
     }
-    else if ((readDataCounter % 6) == 0) // every 60 ms
+    // waiting a little longer to read velocity gives us more accurate readings
+    else if ((readDataCounter % 20) == 0) // every 200 ms
     {
         CalculateCurVelocity();
     }
     else if ((readDataCounter % 5) == 0) // every 50 ms
     {
-       // ReadUltrasonicSensors(); //don't run this until sensors are wired in
+        // running this causes program to break so don't run it yet.
+        //ReadUltrasonicSensors(); //don't run this until sensors are wired in
     }
     
     if (controllerConnected)

@@ -53,7 +53,7 @@ void TurnMotorOff(int motorNum);
 
 /// @brief Sets the pwm for the specified motor
 /// @param motorNum motor to set
-/// @param dutyCycle dutycyle to set
+/// @param dutyCycle dutycyle to set, must be positive
 void SetMotorPWM(int motorNum, float dutyCycle);
 
 /// @brief turns Motor1 off
