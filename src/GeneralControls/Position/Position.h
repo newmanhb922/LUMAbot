@@ -54,4 +54,6 @@ void ReadData();
 void CalculateMotorDir();
 
 void BoundMotorPowers();
+
+void ResetEncoderCounts();
 #endif

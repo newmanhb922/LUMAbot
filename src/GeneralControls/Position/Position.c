@@ -100,50 +100,19 @@ void StartSamplingData()
 
 void CalculateCurPosition()
 {
-    int encoder1Change = 0;
-    int encoder2Change = 0;
-    int encoder3Change = 0;
-    int encoder4Change = 0;
-
-    // not sure if waiting for all of these to stop will take too long 
-    // but we need to make sure the variables aren't being accessed by multiple threads
-    while (count1Changing) {};
-    count1Changing = true;
-    encoder1Change = encoder1Count;
-    encoder1Count = 0;
-    count1Changing = false;
-
-    while (count2Changing) {};
-    count2Changing = true;
-    encoder2Change = encoder2Count;
-    encoder2Count = 0;
-    count2Changing = false;
-
-    while (count3Changing) {};
-    count3Changing = true;
-    encoder3Change = encoder3Count;
-    encoder3Count = 0;
-    count3Changing = false;
-
-    while (count4Changing) {};
-    count4Changing = true;
-    encoder4Change = encoder4Count;
-    encoder4Count = 0;
-    count4Changing = false;
-
    // https://github.com/FTC7393/EVLib/wiki/Mecanum-Wheels
 
    // FL and BR wheels move robot forward and right when wheel turns forward.
    // FR and BL wheels move robot forward and left when wheels move forward.
 
     // average encoder changes then multiply by wheel circumference and divide by gear ratio and sqrt(2) (wheel only moves forward sqrt(2) amount of rotation)
-    curPosition1 += encoder1Change * motorToWheelRatio;
-    curPosition2 += encoder2Change * motorToWheelRatio;
-    curPosition3 += encoder3Change * motorToWheelRatio;
-    curPosition4 += encoder4Change * motorToWheelRatio;
+    curPosition1 = encoder1Count * motorToWheelRatio;
+    curPosition2 = encoder2Count * motorToWheelRatio * -1; // when wheels two and three move forward, the motor moves backward so encoder counts down
+    curPosition3 = encoder3Count * motorToWheelRatio * -1;
+    curPosition4 = encoder4Count * motorToWheelRatio;
 
-    curPositionY += (curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2);
-    curPositionX += (((curPosition1 + curPosition3) / (NUM_OF_MOTORS / 2)) - ((curPosition2 + curPosition4) / (NUM_OF_MOTORS / 2))) / sqrt_2; 
+    curPositionY = (curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2);
+    curPositionX = (((curPosition1 + curPosition3) / (NUM_OF_MOTORS / 2)) - ((curPosition2 + curPosition4) / (NUM_OF_MOTORS / 2))) / sqrt_2; 
 }
 
 void CalculateCurVelocity()
@@ -152,18 +121,22 @@ void CalculateCurVelocity()
 
     curVelocity1 = (curPosition1 - lastPosition1) * 1000000 / (tempTime - lastTime1);
     lastTime1 = tempTime;
+    lastPosition1 = curPosition1;
 
     tempTime = micros();
     curVelocity2 = (curPosition2 - lastPosition2) * 1000000 / (tempTime - lastTime2);
     lastTime2 = tempTime;
+    lastPosition2 = curPosition2;
 
     tempTime = micros();
     curVelocity3 = (curPosition3 - lastPosition3) * 1000000 / (tempTime - lastTime3);
     lastTime3 = tempTime;
+    lastPosition3 = curPosition3;
 
     tempTime = micros();
     curVelocity4 = (curPosition4 - lastPosition4) * 1000000 / (tempTime - lastTime4);
     lastTime4 = tempTime;
+    lastPosition4 = curPosition4;
 }
 
 void CalculateMotorDir()
@@ -294,6 +267,29 @@ void BoundMotorPowers()
     {
         motor4Power = MinDutyCycle;
     }
+}
+
+void ResetEncoderCounts()
+{
+    while (count1Changing) {};
+    count1Changing = true;
+    encoder1Count = 0;
+    count1Changing = false;
+
+    while (count2Changing) {};
+    count2Changing = true;
+    encoder2Count = 0;
+    count2Changing = false;
+
+    while (count3Changing) {};
+    count3Changing = true;
+    encoder3Count = 0;
+    count3Changing = false;
+
+    while (count4Changing) {};
+    count4Changing = true;
+    encoder4Count = 0;
+    count4Changing = false;
 }
 // use this to: read controller (joystick) input, 
              // calculate motor velocity,
