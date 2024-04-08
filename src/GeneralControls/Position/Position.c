@@ -39,6 +39,8 @@ float lastPosition4;
 
 float lastMotor1Power;
 float lastMotor2Power;
+float lastMotor3Power;
+float lastMotor4Power;
 
 float motorToWheelRatio;
 float sqrt_2;
@@ -153,6 +155,7 @@ void CalculateMotorDir()
         motor1Dir = 1; // go backward
         motor3Dir = 0;
         motor1Power = motor1Power * -1; // duty cycle values always positive
+        motor3Power = motor3Power * -1;
     }
 
     if (motor2Power >= 0)
@@ -165,6 +168,7 @@ void CalculateMotorDir()
         motor2Dir = 0; // go backward
         motor4Dir = 1;
         motor2Power = motor2Power * -1; // duty cycle values always positive
+        motor3Power = motor3Power * -1;
     }
 }
 
@@ -201,33 +205,13 @@ void CalculateMotorPowers()
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
     motor1Power = ControllerDutyCycle * (yDiff + xDiff) / max;
     motor2Power = ControllerDutyCycle * (yDiff - xDiff) / max;
-
-    // slow down the acceleration and deceleration
-    if ((motor1Power - lastMotor1Power) > MAX_DUTY_CHANGE)
-    {
-        motor1Power = lastMotor1Power + MAX_DUTY_CHANGE;
-    }
-    else if ((motor1Power - lastMotor1Power) < (MAX_DUTY_CHANGE * -1))
-    {
-        motor1Power = lastMotor1Power - MAX_DUTY_CHANGE;
-    }
-
-    if ((motor2Power - lastMotor2Power) > MAX_DUTY_CHANGE)
-    {
-        motor2Power = lastMotor2Power + MAX_DUTY_CHANGE;
-    }
-    else if ((motor2Power - lastMotor2Power) < (MAX_DUTY_CHANGE * -1))
-    {
-        motor2Power = lastMotor2Power - MAX_DUTY_CHANGE;
-    }
-    
-    lastMotor1Power = motor1Power;
-    lastMotor2Power = motor2Power;
-
-    CalculateMotorDir();
-
     motor3Power = motor1Power;
     motor4Power = motor2Power;
+    
+    // slow down the acceleration and deceleration
+    AccelMotorPowers();
+
+    CalculateMotorDir();
 
     BoundMotorPowers();
 }
@@ -271,6 +255,50 @@ void BoundMotorPowers()
     }
 }
 
+void AccelMotorPowers()
+{
+    if ((motor1Power - lastMotor1Power) > MAX_DUTY_CHANGE)
+    {
+        motor1Power = lastMotor1Power + MAX_DUTY_CHANGE;
+    }
+    else if ((motor1Power - lastMotor1Power) < (MAX_DUTY_CHANGE * -1))
+    {
+        motor1Power = lastMotor1Power - MAX_DUTY_CHANGE;
+    }
+
+    if ((motor2Power - lastMotor2Power) > MAX_DUTY_CHANGE)
+    {
+        motor2Power = lastMotor2Power + MAX_DUTY_CHANGE;
+    }
+    else if ((motor2Power - lastMotor2Power) < (MAX_DUTY_CHANGE * -1))
+    {
+        motor2Power = lastMotor2Power - MAX_DUTY_CHANGE;
+    }
+    
+    if ((motor3Power - lastMotor3Power) > MAX_DUTY_CHANGE)
+    {
+        motor3Power = lastMotor3Power + MAX_DUTY_CHANGE;
+    }
+    else if ((motor3Power - lastMotor3Power) < (MAX_DUTY_CHANGE * -1))
+    {
+        motor3Power = lastMotor3Power - MAX_DUTY_CHANGE;
+    }
+
+    if ((motor4Power - lastMotor4Power) > MAX_DUTY_CHANGE)
+    {
+        motor4Power = lastMotor4Power + MAX_DUTY_CHANGE;
+    }
+    else if ((motor4Power - lastMotor4Power) < (MAX_DUTY_CHANGE * -1))
+    {
+        motor4Power = lastMotor4Power - MAX_DUTY_CHANGE;
+    }
+    
+    lastMotor1Power = motor1Power;
+    lastMotor2Power = motor2Power;
+    lastMotor3Power = motor3Power;
+    lastMotor4Power = motor4Power;
+}
+
 void ResetEncoderCounts()
 {
     while (count1Changing) {};
@@ -293,6 +321,28 @@ void ResetEncoderCounts()
     encoder4Count = 0;
     count4Changing = false;
 }
+
+void SetMotorSpeed(int motorNum, float dutyCycle)
+{
+    bool forward = 1;
+    if (motorNum == 1 || motorNum == 4)
+    {
+        forward = dutyCycle < 0;
+    }
+    else if (motorNum == 2 || motorNum == 3)
+    {
+        forward = dutyCycle > 0;
+    }
+    
+    if (dutyCycle < 0)
+    {
+        dutyCycle = dutyCycle * -1;
+    }
+    
+    SetMotorDir(motorNum, forward);
+    SetMotorPWM(motorNum, dutyCycle);
+}
+
 // use this to: read controller (joystick) input, 
              // calculate motor velocity,
              // read ultrasonic sensor data
@@ -313,7 +363,7 @@ void ReadData()
     }
     else if ((readDataCounter % 5) == 0) // every 50 ms
     {
-        ReadUltrasonicSensors(); //don't run this until sensors are wired in
+       // ReadUltrasonicSensors(); //don't run this until sensors are wired in
     }
     
     if (controllerConnected)

@@ -15,9 +15,9 @@
 #define MinDutyCycle        10
 #define MaxControllerValue  32767
 #define Velocity            12 // 1 ft/s
-#define KD                  1
-#define KI                  1
-#define KP                  1
+#define KD                  0
+#define KI                  0
+#define KP                  3
 #define MinDistance         12
 #define VeryCloseDistance   4
 #define ControllerDutyCycle 35

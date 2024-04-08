@@ -47,6 +47,8 @@ float previousError4;
 
 extern float lastMotor1Power;
 extern float lastMotor2Power;
+extern float lastMotor3Power;
+extern float lastMotor4Power;
 
 void (*stateFunctions[NUM_STATES])();
 
@@ -76,10 +78,21 @@ void Init_States()
 
 void SetState(FSM_STATE_T newState) 
 {
-    if (newState == CONTROLLER_MOVE_STATE)
+    if (newState == CONTROLLER_MOVE_STATE || newState == AUTOMATED_MOVE_STATE)
     {
         lastMotor1Power = 0.0f;
         lastMotor2Power = 0.0f;
+        lastMotor3Power = 0.0f;
+        lastMotor4Power = 0.0f;
+    }
+    if (newState == STOP_STATE || newState == E_STOP_STATE)
+    {
+        goPressed = false;
+        
+        motor1Power = 0;
+        motor2Power = 0;
+        motor3Power = 0;
+        motor4Power = 0;
     }
     printf("Setting state to: %s\n", StateToString(newState));
     currentState = newState;
@@ -97,8 +110,6 @@ void RunStateFunction()
 
 void AutomatedMoveState()
 {
-
-
     previousState = currentState;
 
     if(eStopPressed)
@@ -126,12 +137,18 @@ void AutomatedMoveState()
     {
         theta = atan(yDistance/xDistance);
     }
+    if (xDistance < 0 || (xDistance == 0 && yDistance < 0))
+    {
+        theta = theta + PI;
+    }
+    
     float velocityX = Velocity * cos(theta);
     float velocityY = Velocity * sin(theta);
 
     char helperStr[200];
     sprintf(helperStr, "theta: %.2f, xDistance: %.2f, yDistance: %.2f\n", theta, xDistance, yDistance);
     Debug(helperStr);
+    printf(helperStr);
     //target motor velocities
     float motor1TargetVelocity = velocityX + velocityY; 
     float motor2TargetVelocity = -velocityX + velocityY; 
@@ -139,6 +156,7 @@ void AutomatedMoveState()
     float motor4TargetVelocity = -velocityX + velocityY;
     sprintf(helperStr, "motor1TargetVel: %.2f, motor2TargetVel: %.2f\n", motor1TargetVelocity, motor2TargetVelocity);
     Debug(helperStr);
+    printf(helperStr);
     //find error
     float motor1VelocityError = motor1TargetVelocity - curVelocity1;
     float motor2VelocityError = motor2TargetVelocity - curVelocity2;
@@ -147,6 +165,7 @@ void AutomatedMoveState()
 
     sprintf(helperStr, "motor1VelError: %.2f, motor2VelError: %.2f\n", motor1VelocityError, motor2VelocityError);
     Debug(helperStr);
+    printf(helperStr);
 
     integralError1 += motor1VelocityError;
     integralError2 += motor2VelocityError;
@@ -165,35 +184,43 @@ void AutomatedMoveState()
 
     sprintf(helperStr, "pid1: %.2f, pid2: %.2f\n", pidOutput1, pidOutput2);
     Debug(helperStr);
-    motor1Power = pidOutput1;
-    motor2Power = pidOutput2;
-    motor3Power = pidOutput3;
-    motor4Power = pidOutput4;
+    printf(helperStr);
+    motor1Power += pidOutput1;
+    motor2Power += pidOutput2;
+    motor3Power += pidOutput3;
+    motor4Power += pidOutput4;
 
-    CalculateMotorDir();
+    AccelMotorPowers();
+    
+    //CalculateMotorDir();
 
-    BoundMotorPowers();
+    //BoundMotorPowers();
     sprintf(helperStr, "after bounding powers motor1Power: %.2f, motor2Power: %.2f\n", motor1Power, motor2Power);
     Debug(helperStr);
-    SetMotorPWM(1, motor1Power);
-    SetMotorPWM(2, motor2Power);
-    SetMotorPWM(3, motor3Power);
-    SetMotorPWM(4, motor4Power);
+    printf(helperStr);
+    
+    SetMotorSpeed(1, motor1Power);
+    SetMotorSpeed(2, motor2Power);
+    SetMotorSpeed(3, motor3Power);
+    SetMotorSpeed(4, motor4Power);
+    
+//    SetMotorPWM(1, motor1Power);
+//    SetMotorPWM(2, motor2Power);
+//    SetMotorPWM(3, motor3Power);
+//    SetMotorPWM(4, motor4Power);
 
     // have to set direction here as well with SetMotorDir
-    SetMotorDir(1, motor1Dir);
-    SetMotorDir(2, motor2Dir);
-    SetMotorDir(3, motor3Dir);
-    SetMotorDir(4, motor4Dir);
+//    SetMotorDir(1, motor1Dir);
+//    SetMotorDir(2, motor2Dir);
+//    SetMotorDir(3, motor3Dir);
+//    SetMotorDir(4, motor4Dir);
 
-    if((xDistance < 1) && (yDistance < 1))
+    if((fabs(xDistance) < 1) && (fabs(yDistance) < 1))
     {
         integralError1 = 0;
         integralError2 = 0;
         integralError3 = 0;
         integralError4 = 0;
-    
-        goPressed = false;
         
         SetState(STOP_STATE);
     }
@@ -249,7 +276,9 @@ void StopState()
     }
     else
     {
+        printf("Calling stopallMotorsWithDecel\n");
         StopAllMotorsWithDecel();
+        printf("Done with StopAllMotorsWithDecel\n");
     }
     
     if(eStopPressed)

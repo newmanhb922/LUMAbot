@@ -27,6 +27,8 @@ extern float motor4Power; // back left
 
 extern float lastMotor1Power;
 extern float lastMotor2Power;
+extern float lastMotor3Power;
+extern float lastMotor4Power;
 
 // wheel velocity in inches / second
 extern float curVelocity1;
@@ -56,4 +58,8 @@ void CalculateMotorDir();
 void BoundMotorPowers();
 
 void ResetEncoderCounts();
+
+void AccelMotorPowers();
+
+void SetMotorSpeed(int motorNum, float DutyCycle);
 #endif
