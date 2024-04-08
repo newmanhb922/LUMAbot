@@ -8,7 +8,6 @@ bool controllerConnected;
 void InitController()
 {
     controllerConnected = false;
-    int startTime = micros();
     fileDescrip = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
     if (fileDescrip != -1)
     {

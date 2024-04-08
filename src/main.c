@@ -15,15 +15,15 @@ int main()
 
     // init mqtt and subscribe to topics
     ConnectToMQTT(&client);
-    SubscribeToTopic(&client, CURRENT_POSITION_TOPIC);
+//    SubscribeToTopic(&client, CURRENT_POSITION_TOPIC);
     SubscribeToTopic(&client, TARGET_POSITION_TOPIC);
     SubscribeToTopic(&client, COMMAND_TOPIC);
 
     SetupI2C();
-    SetupMotors();
     InitController();
     UltrasonicInit();
     InitPosition();
+    SetupMotors();
     StartSamplingData();
     Fsm_Init();
 
