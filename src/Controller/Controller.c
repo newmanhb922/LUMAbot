@@ -10,7 +10,6 @@ void InitController()
     controllerConnected = false;
     int startTime = micros();
     fileDescrip = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
-    printf("Time to open controller file descriptor: %d microseconds\n", micros() - startTime); // for testing only
     if (fileDescrip != -1)
     {
         controllerConnected = true;
@@ -26,12 +25,10 @@ void ReadJoystickData()
         { // joystick moved
             if(e.number == 0)
             {
-                printf("setting controllerXValue to %d\n", e.value);
                 controllerXValue = e.value;
             }
             else if (e.number == 1)
             {
-                printf("setting controllerYValue to %d\n", e.value);
                 controllerYValue = e.value * -1; // moving joystick down gives a positive value, we want that to be negative.
             }
         }
