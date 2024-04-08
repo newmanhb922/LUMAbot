@@ -20,8 +20,8 @@
 #define KP                  1
 #define MinDistance         12
 #define VeryCloseDistance   4
-#define ControllerDutyCycle 30
-#define MAX_DUTY_CHANGE     5.0f
+#define ControllerDutyCycle 35
+#define MAX_DUTY_CHANGE     1.0f
 
 typedef enum
 {

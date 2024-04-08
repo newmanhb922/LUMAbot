@@ -59,6 +59,7 @@ void ObstacleAvoidanceState();
 void StartState();
 char * StateToString(FSM_STATE_T state);
 float MinFloats(float val1, float val2, float val3, float val4);
+void StopAllMotorsWithDecel();
 
 void Init_States()
 {
@@ -192,6 +193,8 @@ void AutomatedMoveState()
         integralError3 = 0;
         integralError4 = 0;
     
+        goPressed = false;
+        
         SetState(STOP_STATE);
     }
 }
@@ -240,8 +243,15 @@ void StopState()
 {
     previousState = currentState;
 
-    StopAllMotors();
-
+    if (eStopPressed)
+    {
+        StopAllMotors();
+    }
+    else
+    {
+        StopAllMotorsWithDecel();
+    }
+    
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
@@ -449,6 +459,53 @@ float MinFloats(float val1, float val2, float val3, float val4)
     return fminf(val4, minVal);
 }
 
+void StopAllMotorsWithDecel()
+{
+    float motor1Step = MAX_DUTY_CHANGE * -1;
+    float motor2Step = MAX_DUTY_CHANGE * -1;
+    
+    float motor1PowerDecel = lastMotor1Power;
+    float motor2PowerDecel = lastMotor2Power;
+    
+    if (motor1PowerDecel < 0)
+    {
+        motor1PowerDecel = motor1PowerDecel * -1;
+    }
+    
+    if (motor2PowerDecel < 0)
+    {
+        motor2PowerDecel = motor2PowerDecel * -1;
+    }
+    
+    while (motor1PowerDecel != 0.0f && motor2PowerDecel != 0.0f)
+    {        
+        if (motor1PowerDecel <= MAX_DUTY_CHANGE)
+        {
+            motor1PowerDecel = 0.0f;
+        }
+        
+        if (motor2PowerDecel <= MAX_DUTY_CHANGE)
+        {
+            motor2PowerDecel = 0.0f;
+        }
+
+        SetMotorPWM(1, motor1PowerDecel);
+        SetMotorPWM(2, motor2PowerDecel);
+        SetMotorPWM(3, motor1PowerDecel);
+        SetMotorPWM(4, motor2PowerDecel);
+        
+        if (motor1PowerDecel == 0.0f && motor2PowerDecel == 0.0f)
+        {
+            break;
+        }
+        
+        motor1PowerDecel = motor1PowerDecel + motor1Step;
+        motor2PowerDecel = motor2PowerDecel + motor2Step;
+        delayMicroseconds(100);
+    }   
+    lastMotor1Power = 0.0f;
+    lastMotor2Power = 0.0f;        
+}
 // FMM - don't need to calculate angle. Use CalculateMotorPowers in Position.c to 
 // get motor powers scaled from -1 to 1. Then multiply that by some duty cycle constant 
 // to set motor speeds. Maybe have some sort of "ramp up" speed function that 'slowly' increases

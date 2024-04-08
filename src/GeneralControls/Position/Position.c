@@ -245,6 +245,9 @@ void CalculateMotorPowers()
     {
         motor2Power = lastMotor2Power - MAX_DUTY_CHANGE;
     }
+    
+    lastMotor1Power = motor1Power;
+    lastMotor2Power = motor2Power;
 
     CalculateMotorDir();
 
