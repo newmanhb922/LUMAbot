@@ -12,6 +12,8 @@ volatile float sensor4Val; //left
 // extern volatile float sensor7Val;
 // extern volatile float sensor8Val;
 
+float readTimeout; // maximum time that we wait to receive back echo
+
 /// @brief Samples the sensor value
 void SampleSensor();
 
@@ -47,6 +49,8 @@ void UltrasonicInit()
     // sensor6Val = 0;
     // sensor7Val = 0;
     // sensor8Val = 0;
+    
+    readTimeout = MAX_DISTANCE * CM_PER_IN * 2.0f / (100.0f * SPEED_OF_SOUND / 1000000.0f);
 }
 
 void SampleSensor()
@@ -89,31 +93,30 @@ float ReadSensorDistance(int sensorTrigPin, int echoPin, float oldSensorVal)
 {
     unsigned int startUSec = 0;
     unsigned int endUSec = 0;
-    float distanceCm = oldSensorVal;
-    unsigned int timeout = 10000; // 10 ms. if we reduce this to 10,000 that should cut off measurement at around 5 or 6 feet max
+    float distanceCm = 0;
     char debugMsg[100];
     
     digitalWrite(sensorTrigPin, HIGH); // pulse trig pin to tell sensor we want to read
     delayMicroseconds(10);
     digitalWrite(sensorTrigPin, LOW);
     startUSec = micros();
-    while (digitalRead(echoPin) == LOW && (micros() - startUSec) < timeout); // wait until echo goes high
-    if (micros() - startUSec >= timeout)
+    while (digitalRead(echoPin) == LOW && (micros() - startUSec) < readTimeout); // wait until echo goes high
+    if (micros() - startUSec >= readTimeout)
     { // timeout was reason that the while ended, echo never went high
         sprintf(debugMsg, "Echo pin never went high, error with sensor trigger pin %d\n", sensorTrigPin);
-        //Debug(debugMsg);
-     	printf(debugMsg);
-	   return distanceCm; // return old value
+        Debug(debugMsg);
+     	//printf(debugMsg);
+	   return oldSensorVal; // return old value
     }
     startUSec = micros(); // record start time
-    while (digitalRead(echoPin) == HIGH && (micros() - startUSec) < timeout); // wait until echo goes low.
+    while (digitalRead(echoPin) == HIGH && (micros() - startUSec) < readTimeout); // wait until echo goes low.
     // can add a timeout here as well so that if something is really far away we don't pay care so we don't want to waste time waiting for the signal to come back
     endUSec = micros(); // record end time
-    if (micros() - startUSec >= timeout)
+    if (micros() - startUSec >= readTimeout)
     { // timeout was reason that the while ended, echo never went low
 	sprintf(debugMsg, "Echo pin never went low, object at max distance for sensor with trig pin %d\n", sensorTrigPin);
-        //Debug(debugMsg);
-	printf(debugMsg);
+        Debug(debugMsg);
+	//printf(debugMsg);
     }
     // (100 (cm / meter) * (elapsed time (microseconds) / 1000000 (microseconds / second)) * speed of sound (meters / second)) / 2.
     // we divide by two because the elapsed time is the time to travel to object and back to sensor so it travelled double the distance that we want.

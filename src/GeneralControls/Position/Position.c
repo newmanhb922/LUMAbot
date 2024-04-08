@@ -97,7 +97,7 @@ void StartSamplingData()
 
     CalculateCurVelocity();
     signal(SIGALRM, ReadData);
-    ualarm(1000, 1000); // ReadData function called every 1 ms
+    ualarm(10000, 10000); // ReadData function called every 10 ms
 }
 
 void CalculateCurPosition()
@@ -299,19 +299,19 @@ void ResetEncoderCounts()
              // send position data to UI
 void ReadData()
 {
-    if ((readDataCounter % 1000) == 0) // every second
+    if ((readDataCounter % 100) == 0) // every second
     {
         SendCurPositionToUI();
     }
-    else if ((readDataCounter % 70) == 0) // every 70 ms
+    else if ((readDataCounter % 7) == 0) // every 70 ms
     {
         CalculateCurPosition();
     }
-    else if ((readDataCounter % 60) == 0) // every 50 ms
+    else if ((readDataCounter % 6) == 0) // every 60 ms
     {
         CalculateCurVelocity();
     }
-    else if ((readDataCounter % 50) == 0) // every 50 ms
+    else if ((readDataCounter % 5) == 0) // every 50 ms
     {
         ReadUltrasonicSensors(); //don't run this until sensors are wired in
     }
@@ -320,13 +320,13 @@ void ReadData()
     { // if controller is connected and ready, read joystick data every ms
         ReadJoystickData();
     }
-    else if ((readDataCounter % 1000) == 0) // if controller isn't connected, try to connect/init it every 1 second
+    else if ((readDataCounter % 100) == 0) // if controller isn't connected, try to connect/init it every 1 second
     {
         InitController();
     }
 
     readDataCounter++;
-    if (readDataCounter > 1000)
+    if (readDataCounter > 100)
     {
         readDataCounter = 1;
     }

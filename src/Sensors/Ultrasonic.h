@@ -29,6 +29,8 @@
 
 #define CM_PER_IN            2.54f
 
+#define MAX_DISTANCE		16.0f
+
 // distance from sensor to object in inches
 extern volatile float sensor1Val;
 extern volatile float sensor2Val;
