@@ -1,6 +1,6 @@
 #include "MQTTModule.h"
 
-MQTTAsync * mqttClient;
+MQTTClient * mqttClient;
 
 extern float curPositionX;
 extern float curPositionY;
@@ -10,14 +10,12 @@ extern bool eStopPressed;
 extern bool hasBeenZeroed;
 extern bool goPressed;
 
-bool connected;
-
 void ConnectionLost(void * context, char * cause)
 {
     // Connection Lost
 }
 
-int MessageArrived(void * context, char * topicName, int topicLen, MQTTAsync_message * message)
+int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_message * message)
 {
     printf("message arrived. Topic: %s, Message: %s\n", topicName, message->payload);
     char * receivedMsg = message->payload;
@@ -61,7 +59,6 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTAsync_mes
         else if (strcmp(receivedMsg, ZERO_COMMAND) == 0)
         {
             Debug ("Zeroed from UI, setting current position to (0,0).\n");
-            ResetEncoderCounts();
             curPositionX = 0;
             curPositionY = 0;
             hasBeenZeroed = true;
@@ -71,23 +68,23 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTAsync_mes
     {
         // should never receive a debug message
     }
-    MQTTAsync_freeMessage(&message);
-    MQTTAsync_free(topicName);
+    MQTTClient_freeMessage(&message);
+    MQTTClient_free(topicName);
     return 1;
 }
 
-void OnConnect(void* context, MQTTAsync_successData* response)
+void DeliveryComplete(void * context, MQTTClient_deliveryToken token)
 {
-    connected = true; // signal that we successfully connected
+    // Delivery Complete
 }
 
-int ConnectToMQTT(MQTTAsync * client)
+int ConnectToMQTT(MQTTClient * client)
 {
-    MQTTAsync_connectOptions conn_opts = MQTTAsync_connectOptions_initializer;
+    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     int returnCode = -1;
-    connected = false;
+
     // create client object
-    if ((returnCode = MQTTAsync_create(client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL)) != MQTTASYNC_SUCCESS)
+    if ((returnCode = MQTTClient_create(client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL)) != MQTTCLIENT_SUCCESS)
     {
         // error
         printf("error creating client\n");
@@ -96,7 +93,7 @@ int ConnectToMQTT(MQTTAsync * client)
     {
         printf("Client created\n");
     }
-    if ((returnCode = MQTTAsync_setCallbacks(*client, NULL, ConnectionLost, MessageArrived, NULL)) != MQTTASYNC_SUCCESS)
+    if ((returnCode = MQTTClient_setCallbacks(*client, NULL, ConnectionLost, MessageArrived, DeliveryComplete)) != MQTTCLIENT_SUCCESS)
     {
         // error
         printf("error setting callbacks\n");
@@ -107,26 +104,24 @@ int ConnectToMQTT(MQTTAsync * client)
     }
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
-    conn_opts.onSuccess = OnConnect;
     // connect to mqtt server
-    if ((returnCode = MQTTAsync_connect(*client, &conn_opts)) != MQTTASYNC_SUCCESS)
+    if ((returnCode = MQTTClient_connect(*client, &conn_opts)) != MQTTCLIENT_SUCCESS)
     {
         // error
         printf("error connecting\n");
     }
     else
     {
-        while (!connected); // wait until connected
         printf("Connected\n");
         mqttClient = client;
     }
     return returnCode;
 }
 
-int SubscribeToTopic(MQTTAsync * client, const char * topicName)
+int SubscribeToTopic(MQTTClient * client, const char * topicName)
 {
     int returnCode = -1;
-    if ((returnCode = MQTTAsync_subscribe(*client, topicName, QOS, NULL)) != MQTTASYNC_SUCCESS)
+    if ((returnCode = MQTTClient_subscribe(*client, topicName, QOS)) != MQTTCLIENT_SUCCESS)
     {
         // error
         printf("Error subscribing.\n");
@@ -138,9 +133,10 @@ int SubscribeToTopic(MQTTAsync * client, const char * topicName)
     return returnCode;
 }
 
-int PublishMessage(MQTTAsync * client, const char * topicName, char * message)
+int PublishMessage(MQTTClient * client, const char * topicName, char * message)
 {
-    MQTTAsync_message toPublish = MQTTAsync_message_initializer;
+    MQTTClient_message toPublish = MQTTClient_message_initializer;
+    MQTTClient_deliveryToken deliveryToken;
     int returnCode = -1;
 
     toPublish.payload = message;
@@ -148,10 +144,10 @@ int PublishMessage(MQTTAsync * client, const char * topicName, char * message)
     toPublish.qos = QOS;
     toPublish.retained = 0;
 
-    if ((returnCode = MQTTAsync_sendMessage(*client, topicName, &toPublish, NULL)) != MQTTASYNC_SUCCESS)
+    if ((returnCode = MQTTClient_publishMessage(*client, topicName, &toPublish, &deliveryToken)) != MQTTCLIENT_SUCCESS)
     {
         // error
-        printf("error sending message\n");
+        printf("error publishing message\n");
     }
  //   returnCode = MQTTClient_waitForCompletion(*client, deliveryToken, TIMEOUT);
 //    printf("Message Published: %s, DeliveryToken: %d\n", message, deliveryToken);
@@ -169,11 +165,8 @@ int Debug(char * message)
 }
 
 void SendCurPositionToUI()
-{ // this sometimes causes program to break, investigate further
-    printf("SendCurPositionToUI starting\n");
+{
     char helperStr[100];
     sprintf(helperStr, "%.2f, %.2f", curPositionX, curPositionY);
-    printf("SendCurPositionToUI helperStr set\n");
     PublishMessage(mqttClient, CURRENT_POSITION_TOPIC, helperStr);
-    printf("SendCurPositionToUI message published\n");
 }
