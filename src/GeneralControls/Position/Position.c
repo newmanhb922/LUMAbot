@@ -353,9 +353,7 @@ void ReadData()
 {
     if ((readDataCounter % 100) == 0) // every second
     {
-        int startTime = micros();
         SendCurPositionToUI();
-       // printf("Time to SendCurPositionToUI: %d microSeconds\n", micros() - startTime);
     }
     else if ((readDataCounter % 7) == 0) // every 70 ms
     {
@@ -376,7 +374,7 @@ void ReadData()
     { // if controller is connected and ready, read joystick data every ms
         ReadJoystickData();
     }
-    else if ((readDataCounter % 100) == 0) // if controller isn't connected, try to connect/init it every 1 second
+    if ((readDataCounter % 100) == 0) // if controller isn't connected, try to connect/init it every 1 second
     {
         InitController();
     }
