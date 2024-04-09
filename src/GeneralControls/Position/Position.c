@@ -115,8 +115,8 @@ void CalculateCurPosition()
     curPosition3 = encoder3Count * motorToWheelRatio * -1;
     curPosition4 = encoder4Count * motorToWheelRatio;
 
-    curPositionY = (curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2);
-    curPositionX = (((curPosition1 + curPosition3) / (NUM_OF_MOTORS / 2)) - ((curPosition2 + curPosition4) / (NUM_OF_MOTORS / 2))) / sqrt_2; 
+    curPositionY = ((curPosition1 + curPosition2 + curPosition3 + curPosition4)  / (NUM_OF_MOTORS * sqrt_2)) * YPOS_CALIBRATION;
+    curPositionX = ((((curPosition1 + curPosition3) / (NUM_OF_MOTORS / 2)) - ((curPosition2 + curPosition4) / (NUM_OF_MOTORS / 2))) / sqrt_2) * XPOS_CALIBRATION; 
 }
 
 void CalculateCurVelocity()
@@ -205,15 +205,17 @@ void CalculateMotorPowers()
     // motors 1 and 3 are same and 2 and 4 are same when not rotating
     motor1Power = ControllerDutyCycle * (yDiff + xDiff) / max;
     motor2Power = ControllerDutyCycle * (yDiff - xDiff) / max;
-    motor3Power = motor1Power;
-    motor4Power = motor2Power;
+   // motor3Power = motor1Power;
+    //motor4Power = motor2Power;
     
     // slow down the acceleration and deceleration
-    AccelMotorPowers();
+   // AccelMotorPowers();
 
-    CalculateMotorDir();
+  //  CalculateMotorDir();
 
-    BoundMotorPowers();
+  //  BoundMotorPowers();
+    motor3Power = motor1Power;
+    motor4Power = motor2Power;
 }
 
 void BoundMotorPowers()
@@ -353,7 +355,7 @@ void ReadData()
     {
         int startTime = micros();
         SendCurPositionToUI();
-        printf("Time to SendCurPositionToUI: %d microSeconds\n", micros() - startTime);
+       // printf("Time to SendCurPositionToUI: %d microSeconds\n", micros() - startTime);
     }
     else if ((readDataCounter % 7) == 0) // every 70 ms
     {

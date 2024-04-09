@@ -50,6 +50,8 @@ extern float lastMotor2Power;
 extern float lastMotor3Power;
 extern float lastMotor4Power;
 
+extern short controllerSpin;
+
 void (*stateFunctions[NUM_STATES])();
 
 void AutomatedMoveState();
@@ -59,6 +61,7 @@ void WaitingState();
 void EStopState();
 void ObstacleAvoidanceState();
 void StartState();
+void ControllerSpinState();
 char * StateToString(FSM_STATE_T state);
 float MinFloats(float val1, float val2, float val3, float val4);
 void StopAllMotorsWithDecel();
@@ -73,6 +76,7 @@ void Init_States()
     stateFunctions[E_STOP_STATE] = EStopState;
     stateFunctions[OBSTACLE_AVOIDANCE_STATE] = ObstacleAvoidanceState;
     stateFunctions[START_STATE] = StartState;
+    stateFunctions[CONTROLLER_SPIN_STATE] = ControllerSpinState;
 
 }
 
@@ -165,7 +169,7 @@ void AutomatedMoveState()
 
     sprintf(helperStr, "motor1VelError: %.2f, motor2VelError: %.2f\n", motor1VelocityError, motor2VelocityError);
     Debug(helperStr);
-    printf(helperStr);
+   // printf(helperStr);
 
     integralError1 += motor1VelocityError;
     integralError2 += motor2VelocityError;
@@ -184,20 +188,20 @@ void AutomatedMoveState()
 
     sprintf(helperStr, "pid1: %.2f, pid2: %.2f\n", pidOutput1, pidOutput2);
     Debug(helperStr);
-    printf(helperStr);
+   // printf(helperStr);
     motor1Power += pidOutput1;
     motor2Power += pidOutput2;
     motor3Power += pidOutput3;
     motor4Power += pidOutput4;
 
-    AccelMotorPowers();
+    //AccelMotorPowers();
     
     //CalculateMotorDir();
 
     //BoundMotorPowers();
     sprintf(helperStr, "after bounding powers motor1Power: %.2f, motor2Power: %.2f\n", motor1Power, motor2Power);
     Debug(helperStr);
-    printf(helperStr);
+   // printf(helperStr);
     
     SetMotorSpeed(1, motor1Power);
     SetMotorSpeed(2, motor2Power);
@@ -248,17 +252,23 @@ void ControllerMoveState()
     //converts motor power to the duty cycle and maps the duty cycle within the allowed constraints
     CalculateMotorPowers();
 
+    //AccelMotorPowers();
+    
+    SetMotorSpeed(1, motor1Power);
+    SetMotorSpeed(2, motor2Power);
+    SetMotorSpeed(3, motor3Power);
+    SetMotorSpeed(4, motor4Power);
     //sets motor power
-    SetMotorPWM(1, motor1Power);
-    SetMotorPWM(2, motor2Power);
-    SetMotorPWM(3, motor3Power);
-    SetMotorPWM(4, motor4Power);
+  //  SetMotorPWM(1, motor1Power);
+  //  SetMotorPWM(2, motor2Power);
+   // SetMotorPWM(3, motor3Power);
+   // SetMotorPWM(4, motor4Power);
 
     // have to set direction here as well with SetMotorDir
-    SetMotorDir(1, motor1Dir);
-    SetMotorDir(2, motor2Dir);
-    SetMotorDir(3, motor3Dir);
-    SetMotorDir(4, motor4Dir);
+ //   SetMotorDir(1, motor1Dir);
+ //   SetMotorDir(2, motor2Dir);
+  //  SetMotorDir(3, motor3Dir);
+  //  SetMotorDir(4, motor4Dir);
 
     if(controllerXValue == 0 && controllerYValue == 0)
     {
@@ -266,20 +276,34 @@ void ControllerMoveState()
     }    
 }
 
+void ControllerSpinState()
+{
+    previousState = currentState;
+    
+    if (controllerSpin < 0)
+    {
+        SetMotorSpeed(1, -1 * ControllerDutyCycle);
+        SetMotorSpeed(2, ControllerDutyCycle);
+        SetMotorSpeed(3, ControllerDutyCycle);
+        SetMotorSpeed(4, -1 * ControllerDutyCycle);
+    }
+    else if (controllerSpin > 0)
+    {
+        SetMotorSpeed(1, ControllerDutyCycle);
+        SetMotorSpeed(2, -1 * ControllerDutyCycle);
+        SetMotorSpeed(3, -1 * ControllerDutyCycle);
+        SetMotorSpeed(4, ControllerDutyCycle);
+    }    
+    else if (controllerSpin == 0)
+    {
+        SetState(STOP_STATE);
+    }
+}
 void StopState()
 {
     previousState = currentState;
 
-    if (eStopPressed)
-    {
-        StopAllMotors();
-    }
-    else
-    {
-        printf("Calling stopallMotorsWithDecel\n");
-        StopAllMotorsWithDecel();
-        printf("Done with StopAllMotorsWithDecel\n");
-    }
+    StopAllMotors();
     
     if(eStopPressed)
     {
@@ -303,7 +327,6 @@ void StopState()
 void WaitingState()
 {
     previousState = currentState;
-
     if(eStopPressed)
     {
         SetState(E_STOP_STATE);
@@ -315,6 +338,10 @@ void WaitingState()
     else if((controllerXValue != 0 || controllerYValue != 0) && !goPressed)
     {
         SetState(CONTROLLER_MOVE_STATE);
+    }
+    else if ((controllerSpin != 0) && !goPressed)
+    {
+        SetState(CONTROLLER_SPIN_STATE);
     }
 }
 
@@ -478,6 +505,10 @@ char * StateToString(FSM_STATE_T state)
             return "Obstacle Avoidance State";
         case START_STATE:
             return "Start State";
+        case CONTROLLER_SPIN_STATE:
+            return "Controller Spin State";
+        default:
+            return "Unknown State";
     }
 }
 
@@ -507,7 +538,8 @@ void StopAllMotorsWithDecel()
     }
     
     while (motor1PowerDecel != 0.0f && motor2PowerDecel != 0.0f)
-    {        
+    {  
+              
         if (motor1PowerDecel <= MAX_DUTY_CHANGE)
         {
             motor1PowerDecel = 0.0f;

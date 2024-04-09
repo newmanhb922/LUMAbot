@@ -10,23 +10,23 @@
 #include "../GeneralControls/Position/Position.h"
 #include "../I2C_Module/I2CModule.h"
 
-#define NUM_STATES          7
+#define NUM_STATES          8
 #define MaxDutyCycle        80
-#define MinDutyCycle        10
+#define MinDutyCycle        45
 #define MaxControllerValue  32767
-#define Velocity            12 // 1 ft/s
+#define Velocity            18 // 1 ft/s
 #define KD                  0
 #define KI                  0
 #define KP                  0.01f
 #define MinDistance         12
 #define VeryCloseDistance   4
-#define ControllerDutyCycle 35
+#define ControllerDutyCycle 45
 #define MAX_DUTY_CHANGE     1.0f
 
 typedef enum
 {
     AUTOMATED_MOVE_STATE, CONTROLLER_MOVE_STATE,  STOP_STATE, WAITING_STATE, E_STOP_STATE, 
-    OBSTACLE_AVOIDANCE_STATE, START_STATE
+    OBSTACLE_AVOIDANCE_STATE, START_STATE, CONTROLLER_SPIN_STATE
 } FSM_STATE_T;
 
 extern bool eStopPressed;

@@ -4,6 +4,7 @@ int fileDescrip;
 short controllerXValue;
 short controllerYValue;
 bool controllerConnected;
+short controllerSpin;
 
 void InitController()
 {
@@ -29,6 +30,10 @@ void ReadJoystickData()
             else if (e.number == 1)
             {
                 controllerYValue = e.value * -1; // moving joystick down gives a positive value, we want that to be negative.
+            }
+            else if (e.number == 3) // right joystick x
+            {
+                controllerSpin = e.value;
             }
         }
     }

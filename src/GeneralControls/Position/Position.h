@@ -13,6 +13,8 @@
 #define WHEEL_DIAM              4.0f // inches
 #define PI                      3.14159265f
 #define COUNTS_PER_MOTOR_REV    28.0f
+#define YPOS_CALIBRATION		1.51f
+#define XPOS_CALIBRATION		0.67f
 
 // position in inches
 extern float curPositionX;

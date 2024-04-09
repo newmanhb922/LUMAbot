@@ -11,6 +11,7 @@
 
 extern short controllerXValue;
 extern short controllerYValue;
+extern short controllerSpin;
 
 extern bool controllerConnected; // whether the controller is connected and ready to use.
 

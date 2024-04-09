@@ -173,5 +173,7 @@ void SendCurPositionToUI()
     printf("SendCurPositionToUI starting\n");
     char helperStr[100];
     sprintf(helperStr, "%.2f, %.2f", curPositionX, curPositionY);
+    printf("SendCurPositionToUI helperStr set\n");
     PublishMessage(mqttClient, CURRENT_POSITION_TOPIC, helperStr);
+    printf("SendCurPositionToUI message published\n");
 }
