@@ -16,6 +16,7 @@
 #define TARGET_POSITION_TOPIC       "TargetPosition"
 #define COMMAND_TOPIC               "Command"
 #define DEBUG_TOPIC                 "Debug"
+#define STATE_TOPIC                 "State"
 #define ESTOP_COMMAND               "EStop"
 #define ESTOP_RESET_COMMAND         "EStopReset"
 #define ZERO_COMMAND                "Zero"

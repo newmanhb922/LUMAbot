@@ -52,6 +52,8 @@ extern float lastMotor4Power;
 
 extern short controllerSpin;
 
+extern MQTTClient client;
+
 void (*stateFunctions[NUM_STATES])();
 
 void AutomatedMoveState();
@@ -77,7 +79,6 @@ void Init_States()
     stateFunctions[OBSTACLE_AVOIDANCE_STATE] = ObstacleAvoidanceState;
     stateFunctions[START_STATE] = StartState;
     stateFunctions[CONTROLLER_SPIN_STATE] = ControllerSpinState;
-
 }
 
 void SetState(FSM_STATE_T newState) 
@@ -98,7 +99,10 @@ void SetState(FSM_STATE_T newState)
         motor3Power = 0;
         motor4Power = 0;
     }
-    printf("Setting state to: %s\n", StateToString(newState));
+    printf("Publishing state message\n");
+    PublishMessage(client, STATE_TOPIC, StateToString(newState));
+    printf("State message published\n");
+    //printf("Setting state to: %s\n", StateToString(newState));
     currentState = newState;
 }
 
@@ -492,23 +496,23 @@ char * StateToString(FSM_STATE_T state)
     switch (state)
     {
         case AUTOMATED_MOVE_STATE:
-            return "Automated Move State";
+            return "Automated_Move_State";
         case CONTROLLER_MOVE_STATE:
-            return "Controller Move State";
+            return "Controller_Move_State";
         case STOP_STATE:
-            return "Stop State";
+            return "Stop_State";
         case WAITING_STATE:
-            return "Waiting State";
+            return "Waiting_State";
         case E_STOP_STATE:
-            return "E Stop State";
+            return "E_Stop_State";
         case OBSTACLE_AVOIDANCE_STATE:
-            return "Obstacle Avoidance State";
+            return "Obstacle_Avoidance_State";
         case START_STATE:
-            return "Start State";
+            return "Start_State";
         case CONTROLLER_SPIN_STATE:
-            return "Controller Spin State";
+            return "Controller_Spin_State";
         default:
-            return "Unknown State";
+            return "Unknown_State";
     }
 }
 
