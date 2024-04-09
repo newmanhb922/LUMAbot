@@ -32,6 +32,7 @@ typedef enum
 extern bool eStopPressed;
 extern bool hasBeenZeroed;
 extern bool goPressed;
+extern MQTTClient client;
 
 void Init_States();
 

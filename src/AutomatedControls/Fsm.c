@@ -52,7 +52,7 @@ extern float lastMotor4Power;
 
 extern short controllerSpin;
 
-extern MQTTClient client;
+MQTTClient client;
 
 void (*stateFunctions[NUM_STATES])();
 
@@ -99,10 +99,7 @@ void SetState(FSM_STATE_T newState)
         motor3Power = 0;
         motor4Power = 0;
     }
-    printf("Publishing state message\n");
-    PublishMessage(client, STATE_TOPIC, StateToString(newState));
-    printf("State message published\n");
-    //printf("Setting state to: %s\n", StateToString(newState));
+    PublishMessage(&client, STATE_TOPIC, StateToString(newState));
     currentState = newState;
 }
 
@@ -477,7 +474,7 @@ void StartState()
 }
 
 void Fsm_Init()
-{
+{    
     integralError1 = 0;
     integralError2 = 0;
     integralError3 = 0;

@@ -7,7 +7,7 @@
 #include "AutomatedControls/Fsm.h"
 
 //Objects
-MQTTClient client;
+extern MQTTClient client;
 //MQTTAsync client;
 int main()
 {
