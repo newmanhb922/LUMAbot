@@ -12,7 +12,7 @@ namespace LumaBotUI
     public class MqttModule
     {
         #region Private Enums
-        public enum Topic { CurrentPosition, TargetPosition, Command, Debug };
+        public enum Topic { CurrentPosition, TargetPosition, Command, Debug, State };
         #endregion
 
         #region Private Fields
@@ -123,7 +123,11 @@ namespace LumaBotUI
             }
             else if (e.Topic == Topic.Debug.ToString())
             {
-                OnDebugReceived(new DebugEventArgs(Encoding.UTF8.GetString(e.Message)));
+                OnDebugReceived(new DebugEventArgs(msg));
+            }
+            else if (e.Topic == Topic.State.ToString())
+            {
+                OnStatusUpdate(new StatusEventArgs(msg));
             }
         }
         #endregion

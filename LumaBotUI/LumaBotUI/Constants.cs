@@ -37,5 +37,15 @@ namespace LumaBotUI
         public const string N_COORD = "(0,-168)";
         public const string P_COORD = "(-84,-168)";
         public const string Q_COORD = "(-168,-168)";
+
+        public const string AUTOMATED_MOVE_STR = "Automated_Move_State";
+        public const string CONTROLLER_MOVE_STR = "Controller_Move_State";
+        public const string STOP_STR = "Stop_State";
+        public const string WAITING_STR = "Waiting_State";
+        public const string E_STOP_STR = "E_Stop_State";
+        public const string OBSTACLE_AVOIDANCE_STR = "Obstacle_Avoidance_State";
+        public const string START_STR = "Start_State";
+        public const string CONTROLLER_SPIN_STR = "Controller_Spin_State";
+        public const string UNKNOWN_STR = "Unknown_State";
     }
 }

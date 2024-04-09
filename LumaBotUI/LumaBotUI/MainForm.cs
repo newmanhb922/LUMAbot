@@ -60,6 +60,7 @@ namespace LumaBotUI
             mqtt.LocationUpdated += Mqtt_LocationUpdated;
             mqtt.StatusUpdated += Mqtt_StatusUpdated;
             mqtt.SubscribeToTopic(MqttModule.Topic.CurrentPosition.ToString());
+            mqtt.SubscribeToTopic(MqttModule.Topic.State.ToString());
             mqtt.ConnectToBroker();
             // example for publishing a message
             //client.Publish("/home/temperature", Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false); 
@@ -74,7 +75,48 @@ namespace LumaBotUI
         }
         private void StatusUpdate(string status)
         {
-            statusLabel.Text = status;
+            string newStatus = String.Empty;
+            if (status == AUTOMATED_MOVE_STR)
+            {
+                newStatus = "Automated Move";
+            }
+            else if (status == CONTROLLER_MOVE_STR)
+            {
+                newStatus = "Controller Move";
+            }
+            else if (status == STOP_STR)
+            {
+                newStatus = "Stopped";
+            }
+            else if (status == WAITING_STR)
+            {
+                newStatus = "Waiting For Input";
+            }
+            else if (status == E_STOP_STR)
+            {
+                newStatus = "E Stopped";
+            }
+            else if (status == OBSTACLE_AVOIDANCE_STR)
+            {
+                newStatus = "Obstacle Avoidance";
+            }
+            else if (status == START_STR)
+            {
+                newStatus = "Startup";
+            }
+            else if (status == CONTROLLER_SPIN_STR)
+            {
+                newStatus = "Controller Spin";
+            }
+            else if (status == UNKNOWN_STR)
+            {
+                newStatus = "Unknown State";
+            }
+            else
+            {
+                newStatus = status;
+            }
+            statusLabel.Text = newStatus;
         }
         private void UpdateGraphicLocation()
         {
