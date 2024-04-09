@@ -30,7 +30,7 @@ namespace LumaBotUI
         }
         private void Mqtt_DebugReceived(object sender, MqttModule.DebugEventArgs e)
         {
-            this.BeginInvoke(new DebugDelegate(AddDebugMsg), e.DebugMessage);
+            this?.BeginInvoke(new DebugDelegate(AddDebugMsg), e.DebugMessage);
         }
     }
 }

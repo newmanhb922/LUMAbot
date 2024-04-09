@@ -226,20 +226,20 @@ namespace LumaBotUI
             {
                 mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), ESTOP_COMMAND);
                 eStopPressed = true;
-                eStopButton.Text = "Reset EStop";
+                eStopButton.Text = "Reset";
             }
             else // e stop already pressed, tell pi we can go again
             {
                 mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), ESTOP_RESET_COMMAND);
                 eStopPressed = false;
-                eStopButton.Text = "Emergency Stop";
+                eStopButton.Text = "Stop";
             }
         }
         #endregion
 
         private void launchDebugButton_Click(object sender, EventArgs e)
         {
-            if (debugForm == null)
+            if (debugForm == null || debugForm.IsDisposed)
             {
                 debugForm = new DebugForm(mqtt);
             }

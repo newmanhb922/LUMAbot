@@ -22,9 +22,8 @@ namespace LumaBotUI
         #region Constructor
         public MqttModule(string ipAddress)
         {
-            mqttClient = new MqttClient(ipAddress);
+            mqttClient = new MqttClient(ipAddress, 1883, false, null, null, MqttSslProtocols.None);
             mqttClient.MqttMsgPublishReceived += MqttClient_MqttMsgPublishReceived;
-            
         }
         #endregion
 
@@ -82,7 +81,7 @@ namespace LumaBotUI
         #region Public Methods
         public void ConnectToBroker()
         {
-            byte returnCode = 0;
+            byte returnCode = 1;
             try
             {
                 returnCode = mqttClient.Connect("WindowsApp");
@@ -91,6 +90,10 @@ namespace LumaBotUI
             {
                 //error
                 OnStatusUpdate(new StatusEventArgs("Error connecting to MQTT broker"));
+            }
+            if (returnCode == 0)
+            {
+                OnStatusUpdate(new StatusEventArgs("Connected"));
             }
         }
         public void SubscribeToTopic(string topic)
@@ -113,8 +116,8 @@ namespace LumaBotUI
                 string[] coords = msg.Split(',');
                 if (coords.Length == 2)
                 {
-                    float xCoord = float.Parse(coords[0]);
-                    float yCoord = float.Parse(coords[1]);
+                    float xCoord = float.Parse(coords[0]) / 12.0f;
+                    float yCoord = float.Parse(coords[1]) / 12.0f;
                     OnLocationUpdated(new LocationEventArgs(new PointF(xCoord, yCoord)));
                 }
             }
