@@ -567,6 +567,11 @@ void StopAllMotorsWithDecel()
     lastMotor1Power = 0.0f;
     lastMotor2Power = 0.0f;        
 }
+
+FSM_STATE_T GetCurrentState()
+{
+    return currentState;
+}
 // FMM - don't need to calculate angle. Use CalculateMotorPowers in Position.c to 
 // get motor powers scaled from -1 to 1. Then multiply that by some duty cycle constant 
 // to set motor speeds. Maybe have some sort of "ramp up" speed function that 'slowly' increases

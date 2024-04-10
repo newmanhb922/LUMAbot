@@ -41,4 +41,6 @@ void Fsm_Init();
 
 void RunStateFunction();
 
+FSM_STATE_T GetCurrentState();
+
 #endif

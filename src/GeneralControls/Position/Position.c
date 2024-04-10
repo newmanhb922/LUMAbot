@@ -374,8 +374,9 @@ void ReadData()
     { // if controller is connected and ready, read joystick data every ms
         ReadJoystickData();
     }
-    if ((readDataCounter % 100) == 0) // if controller isn't connected, try to connect/init it every 1 second
-    {
+    if (GetCurrentState() != CONTROLLER_MOVE_STATE && GetCurrentState() != AUTOMATED_MOVE_STATE
+        && GetCurrentState() != CONTROLLER_SPIN_STATE && (readDataCounter % 100) == 0)
+    { // if we aren't in a "moving" state, try to connect to controller every 1 second
         InitController();
     }
 
