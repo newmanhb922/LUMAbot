@@ -171,3 +171,8 @@ void SendCurPositionToUI()
     sprintf(helperStr, "%.2f, %.2f", curPositionX, curPositionY);
     PublishMessage(mqttClient, CURRENT_POSITION_TOPIC, helperStr);
 }
+
+void SendStateToUI(char * curState)
+{
+    PublishMessage(mqttClient, STATE_TOPIC, curState);
+}

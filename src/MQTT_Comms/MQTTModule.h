@@ -46,4 +46,8 @@ int Debug(char * message);
 
 /// @brief Sends the curPositionX and curPositionY to the UI
 void SendCurPositionToUI();
+
+/// @brief Sends the current state to the UI
+/// @param curState string the contains the current state
+void SendStateToUI(char * curState);
 #endif

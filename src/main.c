@@ -7,15 +7,13 @@
 #include "AutomatedControls/Fsm.h"
 
 //Objects
-extern MQTTClient client;
-//MQTTAsync client;
+MQTTClient client;
 int main()
 {
     //Init Functions
 
     // init mqtt and subscribe to topics
     ConnectToMQTT(&client);
-//    SubscribeToTopic(&client, CURRENT_POSITION_TOPIC);
     SubscribeToTopic(&client, TARGET_POSITION_TOPIC);
     SubscribeToTopic(&client, COMMAND_TOPIC);
 

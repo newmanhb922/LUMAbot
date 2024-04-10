@@ -52,8 +52,6 @@ extern float lastMotor4Power;
 
 extern short controllerSpin;
 
-MQTTClient client;
-
 void (*stateFunctions[NUM_STATES])();
 
 void AutomatedMoveState();
@@ -99,7 +97,7 @@ void SetState(FSM_STATE_T newState)
         motor3Power = 0;
         motor4Power = 0;
     }
-    PublishMessage(&client, STATE_TOPIC, StateToString(newState));
+    SendStateToUI(StateToString(newState));
     currentState = newState;
 }
 
