@@ -50,9 +50,18 @@ namespace LumaBotUI
             //ipAddress = "172.30.233.63";
             InitializeComponent();
             eStopPressed = false;
+            this.pointSelectionCombo.SelectedIndex = 0;
         }
         #endregion
-
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle = cp.ExStyle | 0x2000000;
+                return cp;
+            }
+        }
         #region Private Methods
         private void ConnectToMqtt()
         {

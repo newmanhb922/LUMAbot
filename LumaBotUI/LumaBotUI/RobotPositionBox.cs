@@ -42,15 +42,15 @@ namespace LumaBotUI
         }
         protected override void OnPaint(PaintEventArgs e)
         {
+            Pen pen = new Pen(Color.Red, 4);
+            float dotWidth = pen.Width * 2;
             if (this.drawBorder)
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                Pen pen = new Pen(Color.Red, 4);
-                float dotWidth = pen.Width * 2;
-                SolidBrush brush = new SolidBrush(pen.Color);
                 e.Graphics.DrawRectangle(pen, 0, 0, this.Width - 1, this.Height - 1);
-                e.Graphics.FillEllipse(brush, this.Width / 2 - dotWidth / 2, this.Height / 2 - dotWidth / 2, dotWidth, dotWidth);
             }
+            SolidBrush brush = new SolidBrush(pen.Color);
+            e.Graphics.FillEllipse(brush, this.Width / 2 - dotWidth / 2, this.Height / 2 - dotWidth / 2, dotWidth, dotWidth);
         }
     }
 }
