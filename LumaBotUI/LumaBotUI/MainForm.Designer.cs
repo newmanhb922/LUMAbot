@@ -120,7 +120,7 @@ namespace LumaBotUI
             this.eStopButton.Name = "eStopButton";
             this.eStopButton.Size = new System.Drawing.Size(222, 142);
             this.eStopButton.TabIndex = 3;
-            this.eStopButton.Text = "Emergency Stop";
+            this.eStopButton.Text = "Stop";
             this.eStopButton.UseVisualStyleBackColor = false;
             this.eStopButton.Click += new System.EventHandler(this.eStopButton_Click);
             // 
