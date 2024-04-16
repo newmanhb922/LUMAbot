@@ -7,7 +7,7 @@
 #include "../AutomatedControls/Fsm.h"
 #include <stdlib.h>
 
-#define ADDRESS     "localhost"
+#define ADDRESS     "tcp://localhost:5900"
 #define CLIENTID    "RaspPi"
 #define QOS         1
 #define TIMEOUT     10000L
