@@ -46,8 +46,8 @@ namespace LumaBotUI
         #region Constructor
         public MainForm()
         {
-            ipAddress = "192.168.43.65"; // maybe get this dynamically somehow?!
-            //ipAddress = "172.30.233.63";
+          //  ipAddress = "192.168.43.65"; // maybe get this dynamically somehow?!
+            ipAddress = "172.30.233.184";
             InitializeComponent();
             eStopPressed = false;
             this.pointSelectionCombo.SelectedIndex = 0;

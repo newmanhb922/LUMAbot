@@ -22,7 +22,7 @@ namespace LumaBotUI
         #region Constructor
         public MqttModule(string ipAddress)
         {
-            mqttClient = new MqttClient(ipAddress, 1883, false, null, null, MqttSslProtocols.None);
+            mqttClient = new MqttClient(ipAddress, 5900, false, null, null, MqttSslProtocols.None);
             mqttClient.MqttMsgPublishReceived += MqttClient_MqttMsgPublishReceived;
         }
         #endregion
