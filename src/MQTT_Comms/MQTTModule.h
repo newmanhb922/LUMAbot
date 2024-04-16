@@ -20,6 +20,7 @@
 #define ESTOP_COMMAND               "EStop"
 #define ESTOP_RESET_COMMAND         "EStopReset"
 #define ZERO_COMMAND                "Zero"
+#define INIT_CONTROLLER_COMMAND     "InitController"
 
 /// @brief Connects to mqtt server and returns a return code.
 /// @param client pointer to an MQTTClient object 

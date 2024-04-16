@@ -64,6 +64,11 @@ int MessageArrived(void * context, char * topicName, int topicLen, MQTTClient_me
             curPositionY = 0;
             hasBeenZeroed = true;
         }
+        else if (strcmp(receivedMsg, INIT_CONTROLLER_COMMAND) == 0)
+        {
+            Debug("Received init controller command from UI\n");
+            InitController();
+        }
     }
     else if (strcmp(topicName, DEBUG_TOPIC) == 0)
     {
