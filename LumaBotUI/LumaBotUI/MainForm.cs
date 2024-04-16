@@ -305,5 +305,10 @@ namespace LumaBotUI
                 mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), ZERO_COMMAND);
             }
         }
+
+        private void initControllerButton_Click(object sender, EventArgs e)
+        {
+            mqtt.PublishMessage(MqttModule.Topic.Command.ToString(), INIT_CONTROLLER_COMMAND);
+        }
     }
 }

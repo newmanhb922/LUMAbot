@@ -21,6 +21,7 @@ namespace LumaBotUI
         public const string ESTOP_COMMAND = "EStop";
         public const string ESTOP_RESET_COMMAND = "EStopReset";
         public const string ZERO_COMMAND = "Zero";
+        public const string INIT_CONTROLLER_COMMAND = "InitController";
 
         public const string A_COORD = "(168,0)";
         public const string B_COORD = "(84,0)";

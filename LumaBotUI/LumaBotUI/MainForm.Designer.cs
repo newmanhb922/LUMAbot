@@ -56,6 +56,7 @@ namespace LumaBotUI
             this.setOriginButton = new System.Windows.Forms.Button();
             this.launchDebugButton = new System.Windows.Forms.Button();
             this.robotPositionBox = new LumaBotUI.RobotPositionBox();
+            this.initControllerButton = new System.Windows.Forms.Button();
             this.stageGrid.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -408,10 +409,10 @@ namespace LumaBotUI
             // 
             // setOriginButton
             // 
-            this.setOriginButton.Location = new System.Drawing.Point(251, 535);
-            this.setOriginButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.setOriginButton.Location = new System.Drawing.Point(335, 655);
+            this.setOriginButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.setOriginButton.Name = "setOriginButton";
-            this.setOriginButton.Size = new System.Drawing.Size(128, 24);
+            this.setOriginButton.Size = new System.Drawing.Size(171, 30);
             this.setOriginButton.TabIndex = 12;
             this.setOriginButton.Text = "Set Origin";
             this.setOriginButton.UseVisualStyleBackColor = true;
@@ -419,10 +420,10 @@ namespace LumaBotUI
             // 
             // launchDebugButton
             // 
-            this.launchDebugButton.Location = new System.Drawing.Point(251, 578);
-            this.launchDebugButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.launchDebugButton.Location = new System.Drawing.Point(528, 655);
+            this.launchDebugButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.launchDebugButton.Name = "launchDebugButton";
-            this.launchDebugButton.Size = new System.Drawing.Size(128, 24);
+            this.launchDebugButton.Size = new System.Drawing.Size(127, 80);
             this.launchDebugButton.TabIndex = 13;
             this.launchDebugButton.Text = "Launch Debugging";
             this.launchDebugButton.UseVisualStyleBackColor = true;
@@ -438,12 +439,24 @@ namespace LumaBotUI
             this.robotPositionBox.TabIndex = 11;
             this.robotPositionBox.Text = "robotPositionBox1";
             // 
+            // initControllerButton
+            // 
+            this.initControllerButton.Location = new System.Drawing.Point(337, 705);
+            this.initControllerButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.initControllerButton.Name = "initControllerButton";
+            this.initControllerButton.Size = new System.Drawing.Size(171, 30);
+            this.initControllerButton.TabIndex = 14;
+            this.initControllerButton.Text = "Controller Connected";
+            this.initControllerButton.UseVisualStyleBackColor = true;
+            this.initControllerButton.Click += new System.EventHandler(this.initControllerButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(736, 612);
+            this.ClientSize = new System.Drawing.Size(981, 753);
+            this.Controls.Add(this.initControllerButton);
             this.Controls.Add(this.launchDebugButton);
             this.Controls.Add(this.setOriginButton);
             this.Controls.Add(this.robotPositionBox);
@@ -495,6 +508,7 @@ namespace LumaBotUI
         private RobotPositionBox robotPositionBox;
         private System.Windows.Forms.Button setOriginButton;
         private System.Windows.Forms.Button launchDebugButton;
+        private System.Windows.Forms.Button initControllerButton;
     }
 }
 
