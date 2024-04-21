@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using System.Drawing;
+using static LumaBotUI.Constants;
 
 namespace LumaBotUI
 {
@@ -22,8 +23,18 @@ namespace LumaBotUI
         #region Constructor
         public MqttModule(string ipAddress)
         {
-            mqttClient = new MqttClient(ipAddress, 5900, false, null, null, MqttSslProtocols.None);
-            mqttClient.MqttMsgPublishReceived += MqttClient_MqttMsgPublishReceived;
+            try
+            {
+                mqttClient = new MqttClient(ipAddress, 5900, false, null, null, MqttSslProtocols.None);
+            }
+            catch (Exception e)
+            {
+                OnStatusUpdate(new StatusEventArgs(IP_ADDR_STATUS_ERROR));
+            }
+            if (mqttClient != null)
+            {
+                mqttClient.MqttMsgPublishReceived += MqttClient_MqttMsgPublishReceived;
+            }
         }
         #endregion
 
@@ -84,25 +95,38 @@ namespace LumaBotUI
             byte returnCode = 1;
             try
             {
-                returnCode = mqttClient.Connect("WindowsApp");
+                if (mqttClient != null)
+                {
+                    returnCode = mqttClient.Connect(APP_NAME_STR);
+                }
+                else
+                {
+                    OnStatusUpdate(new StatusEventArgs(CONNECTION_ERROR));
+                }
             }
             catch (Exception e)
             {
                 //error
-                OnStatusUpdate(new StatusEventArgs("Error connecting to MQTT broker"));
+                OnStatusUpdate(new StatusEventArgs(CONNECTION_ERROR));
             }
             if (returnCode == 0)
             {
-                OnStatusUpdate(new StatusEventArgs("Connected"));
+                OnStatusUpdate(new StatusEventArgs(CONNECTED_STR));
             }
         }
         public void SubscribeToTopic(string topic)
         {
-            mqttClient.Subscribe(new string[] { topic }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+            if (mqttClient != null)
+            {
+                mqttClient.Subscribe(new string[] { topic }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+            }
         }
         public void PublishMessage(string topic, string message)
         {
-            mqttClient.Publish(topic, Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+            if (mqttClient != null)
+            {
+                mqttClient.Publish(topic, Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+            }
         }
         #endregion
 

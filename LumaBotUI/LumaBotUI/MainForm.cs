@@ -10,26 +10,17 @@ using System.Windows.Forms;
 using static LumaBotUI.Constants;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using System.Net.NetworkInformation;
 
 
 namespace LumaBotUI
 {
     public partial class MainForm : Form
     {
-
-        #region Types
-        enum RobotStatus { Disconnected = 0, Idle = 1, Moving = 2}
-
-        #endregion
-
         #region Private Fields
-
-        private RobotStatus status;
 
         private PointF curLocation; // location of robot
         private PointF targetLocation; // location to send robot to
-
-        private string ipAddress;
 
         private MqttModule mqtt;
 
@@ -46,8 +37,6 @@ namespace LumaBotUI
         #region Constructor
         public MainForm()
         {
-          //  ipAddress = "192.168.43.65"; // maybe get this dynamically somehow?!
-            ipAddress = "172.30.233.184";
             InitializeComponent();
             eStopPressed = false;
             this.pointSelectionCombo.SelectedIndex = 0;
@@ -65,6 +54,13 @@ namespace LumaBotUI
         #region Private Methods
         private void ConnectToMqtt()
         {
+            string ipAddress = GetIPAddress();
+
+            if (ipAddress == NO_IP_ADDR)
+            { // can't find pi!
+                Mqtt_StatusUpdated(this, new MqttModule.StatusEventArgs(IP_ADDR_STATUS_ERROR));
+                return;
+            }
             mqtt = new MqttModule(ipAddress);
             mqtt.LocationUpdated += Mqtt_LocationUpdated;
             mqtt.StatusUpdated += Mqtt_StatusUpdated;
@@ -74,8 +70,6 @@ namespace LumaBotUI
             // example for publishing a message
             //client.Publish("/home/temperature", Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false); 
         }
-
-
 
         private void LocationUpdate()
         {
@@ -147,28 +141,6 @@ namespace LumaBotUI
             stageGrid.Refresh();
             robotPositionBox.Refresh();
         }
-        private void UpdateStatus()
-        {
-            statusLabel.Text = StatusToText(status);
-        }
-
-        private string StatusToText(RobotStatus status)
-        {
-            string toReturn = String.Empty;
-            switch (status)
-            {
-                case RobotStatus.Disconnected:
-                    toReturn = DISCONNECTED_STR;
-                    break;
-                case RobotStatus.Idle:
-                    toReturn = IDLE_STR;
-                    break;
-                case RobotStatus.Moving:
-                    toReturn = MOVING_STR;
-                    break;
-            }
-            return toReturn;
-        }
         private float AdjustXForMargins(float xCoord)
         {
             if (xCoord > stageLocationL.Width * 4)
@@ -200,6 +172,25 @@ namespace LumaBotUI
                 yCoord = yCoord + stageLocationL.Margin.Top * 2;
             }
             return yCoord;
+        }
+
+        private string GetIPAddress()
+        {
+            string ipAddress = NO_IP_ADDR;
+            Ping pinger = new Ping();
+            try
+            {
+                PingReply reply = pinger.Send(PI_LOCAL_NAME);
+                if (reply.Status == IPStatus.Success)
+                {
+                    ipAddress = reply.Address.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                ipAddress = NO_IP_ADDR;
+            }
+            return ipAddress;
         }
         #endregion
 

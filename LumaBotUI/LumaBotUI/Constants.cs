@@ -8,11 +8,6 @@ namespace LumaBotUI
 {
     public class Constants
     {
-        // States strings
-        public const string DISCONNECTED_STR = "Disconnected";
-        public const string IDLE_STR = "Idle";
-        public const string MOVING_STR = "Moving";
-
         public const int MIN_STAGE_X = -14;
         public const int MIN_STAGE_Y = -14;
         public const int MAX_STAGE_X = 14;
@@ -48,5 +43,15 @@ namespace LumaBotUI
         public const string START_STR = "Start_State";
         public const string CONTROLLER_SPIN_STR = "Controller_Spin_State";
         public const string UNKNOWN_STR = "Unknown_State";
+
+        public const string NO_IP_ADDR = "NO_IP_ADDR";
+        public const string PI_LOCAL_NAME = "raspberrypi7";
+
+        public const string CONNECTION_ERROR = "Error connecting to MQTT broker";
+        public const string IP_ADDR_STATUS_ERROR = "Can't find PI's IP Address";
+
+        public const string APP_NAME_STR = "WindowsApp";
+
+        public const string CONNECTED_STR = "Connected";
     }
 }
