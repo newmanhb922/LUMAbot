@@ -11,6 +11,7 @@ using static LumaBotUI.Constants;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using System.Net.NetworkInformation;
+using System.Net;
 
 
 namespace LumaBotUI
@@ -177,10 +178,12 @@ namespace LumaBotUI
         private string GetIPAddress()
         {
             string ipAddress = NO_IP_ADDR;
+            IPAddress toPing = Dns.GetHostAddresses(PI_LOCAL_NAME).First(address => address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
             Ping pinger = new Ping();
             try
             {
-                PingReply reply = pinger.Send(PI_LOCAL_NAME);
+                // PingReply reply = pinger.Send(PI_LOCAL_NAME);
+                PingReply reply = pinger.Send(toPing, 10000, new byte[] { 1 }, new PingOptions(1, true));
                 if (reply.Status == IPStatus.Success)
                 {
                     ipAddress = reply.Address.ToString();
